@@ -2,7 +2,7 @@
 
 ## Resumen ejecutivo
 
-Presenta una síntesis del proyecto, incluyendo el contexto en el que surge, la problemática u oportunidad identificada, la solución propuesta, su alcance general y el valor que aporta. Debe permitir al lector comprender rápidamente de qué trata el proyecto y por qué es relevante.
+Ágora es un sistema multiagente basado en inteligencia artificial orientado a apoyar la formulación básica de proyectos de Ciencia, Tecnología e Innovación (CTeI). La solución busca facilitar que estudiantes, docentes, investigadores y emprendedores transformen una idea inicial en un borrador estructurado de proyecto mediante una interacción guiada que recopila información, identifica datos faltantes y genera automáticamente los principales componentes del documento. El sistema organiza el contenido, permite su revisión por parte del usuario, integra todas las secciones en un único documento y ofrece la posibilidad de traducirlo al inglés, preservando su estructura y sentido técnico. Con ello, se pretende reducir el tiempo y la dificultad asociados a la elaboración de propuestas desde cero, brindando un asistente académico que agiliza el proceso de formulación sin reemplazar la revisión y validación de expertos. El proyecto tiene un alcance de prueba de concepto funcional, enfocado en demostrar el potencial de los sistemas multiagente y la inteligencia artificial generativa como herramientas de apoyo para la formulación de proyectos CTeI.
 
 
 ## Documentación del repositorio
