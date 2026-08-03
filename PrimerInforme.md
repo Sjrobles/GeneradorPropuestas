@@ -119,19 +119,17 @@ El producto mínimo viable permitirá ejecutar el siguiente flujo:
 
 5. **Revisión e intervención del usuario**
 
-   ### Revisión e intervención del usuario
-
 Una vez generados los diez componentes del proyecto, el sistema los presentará individualmente en una interfaz de revisión. El usuario podrá consultar cada sección, realizar modificaciones manuales sobre el contenido generado, guardar los cambios y aprobar cada componente antes de la integración del documento final.
 
 Para cada componente, el sistema permitirá como mínimo:
 
-    * Visualizar el contenido generado por la inteligencia artificial.
-    * Modificar manualmente el contenido mediante un campo de texto editable.
-    * Guardar las modificaciones realizadas.
-    * Marcar el componente como revisado o aprobado.
-    * Identificar cuáles componentes se encuentran pendientes de revisión.
-    * Navegar entre los diez componentes.
-    * Consultar el avance general del proceso de revisión.
+* Visualizar el contenido generado por la inteligencia artificial.
+* Modificar manualmente el contenido mediante un campo de texto editable.
+* Guardar las modificaciones realizadas.
+* Marcar el componente como revisado o aprobado.
+* Identificar cuáles componentes se encuentran pendientes de revisión.
+* Navegar entre los diez componentes.
+* Consultar el avance general del proceso de revisión.
 
 El sistema deberá conservar la última versión guardada por el usuario y utilizarla durante el ensamblaje del documento final. Una vez que el usuario modifique manualmente una sección, esta versión tendrá prioridad sobre el contenido originalmente generado por la inteligencia artificial.
 
@@ -141,11 +139,11 @@ Como funcionalidad complementaria y condicionada al tiempo disponible, el sistem
 
 En caso de implementarse, la regeneración deberá:
 
-    * Aplicarse únicamente al componente seleccionado.
-    * Solicitar confirmación antes de reemplazar el contenido existente.
-    * No modificar automáticamente los demás componentes.
-    * Permitir que el usuario revise el nuevo resultado antes de aprobarlo.
-    * Advertir que la regeneración reemplazará la versión actual de la sección.
+* Aplicarse únicamente al componente seleccionado.
+* Solicitar confirmación antes de reemplazar el contenido existente.
+* No modificar automáticamente los demás componentes.
+* Permitir que el usuario revise el nuevo resultado antes de aprobarlo.
+* Advertir que la regeneración reemplazará la versión actual de la sección.
 
 El ensamblaje final podrá realizarse cuando los diez componentes se encuentren generados y disponibles. El sistema mostrará cuáles han sido aprobados y solicitará confirmación al usuario cuando existan componentes pendientes de revisión.
 
