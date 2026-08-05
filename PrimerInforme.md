@@ -468,7 +468,15 @@ OB4: Integrar y validar, durante el cuarto mes, el funcionamiento de la prueba d
 
 ## 5. Solución propuesta
 
-Describe a alto nivel la solución planteada para abordar el problema identificado. Explica qué se propone construir, quiénes serían sus usuarios, cómo funcionaría de manera general y por qué constituye una respuesta adecuada dentro del alcance definido.
+## 5. Solución propuesta
+
+Se propone construir **Ágora**, una prueba de concepto funcional de un sistema multiagente basado en inteligencia artificial generativa, orientado a apoyar la formulación básica de proyectos de Ciencia, Tecnología e Innovación —CTeI—. La solución estará dirigida principalmente a estudiantes universitarios que cuentan con una idea académica, investigativa o de innovación, pero presentan dificultades para organizarla y convertirla en un borrador estructurado. El sistema no sustituirá la revisión de docentes, investigadores o expertos, sino que funcionará como un asistente para facilitar la etapa inicial de formulación.
+
+De manera general, Ágora permitirá que el usuario ingrese la información básica de su idea mediante una interfaz guiada. A partir de estos datos, el sistema identificará vacíos de información y formulará preguntas de aclaración antes de iniciar la generación del contenido. Posteriormente, los agentes especializados procesarán el contexto consolidado y producirán diez componentes del proyecto: resumen ejecutivo, objetivo general, objetivos específicos, planteamiento del problema, marco teórico, estado del arte, impactos esperados, población beneficiaria, estrategia de sostenibilidad y metodología de ejecución.
+
+Una vez generado el borrador, el usuario podrá visualizar cada componente por separado, editar manualmente su contenido, guardar los cambios y aprobar las secciones antes de su integración. El sistema utilizará la última versión guardada para ensamblar un único documento preliminar y permitir su exportación en al menos un formato. Como funcionalidad complementaria, sujeta al tiempo disponible, podrá incorporarse la regeneración completa de componentes específicos y la traducción del documento al inglés.
+
+La solución se implementará mediante una arquitectura en capas que separará la interfaz de usuario, la lógica de negocio, la orquestación multiagente, los servicios especializados y la persistencia de datos. Este enfoque resulta adecuado para el alcance de cuatro meses y un equipo de cuatro desarrolladores, ya que permite concentrar los esfuerzos en demostrar el funcionamiento completo del flujo principal, desde el registro de la idea hasta la generación del documento integrado. De esta manera, Ágora responde a la necesidad identificada mediante una herramienta viable, modular y centrada en el usuario, capaz de reducir la barrera inicial de formulación y mejorar la organización preliminar de las propuestas CTeI.
 
 ## 6. Estado del arte / soluciones relacionadas
 
