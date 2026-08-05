@@ -2,7 +2,12 @@
 
 ## Resumen / Abstract
 
-Presenta una síntesis breve del problema abordado, la solución propuesta, el alcance del proyecto, la metodología de desarrollo y el plan general de trabajo. Debe permitir al lector comprender la esencia del proyecto sin necesidad de leer el documento completo.
+## Resumen
+
+Los estudiantes universitarios enfrentan dificultades para transformar ideas iniciales en borradores estructurados y coherentes de proyectos de Ciencia, Tecnología e Innovación —CTeI—. Esta situación puede generar propuestas incompletas, inconsistencias entre sus componentes y una menor participación en oportunidades académicas, investigativas y de innovación. Para atender esta problemática, se propone desarrollar una prueba de concepto funcional de un sistema multiagente basado en inteligencia artificial generativa, capaz de recopilar información básica de una idea, identificar datos faltantes mediante preguntas de aclaración, generar diez componentes estructurales del proyecto y permitir su revisión, edición, guardado y aprobación por parte del usuario.
+
+El proyecto tendrá un alcance de producto mínimo viable y será desarrollado durante cuatro meses por un equipo de cuatro desarrolladores. La solución se implementará mediante una arquitectura monolítica modular organizada en capas, con orquestación multiagente, integración con un modelo de lenguaje, persistencia de datos y exportación del documento final. El plan de trabajo comprenderá la definición de requisitos y arquitectura, el desarrollo del mecanismo de diagnóstico, la construcción del motor de generación, la implementación de la revisión y el ensamblaje, y finalmente la integración, las pruebas funcionales y la validación con un grupo reducido de usuarios. Como resultado, se espera demostrar la viabilidad técnica y funcional del uso de sistemas multiagente e inteligencia artificial generativa como apoyo para la formulación básica de proyectos CTeI, sin sustituir la revisión y validación de expertos.
+
 
 ## 1. Introducción
 
@@ -33,21 +38,23 @@ Redacta la introducción como un texto continuo de 4 párrafos. El primero debe 
 
 ## 2. Planteamiento del problema
 
-Define y delimita el problema central, explicando qué se busca resolver y por qué es relevante.
+## 2. Planteamiento del problema
 
-El problema se define como una **carencia o déficit** que se manifiesta como un **estado negativo** en una situación real (no teórica), localizado en una **población objetivo bien definida**. No debe confundirse con la falta de un servicio específico ni con la inexistencia de una solución tecnológica. El problema no es "hace falta un sistema que integre X", sino la evidencia de una situación deficiente: por ejemplo, "existen aplicaciones diferentes e incompatibles en los distintos departamentos de la empresa, lo que genera desconexión entre las unidades y pérdida de calidad en la información para la toma de decisiones". Tampoco se trata de un trabajo para una empresa en particular, sino de una **problemática transferible** a contextos similares.
+### 2.1. Descripción del problema
 
-### 2.1 Descripción del problema
+Los estudiantes universitarios que desean formular iniciativas de Ciencia, Tecnología e Innovación —CTeI— enfrentan dificultades para transformar una idea inicial en una propuesta estructurada, clara y coherente. Aunque pueden reconocer una necesidad, plantear una solución preliminar o identificar una oportunidad de investigación e innovación, con frecuencia no cuentan con la experiencia suficiente para organizar dicha información en los componentes técnicos que integran un proyecto.
 
-Expone con claridad la problemática, sus causas, a quién afecta y cuáles son sus principales consecuencias.
+Esta dificultad se manifiesta especialmente al momento de definir con precisión el problema que se pretende atender, establecer objetivos congruentes, caracterizar la población beneficiaria, formular una metodología, sustentar conceptualmente la propuesta y plantear sus resultados e impactos esperados. La formulación exige que estos elementos mantengan una relación lógica entre sí, por lo que las debilidades en uno de ellos pueden afectar la consistencia general del documento.
 
-### 2.2 Justificación
+Entre las posibles causas de esta situación se encuentran la experiencia limitada de los estudiantes en procesos de formulación, el desconocimiento de la estructura básica de los proyectos CTeI, la dificultad para identificar la información necesaria y la necesidad de acompañamiento para organizar y redactar técnicamente sus ideas. A esto se suma la denominada barrera de la “hoja en blanco”, que puede dificultar el inicio del proceso y aumentar el tiempo requerido para construir un primer borrador.
 
-Explica por qué el problema debe ser atendido y cuál es la pertinencia académica, técnica, social o práctica del proyecto.
+Como consecuencia, algunas ideas con potencial académico, científico, tecnológico o innovador pueden permanecer en una etapa preliminar, presentarse de forma incompleta o no alcanzar el nivel básico de estructuración requerido para ser revisadas por docentes, semilleros de investigación, programas universitarios o convocatorias relacionadas con CTeI. Esto puede generar pérdida de oportunidades de participación, retroalimentación, financiación, vinculación a procesos de investigación y desarrollo de iniciativas académicas.
 
-### 2.3 Restricciones y supuestos iniciales
+En este contexto, el problema central se define de la siguiente manera:
 
-Indica las principales limitaciones y condiciones asumidas para plantear la solución, tales como tiempo, recursos, acceso a información, disponibilidad de usuarios, infraestructura o restricciones técnicas.
+**Los estudiantes universitarios presentan dificultades para transformar sus ideas iniciales en borradores estructurados y coherentes de proyectos de Ciencia, Tecnología e Innovación, lo que limita su capacidad para presentar sus iniciativas y aprovechar oportunidades académicas y de participación en escenarios CTeI.**
+
+El problema no corresponde a la inexistencia de una herramienta tecnológica específica, sino a una brecha en la capacidad inicial de estructuración y formulación de propuestas. Por tanto, el proyecto busca atender esta situación mediante un mecanismo de acompañamiento guiado que facilite la organización de la información, la identificación de datos faltantes y la generación de un primer borrador sujeto a revisión humana.
 
 
 ## 3. Alcance del proyecto
@@ -464,26 +471,18 @@ Los objetivos deben redactarse con **verbos en infinitivo** que indiquen accione
 
 ### 4.1 Objetivo general
 
-Muestra los cambios o efectos que se desean lograr en la situación inicial definida como problemática. Responde a la relación entre el **problema planteado** y los **propósitos o metas del desarrollo**.
-
-Formula de manera clara el propósito principal del proyecto.
-
-**Ejemplo:**
-
-> Definir proceso y estructura metodológica en la empresa XYZ para identificar, evaluar y reducir los riesgos relacionados con TI (Cumplimiento, estratégicos, operacionales) que puedan tener un impacto potencial sobre las actividades de TI que soportan las operaciones de negocio en el 2022, dentro de los niveles de tolerancia establecidos por la organización.
-
-*Análisis SMART del ejemplo:*
-- **S** — Específico: define proceso y estructura metodológica para riesgos TI (cumplimiento, estratégicos, operacionales).
-- **M** — Medible: se puede verificar mediante la existencia del proceso y estructura definidos.
-- **A** — Alcanzable: acotado a una empresa y a riesgos TI específicos.
-- **R** — Relevante: impacta directamente las operaciones de negocio soportadas por TI.
-- **T** — Con plazo: acotado al año 2022.
+Desarrollar, durante un periodo de cuatro meses, una prueba de concepto funcional con características de producto mínimo viable de un sistema multiagente basado en inteligencia artificial generativa, que permita recopilar y organizar la información básica de una idea de proyecto de Ciencia, Tecnología e Innovación —CTeI—, identificar datos faltantes, generar diez componentes estructurales, facilitar su revisión y edición por parte del usuario, y consolidarlos en un documento preliminar integrado y exportable.
 
 ### 4.2 Objetivos específicos
 
-Hacen referencia a los productos o resultados que son necesarios para alcanzar el objetivo general. Son los fines inmediatos del desarrollo, se dimensionan en términos de los resultados esperados o metas, con verbos que indican acciones concretas y con un mayor nivel de detalle.
+OB1 : Diseñar durante los dos primeros meses del proyecto, un mecanismo de interacción guiada que permita recopilar la información básica de una idea de proyecto CTeI, verificar la existencia de los datos mínimos requeridos e identificar vacíos para formular preguntas de aclaración al usuario.
 
-Descompone el objetivo general en metas concretas, observables y alcanzables que orienten el desarrollo del trabajo.
+OB2: Integrar entre el segundo y el tercer mes, un motor basado en inteligencia artificial generativa que procese la información consolidada y produzca de manera estructurada los diez componentes definidos para el borrador del proyecto CTeI, incorporando verificaciones básicas de completitud y coherencia.
+
+OB3: Implementar durante el tercer mes, una interfaz que permita al usuario visualizar, modificar, guardar y aprobar individualmente los diez componentes generados, e integrar la última versión guardada de cada sección en un documento preliminar unificado y exportable.
+
+OB4: Integrar y validar, durante el cuarto mes, el funcionamiento de la prueba de concepto mediante la ejecución de pruebas funcionales del recorrido completo y ejercicios de uso con un grupo reducido de usuarios, evaluando la usabilidad, la coherencia general del contenido, el tiempo de generación y la utilidad percibida del sistema.
+
 
 ## 5. Solución propuesta
 
