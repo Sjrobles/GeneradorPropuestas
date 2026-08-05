@@ -11,32 +11,16 @@ El proyecto tendrá un alcance de producto mínimo viable y será desarrollado d
 
 ## 1. Introducción
 
-Redacta la introducción como un texto continuo de 4 párrafos. El primero debe describir el dominio o sector del proyecto, las tendencias tecnológicas relevantes y el rol del software en ese contexto. El segundo debe exponer la situación actual: limitaciones del mercado, carencias funcionales y el impacto en los usuarios. El tercero debe presentar la necesidad técnica identificada y la oportunidad de diseño tecnológico. El cuarto, opcional, debe cerrar con una presentación general de la solución propuesta (nombre, funcionalidades clave e impacto esperado), sirviendo de transición hacia las secciones siguientes.
+## 1. Introducción
 
-### Contextos
+La formulación de proyectos de Ciencia, Tecnología e Innovación —CTeI— constituye una actividad fundamental en los entornos universitarios, debido a que permite transformar ideas académicas, investigativas y emprendedoras en propuestas estructuradas que puedan ser evaluadas, fortalecidas y eventualmente implementadas. En este contexto, el avance de la inteligencia artificial generativa, los modelos de lenguaje de gran tamaño y los sistemas multiagente ha abierto nuevas posibilidades para apoyar tareas de análisis, organización de información y producción de contenidos técnicos. Estas tecnologías permiten distribuir un proceso complejo entre módulos especializados que colaboran entre sí, mientras que los sistemas de información facilitan la captura de datos, la interacción con los usuarios, la conservación de los avances y la integración de los resultados en documentos estructurados.
 
-- **Dominio o sector** (ej. educación, industria, salud, ciudades inteligentes, TI).
-- **Tendencias tecnológicas relevantes**.
-- **Rol de los sistemas de información / software / datos** en ese contexto.
+A pesar de la disponibilidad creciente de asistentes de inteligencia artificial y herramientas de apoyo académico, persisten limitaciones para acompañar de manera específica la formulación básica de proyectos CTeI. Muchas soluciones actuales generan textos a partir de instrucciones generales, pero no necesariamente guían al usuario en la identificación de la información requerida, la detección de vacíos o la construcción articulada de los diferentes componentes de una propuesta. Asimismo, algunas herramientas se concentran en la búsqueda de literatura, la corrección de textos o la generación aislada de contenidos, sin ofrecer un flujo completo que conecte el diagnóstico de la idea, la formulación, la revisión humana y el ensamblaje documental. Esta situación afecta especialmente a estudiantes universitarios con experiencia limitada en estructuración de proyectos, quienes pueden presentar dificultades para superar la barrera de la hoja en blanco, mantener la coherencia entre el problema, los objetivos y la metodología, y aprovechar oportunidades académicas, investigativas y de innovación.
 
-### Situación actual
+Frente a esta situación, se identifica la necesidad técnica de diseñar una solución que no se limite a producir texto, sino que organice el proceso de formulación mediante una interacción guiada y una arquitectura modular. La oportunidad de diseño consiste en integrar una interfaz web, un mecanismo de diagnóstico, un motor de generación de contenidos, validaciones básicas de completitud y coherencia, funciones de revisión y edición, y un componente de ensamblaje documental dentro de un único flujo. La incorporación de una arquitectura monolítica modular organizada en capas y coordinada por un orquestador multiagente permite distribuir responsabilidades, reducir la complejidad del desarrollo y mantener la participación activa del usuario. De esta manera, la inteligencia artificial actúa como apoyo para construir un primer borrador, mientras que la revisión humana conserva un papel central en la modificación, aprobación y validación del contenido.
 
-- **Limitaciones del mercado actual**.
-- **Carencias funcionales o de diseño**.
-- **Impacto en usuarios**.
+Como respuesta a esta necesidad se propone el desarrollo de **Ágora**, una prueba de concepto funcional con características de producto mínimo viable para apoyar la formulación básica de proyectos CTeI. El sistema permitirá registrar la información inicial de una idea, identificar datos faltantes mediante preguntas de aclaración, generar diez componentes estructurales, visualizar y editar cada sección, guardar los cambios, aprobar individualmente los contenidos y consolidar la última versión en un documento integrado y exportable. Su desarrollo se realizará durante cuatro meses por un equipo de cuatro desarrolladores y se concentrará en demostrar la viabilidad técnica y funcional del recorrido completo. Con ello se espera reducir la dificultad inicial de formulación, mejorar la organización preliminar de las propuestas y facilitar que los estudiantes presenten sus ideas a procesos de revisión académica, sin sustituir el acompañamiento ni la evaluación de docentes, investigadores o expertos.
 
-### Necesidad identificada
-
-- **Necesidad técnica clara**.
-- **Oportunidad de diseño tecnológico**.
-
-### Propuesta general
-
-- **Nombre del sistema**.
-- **Funcionalidades clave**.
-- **Impacto esperado**.
-
-## 2. Planteamiento del problema
 
 ## 2. Planteamiento del problema
 
