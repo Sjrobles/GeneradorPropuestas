@@ -7,6 +7,22 @@
 
 ## Documentación del repositorio
 
+## Estado de desarrollo
+
+La **Fase 1 del frontend web** está disponible en [`frontend/`](./frontend). La
+base incluye React, TypeScript, Vite, rutas, providers, sistema visual,
+accesibilidad inicial y pruebas automatizadas.
+
+Para ejecutarla con Node.js 24 LTS:
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+La arquitectura se documenta en [`docs/frontend.md`](./docs/frontend.md).
+
 ### Primer informe
 
 - [Primer Informe.md](./PrimerInforme.md): Documento que presenta el planteamiento del problema, los objetivos, la solución propuesta, el estado del arte, la metodología de desarrollo y el plan de trabajo del proyecto.
