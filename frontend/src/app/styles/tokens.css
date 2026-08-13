@@ -1,0 +1,46 @@
+:root {
+  color-scheme: light;
+
+  /* Paleta semántica derivada del Figma de Ágora. */
+  --background: #f7f8fc;
+  --foreground: #17213f;
+  --card: #ffffff;
+  --card-foreground: #17213f;
+  --primary: #3862e8;
+  --primary-foreground: #ffffff;
+  --secondary: #eef2ff;
+  --secondary-foreground: #263c7c;
+  --muted: #f1f3f8;
+  --muted-foreground: #69728a;
+  --border: #e1e5ef;
+  --ring: #3862e8;
+  --success: #278461;
+  --warning: #c57828;
+  --danger: #c04444;
+
+  --font-ui:
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+    'Segoe UI', sans-serif;
+  --font-editorial: Georgia, 'Times New Roman', serif;
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+
+  --radius-sm: 0.5rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-pill: 999px;
+
+  --shadow-sm: 0 1px 2px rgb(23 33 63 / 5%);
+  --shadow-card: 0 12px 30px rgb(23 33 63 / 8%);
+  --shadow-floating: 0 18px 44px rgb(23 33 63 / 14%);
+
+  --content-width: 80rem;
+  --header-height: 4.5rem;
+}
