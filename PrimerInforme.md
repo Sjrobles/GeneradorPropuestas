@@ -466,7 +466,7 @@ OB3: Implementar durante el tercer mes, una interfaz que permita al usuario visu
 OB4: Integrar y validar, durante el cuarto mes, el funcionamiento de la prueba de concepto mediante la ejecución de pruebas funcionales del recorrido completo y ejercicios de uso con un grupo reducido de usuarios, evaluando la usabilidad, la coherencia general del contenido, el tiempo de generación y la utilidad percibida del sistema.
 
 
-## 5. Solución propuesta
+
 
 ## 5. Solución propuesta
 
@@ -480,49 +480,152 @@ La solución se implementará mediante una arquitectura en capas que separará l
 
 ## 6. Estado del arte / soluciones relacionadas
 
-Presenta antecedentes o soluciones existentes relevantes, con el fin de contextualizar la propuesta y mostrar oportunidades de diferenciación, mejora o aporte.
+El uso de inteligencia artificial generativa en actividades académicas y de investigación ha crecido considerablemente durante los últimos años. Los modelos de lenguaje permiten generar, resumir, organizar y transformar información a partir de instrucciones proporcionadas por el usuario, lo que los convierte en herramientas con potencial para apoyar diferentes etapas de la construcción de documentos académicos y proyectos. Sin embargo, gran parte de estas herramientas funcionan como asistentes de propósito general y dejan en manos del usuario la responsabilidad de definir qué información proporcionar, qué preguntas realizar y cómo organizar posteriormente los resultados.
 
-Responde a las preguntas: ¿qué soluciones existen hoy?, ¿cómo abordan el problema?, ¿qué limitaciones presentan?
+Dentro de este grupo se encuentran herramientas como ChatGPT, Gemini y otros asistentes basados en modelos de lenguaje. Su principal ventaja es la capacidad para trabajar con diferentes tipos de solicitudes y adaptarse a las necesidades del usuario. En el contexto académico, pueden utilizarse para generar ideas, estructurar textos, proponer objetivos, explicar conceptos o realizar revisiones preliminares. No obstante, estas herramientas no están diseñadas específicamente para acompañar paso a paso la formulación de un proyecto de Ciencia, Tecnología e Innovación. El usuario debe conocer previamente qué información necesita proporcionar y cómo solicitar cada componente, por lo que una persona con poca experiencia en formulación de proyectos puede obtener resultados incompletos o poco relacionados entre sí.
+
+También existen soluciones especializadas en investigación académica. Un ejemplo es Elicit, una herramienta que utiliza inteligencia artificial para apoyar procesos como la búsqueda de literatura científica, la extracción de información de artículos y la elaboración de síntesis. Este tipo de herramientas resulta especialmente útil cuando el investigador necesita explorar antecedentes o encontrar información relacionada con un problema de investigación. Sin embargo, su propósito principal está relacionado con la investigación y revisión de literatura, y no con la construcción completa de un proyecto a partir de una idea inicial. El usuario todavía debe encargarse de organizar los resultados y convertirlos en una propuesta estructurada.
+
+Otra línea de trabajo relevante corresponde a los sistemas multiagente basados en modelos de lenguaje. En este enfoque, una tarea compleja puede dividirse entre diferentes agentes especializados que tienen responsabilidades específicas y que trabajan de manera coordinada. En lugar de solicitar a un único modelo que realice todo el proceso, es posible asignar diferentes funciones a distintos agentes. Por ejemplo, uno puede encargarse de analizar el contexto, otro de generar contenido y otro de revisar los resultados. Las investigaciones recientes sobre sistemas multiagente muestran que esta organización puede ser útil para resolver tareas que requieren diferentes capacidades y etapas de procesamiento.
+
+Una de las principales referencias en este campo corresponde al trabajo de Li et al. (2024), quienes realizan una revisión de los sistemas multiagente basados en modelos de lenguaje y analizan aspectos relacionados con el flujo de trabajo, la infraestructura y los principales desafíos de este tipo de sistemas. Entre los aspectos señalados se encuentran la coordinación entre agentes, la comunicación, la administración del flujo de trabajo y la confiabilidad de los resultados. Estos elementos son importantes para el proyecto debido a que una arquitectura multiagente no consiste simplemente en utilizar varios modelos de inteligencia artificial, sino en definir claramente las responsabilidades de cada componente y la forma en que intercambian información.
+
+De manera similar, Guo et al. (2024) analizan la evolución de los modelos de lenguaje hacia sistemas compuestos por múltiples agentes. Este trabajo muestra que la división de una tarea compleja en diferentes responsabilidades puede facilitar la construcción de sistemas capaces de abordar procesos que serían más difíciles de manejar mediante un único agente. Al mismo tiempo, se reconocen desafíos relacionados con la coordinación, la comunicación y el control de los resultados generados.
+
+Para implementar este tipo de arquitecturas también existen herramientas de desarrollo como AutoGen y Microsoft Agent Framework, que proporcionan mecanismos para construir aplicaciones en las que diferentes agentes pueden colaborar entre sí y con los usuarios. Estas tecnologías son relevantes como referencia técnica para el proyecto, pero no constituyen por sí mismas una solución para la formulación de proyectos CTeI. Su función es proporcionar infraestructura y mecanismos de coordinación sobre los cuales los desarrolladores deben construir la lógica específica de la aplicación.
+
+A partir de las soluciones revisadas se puede observar que actualmente existen herramientas capaces de generar contenido, apoyar la investigación académica y facilitar la construcción de sistemas multiagente, pero estas capacidades se encuentran generalmente separadas. Las herramientas de inteligencia artificial de propósito general permiten generar textos, pero no necesariamente guían al usuario en la construcción de un proyecto completo. Las herramientas de investigación facilitan la búsqueda y análisis de información académica, pero no abarcan todo el proceso de formulación. Por su parte, los frameworks multiagente proporcionan las bases técnicas para coordinar agentes, pero requieren que el desarrollador defina el problema y construya el flujo específico.
+
+En este sentido, se identifica una oportunidad para desarrollar una solución que conecte estas capacidades dentro de un flujo diseñado específicamente para la formulación inicial de proyectos CTeI. La propuesta de Ágora busca que el proceso no comience directamente con la generación de texto, sino con la recopilación de información y el diagnóstico de lo que el usuario ha proporcionado. A partir de este diagnóstico, el sistema podrá formular preguntas de aclaración, consolidar el contexto y utilizarlo posteriormente para generar los diferentes componentes del proyecto.
+
+Otro aspecto diferenciador de la propuesta es la participación del usuario durante todo el proceso. El contenido generado por la inteligencia artificial no será considerado como una versión definitiva. El usuario podrá revisar cada componente, realizar modificaciones, guardar los cambios y aprobar las secciones antes de construir el documento final. De esta manera, la herramienta se plantea como un mecanismo de apoyo para la formulación y no como un sistema que sustituya el criterio de docentes, investigadores o expertos.
+
+Este enfoque también resulta importante debido a las limitaciones propias de la inteligencia artificial generativa. Los modelos de lenguaje pueden producir información incorrecta, incompleta o poco adecuada para un contexto determinado. UNESCO (2023) señala la importancia de utilizar estas tecnologías de manera responsable en educación e investigación, manteniendo un enfoque centrado en las personas y considerando aspectos como la validación de la información, la privacidad y la supervisión humana.
 
 ### Revisar
 
-- Productos comerciales.
-- Soluciones open-source.
-- Arquitecturas o enfoques técnicos relevantes.
+Las soluciones analizadas pueden agruparse en tres grandes categorías. La primera corresponde a los asistentes de inteligencia artificial generativa de propósito general, que permiten producir y transformar contenido a partir de instrucciones. La segunda está formada por herramientas especializadas en investigación académica, como Elicit, que se concentran principalmente en la búsqueda y análisis de literatura científica. La tercera corresponde a frameworks y arquitecturas para sistemas multiagente, como AutoGen, además de las investigaciones académicas que estudian la coordinación de agentes basados en modelos de lenguaje.
+
+Estas tres categorías proporcionan elementos que pueden ser aprovechados en Ágora. De los asistentes generativos se toma la capacidad de producir contenido a partir del contexto proporcionado. De las herramientas de investigación se reconoce la importancia de organizar y sustentar adecuadamente la información. De los sistemas multiagente se toma el principio de dividir el proceso en responsabilidades especializadas que puedan coordinarse entre sí.
 
 ### Comparar
 
-- Funcionalidad.
-- Escalabilidad.
-- Costos.
-- Usabilidad.
-- Limitaciones técnicas.
+En términos de funcionalidad, las herramientas generativas de propósito general ofrecen una gran variedad de posibilidades, pero no cuentan necesariamente con un flujo especializado para formular proyectos CTeI. Las herramientas académicas presentan una mayor especialización en investigación y literatura, aunque su alcance es diferente al de la propuesta planteada. Los frameworks multiagente, por otro lado, ofrecen capacidades para construir sistemas especializados, pero requieren un desarrollo adicional para convertirse en una solución orientada a usuarios finales.
+
+En cuanto a escalabilidad, una arquitectura basada en agentes especializados permite ampliar progresivamente el sistema mediante la incorporación de nuevas funciones. Por ejemplo, una futura versión podría incorporar agentes destinados a revisar referencias, presupuestos, cronogramas o requisitos específicos de una convocatoria. Sin embargo, aumentar el número de agentes también puede incrementar la complejidad del sistema y el consumo de recursos, por lo que el proyecto inicial mantendrá un conjunto limitado de responsabilidades.
+
+Respecto a los costos, las soluciones comerciales suelen depender del modelo de suscripción o del consumo asociado al uso de los servicios de inteligencia artificial. En el caso de una solución propia también existen costos relacionados con el modelo de lenguaje, almacenamiento, infraestructura y despliegue. Debido a que Ágora corresponde inicialmente a una prueba de concepto, la prioridad será demostrar el funcionamiento del sistema y no alcanzar desde esta primera versión una operación masiva o altamente optimizada.
+
+En términos de usabilidad, las herramientas generales ofrecen mayor libertad, pero requieren que el usuario sepa cómo interactuar con ellas para obtener resultados adecuados. Ágora plantea reducir esta dificultad mediante una experiencia guiada en la que el sistema indique progresivamente qué información necesita y qué acciones debe realizar el usuario.
+
+Finalmente, las soluciones existentes presentan limitaciones relacionadas con la confiabilidad del contenido generado, la dependencia de proveedores externos, la privacidad de la información y la necesidad de supervisión humana. Estas limitaciones serán consideradas dentro del proyecto y constituyen una de las razones por las cuales el resultado generado por Ágora será presentado como un borrador preliminar y no como un proyecto automáticamente validado.
 
 ### Resultados esperados
 
-- Identificación de **vacíos, oportunidades o problemas no resueltos**.
-- **Justificación técnica** de por qué se requiere una nueva solución.
+El análisis realizado permite identificar como principal oportunidad la integración de diferentes capacidades que actualmente suelen encontrarse separadas. Existe una amplia disponibilidad de herramientas capaces de generar texto y apoyar la investigación, así como tecnologías para desarrollar sistemas multiagente, pero existe espacio para una solución que integre estas capacidades dentro de un proceso guiado específicamente orientado a estudiantes que necesitan transformar una idea inicial en un borrador estructurado.
+
+Ágora busca aprovechar esta oportunidad mediante un flujo que comienza con la captura de información, continúa con un diagnóstico y preguntas de aclaración, genera los componentes del proyecto y posteriormente permite su revisión, edición, aprobación y ensamblaje. La arquitectura multiagente permitirá separar estas responsabilidades y facilitar su evolución durante futuras etapas del proyecto.
+
+La principal justificación técnica de la propuesta se encuentra, por tanto, en la integración de estas capacidades dentro de una solución específica para la formulación inicial de proyectos CTeI. El objetivo no es desarrollar un nuevo modelo de inteligencia artificial, sino utilizar tecnologías existentes para construir una experiencia especializada que facilite el proceso de formulación y mantenga al usuario como responsable de la revisión y aprobación del resultado.
 
 ## 7. Metodología de desarrollo y plan de trabajo
 
-Describe el enfoque metodológico que orientará el desarrollo del proyecto y la forma en que este se traducirá en actividades, iteraciones y entregables concretos. Debe explicar cómo se construirá, validará y refinará la solución a lo largo del proceso.
+El desarrollo de Ágora se realizará mediante un enfoque de prototipado iterativo e incremental. La decisión de utilizar este enfoque responde a las características del proyecto, ya que la solución integra una interfaz web, servicios de backend, persistencia de información, inteligencia artificial generativa y diferentes componentes especializados que posteriormente deberán comunicarse entre sí.
+
+En lugar de desarrollar todos estos componentes simultáneamente, el proyecto se organizará en fases sucesivas. Primero se construirá y validará la experiencia completa del usuario en el frontend utilizando datos simulados. Una vez que este recorrido se encuentre definido y probado, se procederá a desarrollar los servicios reales que permitirán reemplazar progresivamente la información simulada.
+
+Esta estrategia permite reducir la complejidad durante las primeras etapas y detectar de manera temprana problemas relacionados con navegación, interacción, diseño y experiencia de usuario. También permite que el desarrollo del backend y de los agentes se realice sobre un flujo de usuario previamente definido, evitando que ambas partes tengan que desarrollarse completamente al mismo tiempo.
+
+El proceso seguirá ciclos de diseño, implementación, prueba y ajuste. Cada fase tendrá objetivos concretos y producirá un resultado funcional que servirá como base para la siguiente. De esta manera, el sistema se irá construyendo progresivamente hasta llegar a una integración completa.
 
 ### 7.1 Enfoque metodológico
 
-Explica la metodología adoptada para el desarrollo del proyecto, justificando su elección. En particular, debe describirse el uso de un enfoque de prototipado iterativo, indicando cómo se plantea avanzar mediante ciclos sucesivos de diseño, construcción, prueba y ajuste de la solución.
+El proyecto utilizará un enfoque de desarrollo iterativo debido a que algunos aspectos de la solución, especialmente los relacionados con la interacción con los agentes de inteligencia artificial, pueden requerir ajustes a medida que se realicen las pruebas. La metodología permitirá evaluar cada parte del sistema antes de integrarla con las demás.
+
+La primera parte del desarrollo estará enfocada en el frontend. Se utilizará React con Vite y TypeScript, acompañado de las herramientas necesarias para la construcción de la interfaz, validación de formularios, manejo de rutas, pruebas y organización visual. Durante esta etapa se utilizarán datos simulados mediante MockAPI para representar las respuestas que posteriormente serán proporcionadas por el backend y los agentes.
+
+Una vez construido el flujo principal del frontend, se comenzará la integración de los servicios reales. En esta segunda parte se desarrollarán el backend, la base de datos, la autenticación y las API necesarias. Posteriormente se incorporará el orquestador y los agentes encargados de las diferentes etapas de procesamiento.
+
+Este enfoque permite separar dos problemas que, aunque están relacionados, pueden validarse de manera independiente. Primero se comprobará que el usuario pueda completar correctamente el proceso de formulación. Después se comprobará que los servicios internos puedan proporcionar la información necesaria para que ese proceso funcione con datos reales.
 
 ### 7.2 Iteraciones o fases de desarrollo
 
-Describe las principales fases o iteraciones previstas para el proyecto, indicando el propósito de cada una, las actividades principales a realizar y la manera en que cada ciclo contribuirá al refinamiento progresivo de la solución.
+La primera fase estará dedicada al Bootstrap del frontend. En esta etapa se creará el proyecto utilizando React, Vite y TypeScript y se configurarán las herramientas principales que acompañarán el desarrollo. También se establecerá la estructura inicial del proyecto, las rutas, los proveedores, los elementos visuales reutilizables y la organización general de la aplicación. El objetivo será disponer de una base estable que permita desarrollar las siguientes funcionalidades.
+
+La segunda fase estará orientada a la Landing y selección inicial. Se construirá la pantalla de entrada de Ágora y el flujo mediante el cual el usuario podrá iniciar un proyecto, seleccionar la habilidad o tipo de proceso que desea utilizar y seleccionar el idioma. El diseño se realizará tomando como referencia los prototipos elaborados en Figma y se tendrá en cuenta desde esta etapa el comportamiento de la aplicación en diferentes tamaños de pantalla.
+
+La tercera fase corresponderá al Chat y diagnóstico. En ella se construirá la interacción conversacional que permitirá recopilar información de la idea. El sistema mostrará mensajes, permitirá ingresar respuestas y manejará estados como carga y procesamiento. También se implementará el diagnóstico, las preguntas de aclaración y el resumen del contexto recopilado. Antes de continuar, el usuario podrá revisar el contexto y confirmar o editar la información. Durante esta fase las respuestas serán simuladas, lo que permitirá validar el flujo sin depender todavía de la implementación del backend o de los agentes reales.
+
+La cuarta fase estará dedicada al Workspace. Se desarrollará el espacio de trabajo donde se presentarán los diez componentes del proyecto. En esta etapa se implementarán los estados de cada componente, el progreso general, el editor y las acciones de guardar y aprobar. También se incorporarán advertencias para señalar información pendiente o componentes que requieran atención. Al igual que en la fase anterior, los datos serán simulados para concentrar inicialmente el esfuerzo en la experiencia de usuario.
+
+La quinta fase estará enfocada en el documento final. Se desarrollará la interfaz necesaria para ensamblar los componentes, visualizar una previsualización del resultado, acceder a las opciones de exportación y manejar la traducción. El objetivo será completar el recorrido del usuario hasta el resultado final utilizando todavía datos simulados.
+
+La sexta fase estará dedicada a la calidad del frontend. Antes de comenzar la integración con los servicios reales se revisará el comportamiento responsive, la accesibilidad, el manejo de errores, los estados de carga, las pruebas automatizadas, el proceso de construcción de la aplicación y el rendimiento básico. También se realizará una limpieza general del código para garantizar que la base desarrollada pueda continuar creciendo sin introducir problemas innecesarios.
+
+Al finalizar estas fases se tendrá un frontend funcional que permitirá recorrer el proceso completo de Ágora utilizando datos simulados. Este resultado servirá como base para iniciar la siguiente etapa del proyecto, en la que se reemplazarán progresivamente los elementos simulados por los servicios reales.
+
+Las fases posteriores estarán orientadas al desarrollo del backend y la integración del sistema. Primero se implementará la persistencia mediante MongoDB, la autenticación y las API necesarias para comunicar el frontend con los servicios internos. Posteriormente se desarrollará el orquestador encargado de coordinar las diferentes etapas del proceso.
+
+Una vez establecido el mecanismo de coordinación se implementará el agente encargado del contexto y diagnóstico, cuya función será analizar la información proporcionada por el usuario, identificar datos faltantes y generar preguntas de aclaración. Después se desarrollará el agente encargado de la formulación junto con los subagentes que sean necesarios para generar los diferentes componentes del proyecto.
+
+Con los mecanismos de generación implementados se incorporará la validación orientada a detectar problemas básicos de completitud y coherencia. Esta etapa permitirá comprobar que los componentes requeridos existan y que mantengan relaciones básicas entre ellos, sin pretender realizar una evaluación científica o institucional completa.
+
+Posteriormente se implementará el ensamblaje del documento utilizando las versiones de los componentes que hayan sido guardadas y aprobadas por el usuario. Sobre este flujo se incorporarán las funciones de traducción y exportación.
+
+Finalmente se realizará la integración completa, las pruebas del sistema y el despliegue de la solución. Durante esta etapa se comprobará el recorrido completo desde el ingreso de la idea hasta la obtención del documento final y se corregirán los problemas encontrados durante las pruebas.
 
 ### 7.3 Estrategia de validación
 
-Explica cómo se evaluarán los avances en cada iteración, por ejemplo mediante retroalimentación de usuarios, pruebas funcionales, revisión de requerimientos o validaciones técnicas y de usabilidad.
+La validación será un proceso continuo durante el desarrollo. Cada fase será sometida a pruebas antes de utilizarla como base para la siguiente etapa. De esta manera, los errores podrán detectarse cuando el componente todavía se encuentra aislado y su corrección sea menos costosa.
+
+En las primeras fases se realizarán pruebas sobre la estructura y comportamiento del frontend. Se comprobará que las rutas, formularios, componentes y estados funcionen correctamente y que la aplicación pueda ejecutarse, construirse y validarse mediante las herramientas configuradas para el proyecto.
+
+En el flujo de diagnóstico se verificará que el usuario pueda proporcionar la información solicitada, responder preguntas de aclaración, consultar el resumen de su contexto y modificarlo antes de continuar. En el Workspace se comprobará que los diez componentes puedan visualizarse, editarse, guardarse y aprobarse de manera independiente.
+
+También se verificará que las modificaciones realizadas por el usuario se mantengan durante el proceso. Una sección modificada manualmente deberá conservar la última versión guardada y esta será la que se utilice posteriormente durante el ensamblaje del documento.
+
+Una vez incorporado el backend se realizarán pruebas de integración para comprobar la comunicación entre la interfaz, las API, la base de datos y los servicios de inteligencia artificial. Se verificará que la información proporcionada durante el diagnóstico llegue correctamente al proceso de generación y que los resultados puedan regresar al frontend sin pérdida de información.
+
+Los agentes también serán evaluados de manera individual y posteriormente dentro del flujo completo. El diagnóstico será evaluado según su capacidad para identificar información insuficiente y formular preguntas relacionadas con los vacíos encontrados. La generación será evaluada considerando si los componentes producidos corresponden al contexto proporcionado y si respetan la estructura definida para el proyecto.
+
+La validación no se limitará a comprobar que el sistema funcione técnicamente. También se realizarán ejercicios de uso con un grupo reducido de usuarios, principalmente estudiantes y personas relacionadas con actividades académicas o de investigación. Durante estas pruebas se observará si las instrucciones son comprensibles, si las preguntas permiten completar adecuadamente la información, si el proceso resulta fácil de seguir y si la revisión y edición de los componentes se realiza de manera clara.
+
+También se tendrá en cuenta el tiempo necesario para completar el flujo, la utilidad percibida de la herramienta y la percepción de coherencia del documento generado. Los resultados obtenidos servirán para realizar ajustes tanto en la interfaz como en las instrucciones utilizadas por los agentes.
+
+La validación del contenido generado tendrá un alcance preliminar. El sistema no certificará que un proyecto sea científica, financiera, técnica o institucionalmente viable. El propósito será comprobar que la herramienta pueda ayudar al usuario a construir un primer borrador organizado y que este pueda ser posteriormente revisado por una persona con los conocimientos necesarios.
 
 ### 7.4 Plan de trabajo, cronograma o hitos
 
-Presenta la planificación general del proyecto en forma de cronograma, tabla o listado de hitos, indicando las actividades principales, los entregables esperados y, cuando aplique, la temporalidad estimada de cada fase.
+El trabajo se desarrollará de manera progresiva durante los cuatro meses establecidos para el proyecto. La primera parte estará concentrada en construir el frontend y validar la experiencia completa antes de comenzar con la integración de los servicios reales.
+
+Durante las primeras etapas se desarrollará la estructura base del frontend y posteriormente las interfaces correspondientes a la Landing, la selección inicial, el chat, el diagnóstico y el espacio de trabajo. A continuación se implementará el módulo de documento y se realizarán las actividades de calidad necesarias para dejar estable el recorrido completo.
+
+Una vez finalizada esta primera etapa se contará con una versión funcional del recorrido del usuario utilizando datos simulados. Este punto permitirá comenzar la implementación del backend sobre una interfaz que ya ha sido probada y cuyo comportamiento esperado se encuentra definido.
+
+En la segunda parte del desarrollo se implementarán progresivamente MongoDB, autenticación y las API. Después se incorporará el orquestador y se desarrollarán los componentes de inteligencia artificial responsables del diagnóstico, la formulación y las diferentes tareas especializadas.
+
+Posteriormente se integrarán los mecanismos de validación, ensamblaje, traducción y exportación. Estas funciones serán conectadas con el frontend para reemplazar las respuestas simuladas utilizadas durante las primeras fases.
+
+La última etapa estará dedicada a la integración, pruebas y despliegue. Se ejecutarán pruebas del flujo completo, se corregirán errores y se realizarán pruebas con usuarios para obtener retroalimentación sobre la utilidad y facilidad de uso de la solución.
+
+La distribución temporal se plantea de manera flexible debido a que algunas actividades pueden desarrollarse en paralelo. El equipo de cuatro desarrolladores podrá trabajar sobre diferentes componentes de manera simultánea, manteniendo puntos de integración periódicos para garantizar que las partes desarrolladas continúen siendo compatibles.
+
+El criterio principal para priorizar las actividades será mantener funcional el recorrido central del sistema. Por esta razón, las funcionalidades esenciales tendrán prioridad sobre características complementarias. El objetivo será garantizar que el usuario pueda ingresar una idea, completar el diagnóstico, obtener los componentes, revisarlos, modificarlos, aprobarlos y finalmente consolidarlos en un documento antes de dedicar esfuerzos significativos a funcionalidades adicionales.
 
 ## 8. Referencias
 
-Incluye las fuentes consultadas y citadas en el documento, en el formato de citación definido para el curso o proyecto.
+Elicit. (s. f.). *Elicit: The AI Research Assistant*. https://elicit.com/
+
+Guo, T., Chen, X., Wang, Y., Chang, R., Pei, S., Chawla, N. V., Wiest, O., & Zhang, X. (2024). *Large Language Model based Multi-Agents: A Survey of Progress and Challenges*. Proceedings of the Thirty-Third International Joint Conference on Artificial Intelligence, 8048–8057. https://doi.org/10.24963/ijcai.2024/890
+
+Li, X., Wang, S., Zeng, S., Wu, Y., & Yang, Y. (2024). *A Survey on LLM-based Multi-Agent Systems: Workflow, Infrastructure, and Challenges*. Vicinagearth, 1, 9. https://doi.org/10.1007/s44336-024-00009-2
+
+Microsoft. (s. f.). *AutoGen*. GitHub. https://github.com/microsoft/autogen
+
+Microsoft. (s. f.). *Microsoft Agent Framework*. GitHub. https://github.com/microsoft/agent-framework
+
+UNESCO. (2023). *Guidance for Generative AI in Education and Research*. UNESCO. https://unesdoc.unesco.org/ark:/48223/pf0000386693
+
+OpenAI. (s. f.). *ChatGPT*. https://chatgpt.com/
+
+Google. (s. f.). *Gemini*. https://gemini.google.com/
