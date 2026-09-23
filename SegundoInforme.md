@@ -385,7 +385,7 @@ El desarrollo de Ágora ha seguido un enfoque **iterativo e incremental**, carac
 
 A diferencia del planteamiento inicial, en el estado actual la metodología puede describirse principalmente en pasado y presente, debido a que una parte significativa de la implementación ya fue ejecutada.
 
-## 7.1 Enfoque metodológico
+### 7.1 Enfoque metodológico
 
 La primera etapa se concentró en definir la experiencia del usuario y construir el frontend.
 
@@ -403,7 +403,7 @@ La lógica generativa se desarrolló de manera especializada y se organizó dent
 
 Con el funcionamiento de los agentes, la metodología pasó de una etapa centrada en la implementación a una etapa orientada principalmente a la **estabilización y validación**.
 
-## 7.2 Evolución del sistema multiagente
+### 7.2 Evolución del sistema multiagente
 
 El proceso se organizó inicialmente alrededor de responsabilidades diferenciadas.
 
@@ -420,7 +420,7 @@ Actualmente funcionan los agentes asociados con:
 
 El orquestador ejecuta los agentes de formulación en una secuencia previamente determinada. El análisis arquitectónico actual documenta que *Research*, *Ideation*, *Methodology*, *Budget* e *Impact* forman el recorrido principal.
 
-## 7.3 Ajuste del flujo de metodología y presupuesto
+### 7.3 Ajuste del flujo de metodología y presupuesto
 
 Uno de los cambios metodológicos más relevantes ocurrió durante la integración de los agentes de metodología y presupuesto.
 
@@ -440,7 +440,7 @@ La mejora buscó aumentar la consistencia entre:
 
 **Objetivos → actividades → metodología → recursos → costos.**
 
-## 7.4 Construcción y validación de los trece componentes
+### 7.4 Construcción y validación de los trece componentes
 
 El flujo actual produce trece componentes.
 
@@ -452,7 +452,7 @@ También incorpora un presupuesto relacionado con los medios necesarios para eje
 
 Los apartados finales incluyen beneficiarios, riesgos e impactos esperados como componentes independientes.
 
-## 7.5 Estrategia de pruebas de usabilidad y funcionamiento
+### 7.5 Estrategia de pruebas de usabilidad y funcionamiento
 
 En la etapa actual se realizan pruebas de forma continua.
 
@@ -474,7 +474,7 @@ Como resultado de estas pruebas, se implementaron modificaciones tanto en el fro
 
 Estas acciones representan la aplicación directa del enfoque iterativo: las decisiones no se mantienen únicamente por haber sido definidas durante el diseño inicial, sino que pueden modificarse cuando las pruebas muestran una alternativa más adecuada.
 
-## 7.6 Evaluación comparativa de interfaces
+### 7.6 Evaluación comparativa de interfaces
 
 Como parte del proceso, se realizó una evaluación comparativa entre:
 
@@ -493,7 +493,7 @@ Debe señalarse que esta comparación corresponde a una **evaluación experta de
 
 Las pruebas realizadas directamente con usuarios constituyen una línea de validación complementaria.
 
-## 7.7 Estado actual de la metodología
+### 7.7 Estado actual de la metodología
 
 El proyecto se encuentra actualmente dentro del siguiente ciclo:
 
@@ -541,8 +541,6 @@ Las pruebas continuarán hasta la entrega final.
 | RF-29 | El sistema debe permitir volver al inicio durante el desarrollo de un proyecto. | Existe una acción específica para regresar al inicio. |
 
 ### 8.2 No funcionales
-
-## 8.2 Requerimientos no funcionales
 
 ### Usabilidad
 
@@ -597,8 +595,6 @@ Las pruebas continuarán hasta la entrega final.
 **RNF-18.** Las futuras pruebas de carga deberán registrar los tokens utilizados y el costo por trabajo (`job`) cuando sea técnicamente viable.
 
 ## 9. Evaluación de alternativas
-
-## 9. Evaluación de alternativas arquitectónicas
 
 Para definir cómo debe evolucionar la arquitectura de Ágora, se analizaron diferentes opciones teniendo en cuenta cuatro aspectos principales: **desempeño bajo carga, nivel de acoplamiento, disponibilidad y tolerancia a fallos, y complejidad de implementación y operación**.
 
