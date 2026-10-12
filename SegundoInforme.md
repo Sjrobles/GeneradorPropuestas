@@ -1,6 +1,6 @@
-# Guía para el segundo informe del proyecto
+# Ágora — Informe del proyecto
 
-En el segundo informe se reflejará el trabajo desarrollado durante el semestre y se avanzará hacia una estructura más formal y cercana a la versión final del documento​
+Este informe presenta el estado de desarrollo de Ágora, la evolución del MVP, la evidencia de validación disponible y las decisiones técnicas adoptadas para avanzar hacia la entrega final.​
 ​
 Por esta razón, cada componente deberá desarrollarse con un mínimo de tres párrafos, con el fin de asegurar el nivel de profundidad y coherencia esperado en un informe final.
 
@@ -73,15 +73,15 @@ El desarrollo de Ágora requiere articular conceptos provenientes de la formulac
 
 **Ciencia, Tecnología e Innovación —CTeI—**
 
-Los proyectos CTeI constituyen iniciativas estructuradas destinadas a generar, aplicar, adaptar o transferir conocimiento, tecnologías, procesos o soluciones frente a necesidades y oportunidades determinadas. Su formulación requiere establecer de manera coherente componentes como problema, objetivos, antecedentes, metodología, población beneficiaria, resultados e impactos.
+Los proyectos de Ciencia, Tecnología e Innovación —CTeI— comprenden un conjunto coherente e integral de actividades orientadas a alcanzar un fin mediante objetivos específicos, una metodología definida y recursos humanos, tecnológicos y financieros estimados. Esta definición oficial de Minciencias permite fundamentar la estructura de Ágora y su orientación hacia la organización articulada de los componentes de una propuesta [1].
 
 Ágora no pretende implementar una metodología institucional completa de formulación CTeI. Su alcance corresponde a la construcción de un borrador inicial que permita organizar los elementos fundamentales de una propuesta antes de una revisión especializada.
 
 **Inteligencia artificial generativa**
 
-La inteligencia artificial generativa comprende sistemas capaces de producir contenido nuevo a partir de patrones identificados durante su entrenamiento y del contexto proporcionado durante una interacción. Dentro del proyecto, esta tecnología se empleará principalmente para interpretar información textual, formular preguntas de aclaración, estructurar contenido y generar borradores.
+La inteligencia artificial generativa comprende sistemas capaces de producir contenido nuevo a partir de patrones aprendidos durante su entrenamiento y del contexto proporcionado durante una interacción. En Ágora, esta tecnología se utiliza para interpretar información textual, formular preguntas de aclaración, estructurar contenido y generar borradores. Debido a que los sistemas generativos pueden producir información incorrecta o contenido no sustentado, su utilización debe acompañarse de mecanismos de evaluación y revisión [2][3].
 
-Su utilización implica limitaciones relacionadas con la precisión, la reproducibilidad y la posibilidad de producir información incorrecta o no sustentada. Por esta razón, Ágora adopta un esquema de revisión humana obligatoria antes de considerar aprobado un componente.
+Su utilización implica limitaciones relacionadas con precisión, reproducibilidad y posibilidad de producir información incorrecta o no sustentada. NIST identifica, entre otros riesgos, la generación de contenido falso o erróneo presentado con apariencia de confianza y la posibilidad de generar citas o justificaciones que no respaldan realmente una afirmación [2]. Por esta razón, Ágora adopta un esquema de revisión humana antes de considerar aprobado un componente.
 
 **Modelos de lenguaje de gran tamaño —LLM—**
 
@@ -110,7 +110,7 @@ El orquestador deberá garantizar que la generación solamente ocurra cuando exi
 
 **Human-in-the-loop**
 
-El enfoque human-in-the-loop mantiene a una persona dentro del proceso de decisión y validación de los resultados producidos mediante inteligencia artificial.
+El enfoque human-in-the-loop mantiene a una persona dentro del proceso de decisión y validación de los resultados producidos mediante inteligencia artificial. NIST señala que las responsabilidades humanas y los mecanismos de supervisión deben definirse de acuerdo con el contexto de uso del sistema [4].
 
 En Ágora, este principio se materializa en la posibilidad de visualizar, editar, guardar y aprobar individualmente cada componente. Por consiguiente, la salida generada por inteligencia artificial será tratada como una propuesta inicial y no como contenido definitivo.
 
@@ -124,7 +124,7 @@ No se consideran parte del MVP aquellas funcionalidades que mejoren la experienc
 
 **Arquitectura monolítica modular**
 
-Una arquitectura monolítica modular concentra la aplicación dentro de una misma unidad de despliegue, pero organiza internamente las responsabilidades mediante módulos desacoplados.
+Una arquitectura monolítica modular concentra la aplicación dentro de una misma unidad de despliegue, pero organiza internamente las responsabilidades mediante módulos desacoplados. En el contexto de Ágora, esta decisión busca mantener una estructura controlable durante la etapa de MVP y evitar introducir prematuramente la complejidad operativa de múltiples servicios. La literatura técnica sobre arquitectura evolutiva advierte que los microservicios introducen costos de operación y que las fronteras entre servicios deben estar suficientemente comprendidas antes de separar un sistema [5].
 
 Esta arquitectura resulta apropiada para el alcance académico del proyecto porque reduce la complejidad operativa frente a un esquema de microservicios, conservando al mismo tiempo separación entre interfaz, servicios, persistencia, integración con IA y ensamblaje documental.
 
@@ -278,55 +278,64 @@ El proyecto no tiene como propósito:
 
 ### 4.1 Objetivo general
 
-Desarrollar, durante un periodo de cuatro meses, una prueba de concepto funcional con características de producto mínimo viable de un sistema multiagente basado en inteligencia artificial generativa, que permita recopilar y organizar la información básica de una idea de proyecto de Ciencia, Tecnología e Innovación —CTeI—, identificar datos faltantes, generar diez componentes estructurales, facilitar su revisión y edición por parte del usuario, y consolidarlos en un documento preliminar integrado y exportable.
+Desarrollar, durante un periodo de cuatro meses, una prueba de concepto funcional con características de producto mínimo viable de un sistema multiagente basado en inteligencia artificial generativa, que permita recopilar y organizar la información básica de una idea de proyecto de Ciencia, Tecnología e Innovación —CTeI—, identificar datos faltantes, generar trece componentes estructurales, facilitar su revisión y edición por parte del usuario, y consolidarlos en un documento preliminar integrado y exportable.
 
 ### 4.2 Objetivos específicos
 
 OB1 : Diseñar durante los dos primeros meses del proyecto, un mecanismo de interacción guiada que permita recopilar la información básica de una idea de proyecto CTeI, verificar la existencia de los datos mínimos requeridos e identificar vacíos para formular preguntas de aclaración al usuario.
 
-OB2: Integrar entre el segundo y el tercer mes, un motor basado en inteligencia artificial generativa que procese la información consolidada y produzca de manera estructurada los diez componentes definidos para el borrador del proyecto CTeI, incorporando verificaciones básicas de completitud y coherencia.
+OB2: Integrar entre el segundo y el tercer mes, un motor basado en inteligencia artificial generativa que procese la información consolidada y produzca de manera estructurada los trece componentes definidos para el borrador del proyecto CTeI, incorporando verificaciones básicas de completitud y coherencia.
 
-OB3: Implementar durante el tercer mes, una interfaz que permita al usuario visualizar, modificar, guardar y aprobar individualmente los diez componentes generados, e integrar la última versión guardada de cada sección en un documento preliminar unificado y exportable.
+OB3: Implementar durante el tercer mes, una interfaz que permita al usuario visualizar, modificar, guardar y aprobar individualmente los trece componentes generados, e integrar la última versión guardada de cada sección en un documento preliminar unificado y exportable.
 
 OB4: Integrar y validar, durante el cuarto mes, el funcionamiento de la prueba de concepto mediante la ejecución de pruebas funcionales del recorrido completo y ejercicios de uso con un grupo reducido de usuarios, evaluando la usabilidad, la coherencia general del contenido, el tiempo de generación y la utilidad percibida del sistema.
 
 
 ## 5. Estado del arte / soluciones relacionadas
 
-El ecosistema tecnológico relacionado con Ágora puede organizarse en tres categorías: asistentes generativos de propósito general, herramientas especializadas en investigación y plataformas/frameworks para construir sistemas multiagente.
+El estado del arte relacionado con Ágora puede organizarse en tres grupos: asistentes generativos de propósito general, herramientas especializadas en investigación académica y sistemas multiagente basados en modelos de lenguaje. La comparación se realiza a partir de los criterios que resultan relevantes para el problema planteado: captura guiada, coherencia entre componentes, control humano, persistencia, trazabilidad, bibliografía y exportación.
 
-Los asistentes de propósito general como ChatGPT y Gemini permiten generar, reorganizar, resumir y revisar contenido. Su principal ventaja es la flexibilidad.
+### 5.1 Asistentes generativos de propósito general
 
-Sin embargo, esta flexibilidad exige que el usuario conozca previamente qué preguntar, cómo estructurar cada instrucción y qué componentes necesita.
+Herramientas como ChatGPT permiten generar, reorganizar, resumir, explicar y transformar contenido mediante interacción conversacional [6]. Gemini pertenece igualmente a la categoría de asistentes generativos de propósito general. Estas herramientas ofrecen flexibilidad y reducen la barrera técnica para acceder a modelos de lenguaje, pero su flujo no está diseñado específicamente para recorrer de manera controlada los trece componentes de un proyecto CTeI.
 
-En formulación de proyectos, esta condición es especialmente relevante. Una persona sin experiencia puede obtener individualmente un objetivo, un problema o una metodología, pero esto no garantiza que dichos contenidos sean coherentes entre sí.
+El principal reto para el usuario consiste en convertir una herramienta de propósito general en un proceso de formulación: debe conocer qué información suministrar, qué preguntas realizar, qué estructura solicitar y cómo comprobar que los resultados de diferentes interacciones mantienen coherencia entre sí. Ágora aborda esta brecha mediante un flujo previamente definido, agentes especializados y persistencia de los resultados.
 
-Las herramientas especializadas en investigación académica, como Elicit, ofrecen funcionalidades relacionadas con búsqueda, extracción y síntesis de literatura. Estas capacidades resultan valiosas para fundamentar propuestas, pero no están orientadas a recorrer de extremo a extremo la formulación de un proyecto CTeI.
+### 5.2 Herramientas especializadas en investigación
 
-La tercera categoría corresponde a sistemas multiagente basados en modelos de lenguaje.
+Elicit está orientado a tareas de investigación y síntesis de literatura. Su flujo incluye búsqueda, selección, extracción de información y síntesis, y ofrece mecanismos de trazabilidad de las afirmaciones hacia las fuentes utilizadas [7]. Estas capacidades son relevantes para el componente bibliográfico y para la fundamentación de un proyecto.
 
-Li et al. (2024) destacan elementos relacionados con coordinación, infraestructura, comunicación y control de agentes. Guo et al. (2024) analizan la evolución de modelos individuales hacia configuraciones multiagente capaces de distribuir tareas complejas entre unidades especializadas.
+Sin embargo, el objetivo de Elicit es distinto al de Ágora. Su flujo se concentra en la evidencia científica y la revisión de literatura, mientras que Ágora busca recorrer de extremo a extremo la construcción de un borrador de proyecto CTeI, incluyendo problema, antecedentes, objetivos, actividades, cronograma, metodología, presupuesto, beneficiarios, riesgos e impactos.
 
-Ágora adopta este principio de separación de responsabilidades.
+### 5.3 Sistemas multiagente basados en LLM
 
-La propuesta no consiste en solicitar a un solo prompt la creación de un proyecto completo. El proceso se divide entre agentes especializados que utilizan los resultados anteriores como parte del contexto de las siguientes operaciones.
+La investigación reciente sobre sistemas multiagente basados en modelos de lenguaje analiza cómo diferentes agentes pueden asumir roles especializados, coordinarse y participar en la resolución de tareas complejas [8]. Esta línea de trabajo respalda la decisión de separar responsabilidades en Ágora en lugar de solicitar a un único agente la generación completa del documento.
 
-Este enfoque también facilita la mejora independiente de cada etapa. Por ejemplo, el prompt de presupuesto pudo ser reestructurado sin necesidad de rediseñar por completo el agente encargado del marco teórico.
+En Ágora, la especialización es funcional y controlada. ResearchAgent trabaja sobre fundamentación e investigación; IdeationAgent sobre actividades, objetivos y cronograma; MethodologyAgent sobre la metodología; BudgetAgent sobre recursos y costos; ImpactAgent sobre beneficiarios, riesgos e impactos; y TranslationAgent sobre la traducción del documento consolidado.
 
-La diferenciación principal de Ágora se encuentra en la integración de:
+### 5.4 Comparación de soluciones
 
-- Interacción guiada.
-- Formulación especializada.
-- Trece componentes definidos.
-- Preguntas complementarias.
-- Persistencia.
-- Edición.
-- Aprobación.
-- Traducción.
-- Ensamblaje documental.
-- Exportación.
+| Criterio | Asistentes generativos generales | Elicit | Sistemas multiagente | Ágora |
+|---|---|---|---|---|
+| Captura guiada para formulación CTeI | No específica | Orientada a investigación | Depende de la implementación | Sí |
+| Coherencia entre componentes CTeI | Depende del usuario | Centrada en evidencia | Depende de la orquestación | Se controla mediante contexto compartido y secuencia |
+| Revisión humana | Disponible | Integrada en distintos pasos | Depende de la implementación | Sí, antes de aprobar componentes |
+| Persistencia del proyecto | Depende del producto | Sí, orientada a investigación | Depende de la implementación | Sí |
+| Trazabilidad de prompts/versiones | No es el objetivo principal | Orientada al proceso de investigación | Depende de la implementación | Se plantea como necesidad de evolución |
+| Bibliografía | Puede generar referencias, pero requiere verificación | Funcionalidad central | Depende de la implementación | Se genera como componente y requiere verificación humana |
+| Exportación de proyecto CTeI | No específica | Orientada a informes de investigación | Depende de la implementación | PDF |
+| Flujo de trece componentes CTeI | No | No | No necesariamente | Sí |
+| Preguntas adicionales para metodología y presupuesto | No específicas | No | Depende de la implementación | Sí |
 
-El sistema busca convertir la inteligencia artificial generativa en un proceso de formulación asistida, en lugar de presentarla únicamente como una herramienta abierta de redacción.
+La comparación muestra que la diferenciación de Ágora no consiste en afirmar que genera contenido que otras herramientas no pueden generar. La diferencia está en organizar esas capacidades dentro de un flujo especializado, persistente y revisable.
+
+### 5.5 Justificación de la propuesta de Ágora
+
+A partir de esta comparación, la elección de trece componentes responde al alcance funcional definido durante el desarrollo y no a la intención de maximizar el número de agentes. La separación permite mantener responsabilidades delimitadas y reutilizar información previa.
+
+Las preguntas adicionales antes de metodología y presupuesto surgieron de las pruebas realizadas: el contexto inicial no siempre contenía información suficiente para representar las condiciones reales de ejecución. La orquestación controlada permite incorporar esta información antes de ejecutar los agentes correspondientes.
+
+Por tanto, Ágora se diferencia principalmente por la combinación de captura guiada, generación especializada, persistencia, revisión humana, preguntas complementarias, ensamblaje y exportación dentro de un mismo recorrido.
 
 ## 6. Solución propuesta
 
@@ -596,389 +605,255 @@ Las pruebas continuarán hasta la entrega final.
 
 ## 9. Evaluación de alternativas
 
-Para definir cómo debe evolucionar la arquitectura de Ágora, se analizaron diferentes opciones teniendo en cuenta cuatro aspectos principales: **desempeño bajo carga, nivel de acoplamiento, disponibilidad y tolerancia a fallos, y complejidad de implementación y operación**.
-
-La arquitectura actual funciona correctamente para el MVP, pero puede presentar limitaciones cuando varios usuarios ejecutan procesos de inteligencia artificial al mismo tiempo, debido a que la generación todavía depende directamente del procesamiento realizado por el backend.
-
-Actualmente, Ágora utiliza **React y Vite en el frontend, NestJS en el backend, MongoDB para la persistencia de la información y OpenAI como proveedor de inteligencia artificial**. El principal aspecto que se busca mejorar no corresponde a estas tecnologías, sino a la manera en que se procesan los trabajos de generación de larga duración.
+Para definir la evolución técnica de Ágora se analizaron diferentes alternativas arquitectónicas considerando el comportamiento esperado del sistema, el nivel de acoplamiento, la facilidad de operación y la complejidad que cada opción introduciría. La comparación se entiende como una evaluación de diseño y no como una medición de producción.
 
 ### 9.1 Alternativas consideradas
 
-Se analizaron cuatro alternativas posibles.
+**Alternativa A. Mantener la arquitectura actual**
 
-#### Alternativa A. Mantener la arquitectura actual
+React → NestJS → MongoDB → OpenAI.
 
-Esta alternativa consiste en conservar la estructura existente:
+Esta alternativa conserva la estructura actualmente implementada. Su principal ventaja es que permite continuar desarrollando y validando el producto sin introducir cambios arquitectónicos de gran impacto durante la etapa actual del proyecto. Su principal limitación se relaciona con las operaciones generativas de mayor duración, que actualmente se ejecutan dentro del flujo iniciado por el usuario.
 
-**React → NestJS → MongoDB → OpenAI**
+**Alternativa B. Fortalecer el monolito modular actual**
 
-La generación de los componentes continuaría realizándose directamente dentro del flujo iniciado por el usuario.
+Esta alternativa mantiene la arquitectura general, pero mejora progresivamente la separación de responsabilidades, el control de estados, la gestión de errores, las validaciones y la observabilidad.
 
-Su principal ventaja es que requiere pocos cambios y permite continuar utilizando una arquitectura que ya funciona. Sin embargo, cuando varios usuarios generen proyectos simultáneamente, los procesos de inteligencia artificial podrían ocupar recursos del backend durante periodos prolongados y afectar otras operaciones, como iniciar sesión, abrir un proyecto, editar información o consultar su estado.
+Su ventaja es que permite aprovechar la base funcional existente y realizar mejoras incrementales sin sustituir el sistema. Para el alcance actual, representa una evolución razonable porque conserva la simplicidad del MVP mientras permite reforzar los puntos identificados durante las pruebas.
 
-#### Alternativa B. Monolito modular reforzado con cola y workers
+**Alternativa C. Separación de servicios**
 
-Esta alternativa mantiene la arquitectura modular existente, pero cambia la forma en que se ejecutan los procesos de inteligencia artificial de larga duración.
+Consiste en dividir algunas responsabilidades del sistema en componentes independientes. Aunque puede facilitar una evolución posterior, también incrementa la complejidad de despliegue, comunicación y monitoreo.
 
-Cuando el usuario solicita una generación, el backend registra la tarea y la coloca en una **cola de trabajos**. Posteriormente, uno o varios **workers**, es decir, procesos especializados en ejecutar tareas de inteligencia artificial, toman estos trabajos y los procesan.
+Para la etapa actual no se considera necesaria, debido a que el objetivo inmediato es consolidar el funcionamiento del MVP y obtener evidencia suficiente antes de introducir una mayor complejidad técnica.
 
-El flujo sería aproximadamente:
+**Alternativa D. Servicios administrados**
 
-**Usuario → API → registro del trabajo → cola → worker → agentes de IA → resultado**
+Considera utilizar servicios administrados para determinadas capacidades de infraestructura. Esta opción puede simplificar algunas tareas operativas, pero introduce dependencias adicionales y debe evaluarse de acuerdo con los recursos disponibles para el proyecto.
 
-Además, esta alternativa incorpora mecanismos como:
+### 9.2 Criterios de evaluación
 
-- Reintentos cuando ocurre un fallo temporal.
-- Control para evitar la ejecución duplicada de un mismo trabajo.
-- Registro de trabajos fallidos.
-- Monitoreo del estado de las tareas.
-- Recuperación frente a errores.
-- Control de la cantidad de trabajos que pueden ejecutarse simultáneamente.
+Las alternativas se valoran inicialmente según cuatro criterios:
 
-La principal ventaja es que el backend no necesita esperar a que todos los agentes terminen para continuar atendiendo a otros usuarios.
-
-#### Alternativa C. Microservicios orientados a eventos
-
-Esta opción consiste en separar Ágora en diferentes servicios independientes.
-
-Por ejemplo, podrían existir servicios separados para:
-
-- Autenticación.
-- Proyectos.
-- Orquestación.
-- Agentes de inteligencia artificial.
-- Generación de documentos.
-- Exportación.
-
-Esto permitiría escalar cada componente de forma independiente y aislar mejor determinados fallos.
-
-Sin embargo, para el estado actual del proyecto implicaría una complejidad considerablemente mayor, porque sería necesario administrar diferentes servicios, contratos de comunicación, despliegues, eventos y mecanismos de trazabilidad.
-
-#### Alternativa D. Serverless y workflows administrados
-
-La cuarta opción consiste en utilizar servicios administrados en la nube, como funciones, colas y flujos de trabajo.
-
-En este modelo, la infraestructura puede crecer o disminuir automáticamente según la demanda.
-
-Su principal ventaja es la elasticidad. Sin embargo, puede generar una mayor dependencia del proveedor de servicios en la nube y presentar problemas relacionados con los tiempos de arranque, límites de duración de las funciones, cuotas y costos de ejecución.
-
-### 9.2 ¿Cuál alternativa ofrece mejor desempeño bajo la carga esperada?
-
-Para analizar el comportamiento futuro de Ágora, se plantearon tres escenarios de prueba:
-
-| Escenario | Sesiones activas | Trabajos de IA simultáneos |
-|---|---:|---:|
-| Uso nominal | 25 | 3 |
-| Pico esperado | 100 | 10 |
-| Estrés | Más de 250 | Más de 20 |
-
-Estos valores se utilizan como **escenarios de prueba** y no representan actualmente tráfico real de producción.
-
-Bajo estas condiciones, la **alternativa B** presenta el mejor equilibrio para Ágora.
-
-La razón principal es que separa las operaciones rápidas de las operaciones de inteligencia artificial.
-
-Por ejemplo, las siguientes acciones pueden continuar siendo atendidas normalmente mientras los workers generan los contenidos en segundo plano:
-
-- Iniciar sesión.
-- Consultar proyectos.
-- Modificar información.
-- Guardar cambios.
-- Revisar componentes.
-
-En la arquitectura actual, el backend puede quedar ocupado esperando a que termine un proceso completo de generación. Con una cola, el backend únicamente registra la solicitud y el procesamiento continúa de manera independiente.
-
-#### Latencia
-
-Cuando existen pocos usuarios, la arquitectura actual puede responder correctamente.
-
-Sin embargo, si varias generaciones ocurren simultáneamente, los tiempos pueden aumentar.
-
-Con la alternativa B se diferencian dos tiempos:
-
-- **Tiempo de aceptación:** tiempo que tarda el sistema en recibir y registrar el trabajo.
-- **Tiempo de generación:** tiempo que tardan posteriormente los agentes en producir el resultado.
-
-De esta manera, una generación de larga duración no necesariamente afecta el resto de la plataforma.
-
-#### Capacidad de procesamiento
-
-La capacidad del sistema no debe analizarse solamente mediante las solicitudes procesadas por segundo.
-
-En Ágora resulta más importante medir:
-
-- Proyectos generados por hora.
-- Componentes generados por hora.
-- Trabajos simultáneos.
-- Tiempo de ejecución de cada agente.
-
-La alternativa B permite aumentar la cantidad de workers cuando sea necesario, sin modificar completamente la arquitectura.
-
-#### Concurrencia
-
-Cuando aumente el número de usuarios, los trabajos pueden acumularse temporalmente en la cola.
-
-Esto es preferible a que toda la aplicación se vuelva lenta o deje de responder.
-
-Por esta razón, la alternativa seleccionada permite una degradación más controlada: las generaciones pueden tardar más cuando exista una alta demanda, pero las demás funciones de Ágora pueden continuar disponibles.
-
-### 9.3 ¿Qué grado de acoplamiento introduce cada alternativa?
-
-Ágora depende principalmente de dos elementos externos:
-
-- Un proveedor de inteligencia artificial.
-- Una base de datos.
-
-Actualmente, si OpenAI presenta problemas mientras se ejecuta una generación, la solicitud puede verse directamente afectada.
-
-La alternativa B disminuye esta dependencia directa porque introduce una cola entre el backend y los procesos de generación.
-
-Esto significa que el trabajo puede permanecer registrado aunque OpenAI presente errores temporalmente.
-
-También facilita que diferentes componentes puedan sustituirse posteriormente.
-
-Por ejemplo:
-
-- OpenAI podría reemplazarse por otro proveedor.
-- El sistema de cola podría cambiarse.
-- La base de datos podría abstraerse mediante repositorios.
-- Los workers podrían convertirse posteriormente en servicios independientes.
-
-Por esta razón, la alternativa B mantiene un **acoplamiento controlado**. Agrega una nueva dependencia —la cola—, pero reduce la dependencia directa entre la API y el proveedor de inteligencia artificial.
-
-### 9.4 ¿Qué nivel de disponibilidad y tolerancia a fallos ofrece cada alternativa?
-
-Uno de los principales riesgos de la arquitectura actual ocurre cuando el backend se reinicia durante una generación.
-
-En ese caso, el proceso activo podría interrumpirse.
-
-Con la alternativa B, el trabajo permanece almacenado en la cola y puede continuar posteriormente.
-
-Por ejemplo:
-
-- **Si falla un worker:** otro worker puede continuar el trabajo.
-- **Si OpenAI no responde:** se pueden ejecutar reintentos.
-- **Si el backend se reinicia:** los trabajos previamente registrados no deberían desaparecer.
-- **Si falla la exportación:** puede intentarse nuevamente sin tener que generar todo el proyecto otra vez.
-
-Esto permite aislar mejor los errores.
-
-Para conseguirlo, se consideran mecanismos como:
-
-- **Idempotencia:** evita que un mismo trabajo genere resultados duplicados.
-- **Reintentos:** permiten repetir operaciones que fallaron temporalmente.
-- **Heartbeat:** permite saber si un worker continúa activo.
-- **Visibility timeout:** permite que otro worker retome una tarea si el anterior falla.
-- **Dead-letter queue:** almacena trabajos que no pudieron completarse.
-- **Backups:** permiten recuperar la información ante un fallo.
-- **Pruebas de restauración:** permiten comprobar que las copias de seguridad realmente funcionan.
-
-Aunque los microservicios ofrecen un aislamiento todavía mayor, esta ventaja no justifica actualmente la complejidad adicional que introducirían para el tamaño y estado actual de Ágora.
-
-### 9.5 Comparación general de las alternativas
-
-Para comparar las opciones, se definieron los siguientes pesos:
-
-- Desempeño: **35 %**.
-- Acoplamiento y facilidad de sustitución: **25 %**.
-- Disponibilidad y tolerancia a fallos: **25 %**.
-- Facilidad y costo de operación: **15 %**.
-
-Los resultados obtenidos fueron:
-
-| Alternativa | Desempeño | Acoplamiento | Disponibilidad | Operabilidad | Resultado |
-|---|---:|---:|---:|---:|---:|
-| A. Arquitectura actual | 3,0 | 3,0 | 2,0 | 5,0 | **3,05** |
-| B. Monolito modular reforzado | 4,5 | 4,0 | 4,0 | 4,0 | **4,18** |
-| C. Microservicios | 4,5 | 4,5 | 4,5 | 2,0 | **4,13** |
-| D. Serverless | 4,0 | 3,0 | 4,5 | 3,5 | **3,80** |
-
-La alternativa con mayor resultado es la **alternativa B**, con **4,18 sobre 5**. La opción de microservicios se encuentra muy cerca, con 4,13, pero introduce una complejidad operativa que actualmente no resulta necesaria para Ágora.
-
-Por esta razón, se selecciona el **monolito modular reforzado con cola y workers**.
-
-La decisión se fundamenta principalmente en que esta arquitectura:
-
-- Soluciona el principal problema de los procesos de larga duración.
-- Aprovecha la arquitectura que ya funciona.
-- Requiere menos cambios que una migración hacia microservicios.
-- Permite controlar la cantidad de procesos de inteligencia artificial simultáneos.
-- Permite gestionar mejor los costos.
-- Mejora la recuperación frente a errores.
-- Mantiene abierta la posibilidad de migrar hacia microservicios en el futuro.
-
-### 9.6 Arquitectura propuesta
-
-La arquitectura conserva los principales componentes actuales:
-
-**React → API NestJS → MongoDB**
-
-Además, agrega una capa para procesar los trabajos de inteligencia artificial:
-
-**API → cola de trabajos → workers → OpenAI**
-
-De manera simplificada, el recorrido sería:
-
-1. **Usuario.**
-2. **Frontend desarrollado con React.**
-3. **API desarrollada con NestJS.**
-4. **MongoDB y cola de trabajos.**
-5. **Workers de inteligencia artificial.**
-6. **OpenAI.**
-
-La API continuará encargándose principalmente de:
-
-- Autenticación.
-- Autorización.
-- Creación y consulta de proyectos.
-- Edición.
-- Validaciones.
-- Registro de nuevos trabajos.
-
-Los workers se encargarán de:
-
-- Ejecutar los agentes.
-- Comunicarse con OpenAI.
-- Controlar los reintentos.
-- Guardar los avances.
-- Gestionar los procesos de larga duración.
-
-Con esto se evita que la API tenga que ejecutar directamente todas las generaciones.
-
-### 9.7 Metas técnicas para la arquitectura
-
-Para evaluar posteriormente si la arquitectura funciona correctamente, se plantean los siguientes objetivos técnicos:
-
-| Indicador | Meta |
+| Criterio | Peso inicial |
 |---|---:|
-| Disponibilidad de la API | ≥ 99,5 % mensual |
-| Tiempo p95 para operaciones CRUD | ≤ 750 ms |
-| Tiempo p95 para aceptar un trabajo | ≤ 1 segundo |
-| Tiempo p95 para consultar el estado | ≤ 500 ms |
-| Trabajos aceptados perdidos | 0 |
-| Generaciones exitosas después de los reintentos | ≥ 97 % |
-| RPO | ≤ 15 minutos |
-| RTO | ≤ 60 minutos |
+| Desempeño | 35 % |
+| Facilidad de evolución | 25 % |
+| Disponibilidad y tolerancia a fallos | 25 % |
+| Facilidad y costo de operación | 15 % |
 
-Estos valores son **metas de diseño**. Todavía deben validarse mediante pruebas y no representan el desempeño actual de Ágora.
+Las calificaciones iniciales deben interpretarse como una valoración de diseño y no como resultados experimentales. Su función es orientar la decisión técnica y establecer qué aspectos deben validarse durante las siguientes pruebas.
 
-### 9.8 Pruebas que se deben realizar
+### 9.3 Resultado de la evaluación
 
-La elección de la arquitectura debe comprobarse posteriormente mediante pruebas controladas.
+La arquitectura actual presenta una ventaja importante para el estado del proyecto: ya existe un flujo funcional integrado entre frontend, backend, persistencia e inteligencia artificial. Por esta razón, la evolución propuesta no parte de una reconstrucción del sistema, sino de la consolidación de los componentes existentes.
 
-Se plantea evaluar escenarios como:
+La auditoría tecnológica coincide con esta interpretación. El proyecto es considerado una prueba de concepto funcional y demostrable, con una base razonable para evolucionar, pero todavía requiere fortalecer aspectos de operación y validación antes de ampliar su alcance. La recomendación general es estabilizar la solución existente antes de realizar cambios de mayor complejidad. fileciteturn2file4
 
-1. **25 usuarios simultáneos** utilizando funciones como el inicio de sesión, la apertura y el guardado de proyectos.
-2. **100 sesiones con 10 generaciones simultáneas**.
-3. Incremento progresivo de los trabajos hasta encontrar el límite del sistema.
-4. Apagado deliberado de un worker durante una generación.
-5. Simulación de errores del proveedor de inteligencia artificial.
-6. Reinicio de la API mientras existen trabajos activos.
-7. Restauración de una copia de seguridad y comprobación de la recuperación.
+En consecuencia, para el alcance actual se mantiene como referencia la arquitectura monolítica modular implementada, acompañada de mejoras progresivas en validación, manejo de estados, pruebas y operación.
 
-Durante estas pruebas se medirán principalmente:
+### 9.4 Evidencia necesaria para validar la evolución
 
-- Tiempo de respuesta.
-- Errores.
-- Número de trabajos en espera.
-- Tiempo de ejecución de cada agente.
-- Cantidad de reintentos.
-- Proyectos generados por unidad de tiempo.
-- Consumo de tokens.
-- Costo por generación.
-- Uso de CPU y memoria.
-- Disponibilidad del sistema.
-- Porcentaje de trabajos completados.
+Las siguientes etapas deberán aportar evidencia sobre:
 
-De esta manera, la arquitectura seleccionada podrá validarse con datos reales antes de utilizar Ágora en escenarios con una mayor cantidad de usuarios.
+- tiempo de respuesta de las operaciones interactivas;
+- duración de las generaciones;
+- comportamiento con diferentes cantidades de proyectos;
+- frecuencia de errores y reintentos;
+- comportamiento ante fallos de servicios externos;
+- consumo de recursos;
+- consumo de tokens y costo por generación;
+- comportamiento general durante pruebas controladas.
+
+Estos indicadores permitirán determinar si las mejoras realizadas son suficientes para el nivel de uso previsto o si posteriormente se requiere una modificación arquitectónica adicional.
+
+### 9.5 Decisión para el avance actual
+
+La decisión adoptada consiste en conservar la arquitectura existente y concentrar el esfuerzo en completar y validar el flujo funcional. Esta decisión es coherente con el carácter de MVP del proyecto y evita introducir complejidad que no pueda justificarse mediante evidencia.
+
+La arquitectura actual permite demostrar el recorrido completo del producto y mantiene una separación funcional entre frontend, API, persistencia y servicios de inteligencia artificial. Las modificaciones futuras deberán estar sustentadas en resultados de pruebas y necesidades reales del producto.
 
 ## 10. Diseño y arquitectura
 
-Explica cómo se estructura la solución a nivel conceptual y técnico.
-
 ### 10.1 Descripción general de la arquitectura
 
-**Objetivo:** que el lector entienda cómo está pensado el sistema antes de ver cualquier representación visual.
+Ágora utiliza una arquitectura cliente-servidor basada en un frontend desarrollado con React y Vite, un backend modular construido con NestJS, MongoDB como mecanismo de persistencia y servicios externos asociados a autenticación e inteligencia artificial.
 
-Debe incluir:
+El frontend concentra la interacción con el usuario y organiza las diferentes etapas del proceso de formulación. El backend controla las operaciones de negocio, la autenticación, la autorización, la persistencia de los proyectos y la comunicación con los servicios de inteligencia artificial.
 
-- Tipo de arquitectura (cliente-servidor, basada en Backend as a Service, etc.).
-- Enfoque general de la solución.
-- Relación con la alternativa seleccionada previamente.
+La arquitectura actual corresponde a un monolito modular. Esta decisión resulta adecuada para el estado de MVP porque permite mantener el sistema dentro de una estructura controlable y reducir la complejidad operativa mientras se valida el producto. La auditoría tecnológica identifica esta misma característica y señala que la principal limitación actual aparece en las operaciones generativas de larga duración. 
 
 ### 10.2 Componentes del sistema
 
-Deben identificarse y explicarse:
+El frontend está compuesto por las funcionalidades de autenticación, creación de proyectos, captura de contexto, diagnóstico, formulación, revisión, edición, aprobación y exportación. Las rutas se organizan por funcionalidades y utilizan carga diferida para evitar cargar desde el inicio todos los recursos de la aplicación.
 
-- **Componentes principales** del sistema (frontend, backend, base de datos, servicios externos).
-- **Responsabilidad** de cada uno.
-- **Relación con los requerimientos** del sistema.
+El backend contiene módulos para autenticación, usuarios, proyectos, inteligencia artificial, orquestación, skills, configuración y salud. Dentro de esta estructura, el módulo de proyectos concentra buena parte de la lógica del recorrido, mientras que el módulo de orquestación coordina la secuencia de generación y las estructuras de intercambio entre componentes. 
 
-Esta parte debe terminar con el **diagrama de arquitectura del sistema**.
+MongoDB almacena la información de usuarios y proyectos. Dentro del proyecto se conservan el contexto, mensajes, diagnóstico, componentes generados, resultados y versiones editadas. Esta estructura facilita la continuidad del flujo durante la etapa de MVP.
+
+Los servicios externos cumplen funciones específicas. OpenAI participa en la generación, regeneración y traducción; Google puede intervenir en autenticación; y la aplicación también contempla servicios de búsqueda para apoyar determinados componentes de investigación y presupuesto. 
 
 ### 10.3 Interacción entre módulos
 
-Debe explicarse:
+El flujo comienza en el frontend, donde el usuario crea o selecciona un proyecto y proporciona información inicial. Las solicitudes se envían al backend mediante la API REST, donde se valida la sesión, se identifica el proyecto y se procesa la información correspondiente.
 
-- Cómo se comunican los componentes.
-- Flujos de datos.
-- Dependencias.
-- Nivel de acoplamiento.
+El backend conserva el estado del proyecto y determina qué etapa debe ejecutarse. Cuando corresponde una operación de inteligencia artificial, el orquestador coordina los componentes especializados y posteriormente persiste el resultado. El usuario puede revisar y modificar el contenido antes de aprobarlo.
 
-Esta parte debe terminar con el **diagrama de interacción entre módulos**.
+La comunicación mantiene una división funcional clara: el frontend gestiona la experiencia, el backend controla la lógica y persistencia, y los servicios de IA producen contenido dentro de estructuras previamente definidas. Esta separación coincide con uno de los principios técnicos destacados durante la auditoría: las decisiones deterministas deben permanecer bajo control del código, mientras las tareas cognitivas son delegadas a los agentes. 
 
 ### 10.4 Comportamiento
 
-Debe explicarse cómo se comportan los componentes, describiendo las principales secuencias de la arquitectura y respondiendo preguntas como:
+El flujo principal puede representarse de manera simplificada como:
 
-- ¿El flujo es eficiente? (latencia, pasos innecesarios).
-- ¿Existen cuellos de botella?
-- ¿La interacción refleja buen desacoplamiento?
+**Idea → captura de contexto → diagnóstico → confirmación → investigación e ideación → preguntas de ejecución → metodología, presupuesto e impacto → revisión → aprobación → documento → traducción → exportación.**
 
-En esta parte se utilizan **diagramas de secuencia**.
+La auditoría confirma este recorrido y señala que la aplicación genera trece componentes mediante cinco agentes especializados, con intervención humana antes de consolidar el documento final. 
+
+El comportamiento actual es suficiente para demostrar el flujo funcional del MVP. Sin embargo, las operaciones generativas constituyen el punto de mayor duración del proceso y, por ello, deberán continuar siendo observadas durante las pruebas de validación.
+
+**Aquí debe incorporarse el diagrama de arquitectura del sistema.**
+
+**Aquí debe incorporarse el diagrama de interacción entre módulos.**
+
+**Aquí debe incorporarse el diagrama de secuencia del flujo principal.**
 
 ## 11. Implementación y avance actual
 
-Documenta el estado real de construcción del sistema y el grado de avance alcanzado.
-
 ### 11.1 Stack tecnológico
 
-Lista y justifica las tecnologías, frameworks, librerías y herramientas utilizadas.
+El frontend utiliza React 19, TypeScript, Vite, React Router, TanStack Query, React Hook Form, Zod, Zustand y Tailwind CSS. La generación documental utiliza las herramientas correspondientes para producir archivos DOCX y PDF.
+
+El backend utiliza NestJS, TypeScript, Mongoose y MongoDB. La autenticación se apoya en JWT y bcrypt, mientras que la integración de inteligencia artificial utiliza los SDK correspondientes de OpenAI. La configuración de despliegue se encuentra preparada para Render y el proyecto utiliza Node 24 como requisito de ejecución. 
 
 ### 11.2 Componentes implementados
 
-Describe qué módulos o componentes ya fueron construidos, qué funcionalidades cubren y cuál es su estado actual.
+El frontend constituye actualmente una de las partes más completas del proyecto. Se encuentran implementadas las pantallas y recorridos asociados con inicio, selección de skill, creación de proyecto, recopilación de información, diagnóstico, formulación, revisión, edición, aprobación y exportación.
+
+La estructura frontend organiza las funcionalidades por dominio y cuenta con servicios específicos para comunicación con la API, agentes locales y documentos. Las rutas utilizan carga diferida y se contemplan estados de carga, error y navegación. La auditoría encontró además una interfaz clara, responsive y con validaciones básicas de accesibilidad. 
+
+En el backend se encuentra implementada la lógica necesaria para soportar el flujo básico del producto. El módulo de proyectos concentra la creación y consulta de proyectos, el manejo de estados, la persistencia de respuestas y componentes, la generación, regeneración y ensamblaje. El módulo de orquestación organiza la secuencia y los contratos utilizados durante la generación.
+
+En esta etapa, el backend se presenta como una implementación funcional de la lógica principal y no como una arquitectura definitiva. Esto permite mostrar el flujo completo sin asumir que las decisiones actuales representan necesariamente la solución final para una futura operación de mayor alcance.
 
 ### 11.3 Integraciones realizadas
 
-Explica las integraciones ya desarrolladas con servicios externos, bases de datos, autenticación u otros componentes.
+La aplicación cuenta con integración entre el frontend y la API REST del backend. La API utiliza el prefijo `/api/v1`, validación de datos y mecanismos de autorización sobre los recursos de proyectos. Las rutas de proyectos verifican el propietario antes de permitir el acceso. 
+
+MongoDB proporciona la persistencia de usuarios y proyectos. Los resultados generados por los agentes se almacenan progresivamente, permitiendo conservar el estado del trabajo y facilitar la reanudación.
+
+OpenAI se encuentra integrado para las operaciones principales de generación, regeneración y traducción. Algunas funciones, como el chat y el diagnóstico, disponen de comportamientos alternativos cuando el proveedor no está disponible, mientras que las operaciones principales de generación dependen del servicio externo. 
 
 ### 11.4 Pendientes para la entrega final
 
-Indica qué elementos faltan por implementar, integrar, corregir o validar antes del cierre del proyecto.
+El proyecto no requiere una reconstrucción completa. Las actividades pendientes se concentran en continuar las pruebas funcionales, ampliar la validación de integración, corregir incidencias, mejorar la experiencia de usuario, documentar los resultados y comprobar el comportamiento de las operaciones generativas bajo diferentes condiciones.
+
+También será necesario continuar revisando los componentes que actualmente concentran mayor cantidad de lógica, especialmente para facilitar futuras modificaciones sin alterar el comportamiento ya validado. La auditoría identifica `ProjectsService` y `ReviewWorkspacePage` como los principales puntos de concentración.
 
 ## 12. Despliegue y operación preliminar
 
-Describe cómo se ejecuta actualmente la solución, en qué entorno funciona, qué dependencias requiere y cuál es su estado de despliegue o configuración.
+La solución dispone de una configuración preliminar de despliegue que permite preparar el backend y el frontend para ejecutarse en un entorno controlado. La configuración de Render define los servicios principales, los comandos de ejecución y el health check correspondiente. 
+
+Durante la etapa actual, el despliegue debe entenderse como un mecanismo para demostración, validación y pruebas del MVP, no como una infraestructura de producción completamente consolidada. La auditoría señala que todavía existen elementos operativos que deben fortalecerse, como automatización de calidad, métricas, alertas, recuperación y validaciones más completas del estado de las dependencias. 
+
+Por lo anterior, el objetivo inmediato del despliegue es garantizar que el flujo funcional pueda ejecutarse de manera reproducible y que el equipo pueda continuar realizando pruebas sobre una versión integrada del sistema.
 
 ## 13. Validación preliminar
 
-Presenta las pruebas o validaciones realizadas hasta el momento para verificar el comportamiento del sistema y su grado de cumplimiento frente a los requerimientos.
-
 ### 13.1 Pruebas por componentes
+
+La validación actual combina pruebas automatizadas y pruebas funcionales sobre los componentes principales. La auditoría tecnológica registró 57 pruebas frontend, 58 pruebas unitarias backend y 2 pruebas E2E, para un total de 117 pruebas ejecutadas. 
+
+Las pruebas cubren aspectos como formato documental, comunicación con la API, orquestación simulada, rutas, accesibilidad básica, contratos de agentes, mapeo, prompts, autenticación y reglas relacionadas con los proyectos.
+
+Estos resultados permiten afirmar que existe una base de validación automatizada relevante para el estado actual del MVP. Sin embargo, las pruebas todavía no cubren la totalidad del recorrido integrado con servicios reales.
 
 ### 13.2 Pruebas de integración
 
+Las pruebas de integración actuales permiten validar partes específicas de la comunicación y de la lógica del sistema, pero todavía deben ampliarse para cubrir escenarios completos con autenticación, persistencia, aislamiento de proyectos, estados y fallos de servicios externos.
+
+La auditoría señala que las pruebas E2E actuales cubren principalmente rutas básicas y no ejercitan de forma completa el flujo con MongoDB, autenticación, concurrencia o recuperación ante fallos. Por tanto, el siguiente paso de validación consiste en ampliar la cobertura del recorrido real y comprobar los escenarios negativos. 
+
 ### 13.3 Pruebas de usabilidad
+
+La evaluación de usabilidad ha tenido un peso importante dentro del desarrollo. La interfaz implementada fue comparada con el prototipo inicial y obtuvo una valoración ponderada de 84,3 sobre 100 frente a 66,4 para el prototipo.
+
+La evaluación favoreció la versión implementada en seis de ocho criterios, especialmente en revisión y edición, persistencia y control, ayuda, accesibilidad y ajuste al alcance. Al mismo tiempo, se identificaron oportunidades de mejora en la orientación durante el diagnóstico y en la reducción de la carga cognitiva.
+
+La auditoría tecnológica también encontró una interfaz clara, responsive y con elementos de accesibilidad básica, incluyendo skip link, semántica y pruebas con axe. No obstante, se recomienda continuar con validaciones más amplias durante las siguientes iteraciones. 
 
 ## 14. Resultados parciales y discusión
 
-Presenta los principales hallazgos obtenidos hasta el momento, interpreta su significado y analiza el nivel de avance del proyecto frente a los objetivos planteados.
+El principal resultado obtenido hasta esta etapa es la consolidación de un MVP funcional capaz de recorrer el proceso central de Ágora desde la idea inicial hasta la generación, revisión y exportación de un documento estructurado.
+
+El sistema actualmente genera trece componentes y coordina cinco agentes especializados, manteniendo al usuario dentro del proceso de revisión y aprobación. La auditoría confirma que el producto puede considerarse una prueba de concepto funcional y demostrable y que el recorrido general se encuentra implementado. 
+
+Los resultados de validación también muestran que las decisiones de diseño han producido mejoras observables en la interfaz. La comparación entre el prototipo y la versión implementada favoreció al producto desarrollado, mientras que las pruebas funcionales han permitido corregir aspectos relacionados con navegación, persistencia, tiempos de respuesta percibidos, regeneraciones y organización del flujo.
+
+Desde la perspectiva técnica, la evaluación general de la auditoría fue de 5,8 sobre 10. Esta valoración debe interpretarse como una fotografía del estado del proyecto y no como una calificación académica del producto. Las áreas con mejor valoración fueron usabilidad, calidad del código, accesibilidad y arquitectura, mientras que las áreas que requieren mayor fortalecimiento corresponden principalmente a operación, rendimiento y preparación para un uso sostenido. 
+
+En consecuencia, los resultados actuales son consistentes con el objetivo de una entrega de avance: existe una base funcional demostrable, se dispone de evidencia de pruebas y se han identificado de manera concreta los aspectos que deben seguir siendo validados.
 
 ## 15. Plan de cierre hacia la entrega final
 
-Describe las actividades restantes, prioridades, riesgos y estrategia de cierre para completar el proyecto en las semanas finales.
+El cierre del proyecto se organizará en ciclos cortos de validación y corrección, priorizando primero el funcionamiento integral del MVP y posteriormente los aspectos que requieran mayor evidencia técnica.
+
+### 15.1 Validación funcional
+
+Se continuará verificando el recorrido completo:
+
+**inicio → creación del proyecto → contexto → diagnóstico → generación → preguntas de ejecución → componentes → revisión → aprobación → documento → traducción → exportación.**
+
+Cada iteración deberá registrar incidencias, correcciones realizadas y resultado de la nueva prueba.
+
+### 15.2 Ampliación de pruebas
+
+Se ampliarán las pruebas de integración y E2E para cubrir el recorrido con mayor realismo, incluyendo autenticación, persistencia, aislamiento de proyectos, estados y manejo de errores.
+
+También se continuará con las pruebas de usabilidad para comprobar que las modificaciones introducidas no generen nuevas dificultades en el recorrido del usuario.
+
+### 15.3 Estabilización
+
+La estabilización tendrá como objetivo reducir errores visibles, mejorar los estados de carga y error, revisar los tiempos de las operaciones generativas y asegurar que el progreso del usuario se conserve correctamente.
+
+También se revisarán los componentes que concentran mayor cantidad de lógica, procurando realizar mejoras puntuales sin alterar innecesariamente el funcionamiento ya validado.
+
+### 15.4 Validación del comportamiento
+
+Se realizarán pruebas controladas para obtener evidencia sobre tiempos de respuesta, duración de las generaciones, comportamiento ante errores externos y consumo asociado a las operaciones de inteligencia artificial.
+
+La auditoría recomienda que la capacidad y el comportamiento futuro se determinen mediante pruebas reales y no mediante estimaciones teóricas. Por ello, cualquier conclusión sobre desempeño deberá quedar respaldada por resultados medidos. 
+
+### 15.5 Criterio de cierre
+
+El proyecto podrá considerarse listo para la entrega final cuando:
+
+1. el flujo funcional pueda ejecutarse de principio a fin;
+2. los componentes principales cuenten con validación suficiente;
+3. las incidencias críticas identificadas durante las pruebas hayan sido corregidas;
+4. la navegación y persistencia funcionen de manera consistente;
+5. la generación y revisión de los trece componentes puedan demostrarse;
+6. la exportación documental haya sido validada;
+7. los resultados de las pruebas estén documentados;
+8. las decisiones técnicas principales estén justificadas mediante evidencia del proceso.
+
+De esta manera, el cierre no se plantea como una reescritura del sistema, sino como la consolidación de la solución existente y la documentación de la evidencia obtenida durante el desarrollo. Esta orientación coincide con la conclusión de la auditoría: la base actual es funcional y puede evolucionar, por lo que el trabajo debe concentrarse en estabilizarla y validar sus siguientes etapas. 
 
 ## 16. Referencias
 
-Incluye las fuentes consultadas y citadas en el documento.
+[1] Ministerio de Ciencia, Tecnología e Innovación — Minciencias. (2026). *Proyecto de Ciencia, Tecnología e Innovación CTeI*. Glosario oficial de Minciencias.
+
+[2] Autio, C., Schwartz, R., Dunietz, J., Jain, S., Stanley, M., Tabassi, E., Hall, P., & Roberts, K. (2024). *Artificial Intelligence Risk Management Framework: Generative Artificial Intelligence Profile*. NIST AI 600-1. National Institute of Standards and Technology. https://doi.org/10.6028/NIST.AI.600-1
+
+[3] Tabassi, E. (2023). *Artificial Intelligence Risk Management Framework (AI RMF 1.0)*. NIST AI 100-1. National Institute of Standards and Technology. https://doi.org/10.6028/NIST.AI.100-1
+
+[4] National Institute of Standards and Technology. (2023). *AI RMF: AI Risk Management and Human-AI Interaction*. NIST AI Resource Center.
+
+[5] Fowler, M. (2015). *Monolith First*. Martin Fowler.
+
+[6] OpenAI. (2026). *¿Qué es ChatGPT? Preguntas frecuentes*. OpenAI Help Center.
+
+[7] Elicit. (2026). *Systematic Literature Reviews*. Elicit: AI for scientific research.
+
+[8] Guo, T., Chen, X., Wang, Y., Chang, R., Pei, S., Chawla, N. V., Wiest, O., & Zhang, X. (2024). *Large Language Model based Multi-Agents: A Survey of Progress and Challenges*. arXiv:2402.01680.
+
+
