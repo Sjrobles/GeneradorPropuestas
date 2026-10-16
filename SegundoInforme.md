@@ -378,7 +378,7 @@ Esta funcionalidad ya fue incorporada: al abandonar temporalmente un proyecto, e
 Las pruebas también llevaron a establecer limitaciones sobre el número o condiciones de regeneración.
 El objetivo es evitar ciclos indefinidos, controlar consumo del modelo y mejorar la previsibilidad del sistema.
 
-**Delimitación de objetivos*8
+**Delimitación de objetivos**
 
 Se establecieron controles sobre la cantidad de objetivos dentro de un proyecto con el propósito de mantener el alcance manejable y evitar que la generación produzca estructuras excesivamente amplias.
 
@@ -648,7 +648,7 @@ Las calificaciones iniciales deben interpretarse como una valoración de diseño
 
 La arquitectura actual presenta una ventaja importante para el estado del proyecto: ya existe un flujo funcional integrado entre frontend, backend, persistencia e inteligencia artificial. Por esta razón, la evolución propuesta no parte de una reconstrucción del sistema, sino de la consolidación de los componentes existentes.
 
-La auditoría tecnológica coincide con esta interpretación. El proyecto es considerado una prueba de concepto funcional y demostrable, con una base razonable para evolucionar, pero todavía requiere fortalecer aspectos de operación y validación antes de ampliar su alcance. La recomendación general es estabilizar la solución existente antes de realizar cambios de mayor complejidad. fileciteturn2file4
+La auditoría tecnológica coincide con esta interpretación. El proyecto es considerado una prueba de concepto funcional y demostrable, con una base razonable para evolucionar, pero todavía requiere fortalecer aspectos de operación y validación antes de ampliar su alcance. La recomendación general es estabilizar la solución existente antes de realizar cambios de mayor complejidad [9].
 
 En consecuencia, para el alcance actual se mantiene como referencia la arquitectura monolítica modular implementada, acompañada de mejoras progresivas en validación, manejo de estados, pruebas y operación.
 
@@ -709,13 +709,139 @@ El flujo principal puede representarse de manera simplificada como:
 
 La auditoría confirma este recorrido y señala que la aplicación genera trece componentes mediante cinco agentes especializados, con intervención humana antes de consolidar el documento final. 
 
-El comportamiento actual es suficiente para demostrar el flujo funcional del MVP. Sin embargo, las operaciones generativas constituyen el punto de mayor duración del proceso y, por ello, deberán continuar siendo observadas durante las pruebas de validación.
+El comportamiento actual es suficiente para demostrar el flujo funcional del MVP. Sin embargo, las operaciones generativas constituyen el punto de mayor duración del proceso y, por ello, deberán continuar siendo observadas durante las pruebas de validación. Las figuras siguientes separan la vista general, la colaboración interna, las secuencias de casos de uso y la distribución preliminar de ejecución. Los diagramas representan la arquitectura descrita en este informe; no implican que exista una infraestructura de producción de alta disponibilidad.
 
-**Aquí debe incorporarse el diagrama de arquitectura del sistema.**
+**Figura 1. Diagrama de arquitectura general de Ágora.** La figura resume los actores, la aplicación cliente, el backend, la persistencia y los servicios externos. Debe observarse que la generación y la lógica de negocio se coordinan desde el backend, mientras MongoDB conserva el estado del proyecto.
 
-**Aquí debe incorporarse el diagrama de interacción entre módulos.**
+```mermaid
+flowchart LR
+    U[Usuario] -->|Navegador web| FE[Frontend React + Vite]
+    FE -->|API REST /api/v1| BE[Backend modular NestJS]
+    BE <--> DB[(MongoDB)]
+    BE --> ORQ[Orquestador multiagente]
+    ORQ --> AI[OpenAI: generación y traducción]
+    BE -. autenticación cuando aplica .-> AUTH[Google / JWT]
+    ORQ -. búsquedas de apoyo cuando aplica .-> SEARCH[Servicios de búsqueda]
+```
 
-**Aquí debe incorporarse el diagrama de secuencia del flujo principal.**
+<em>Leyenda:</em> las flechas continuas representan intercambios principales; las discontinuas representan integraciones complementarias que dependen de la operación. El diagrama es una vista conceptual y no detalla nodos de despliegue.
+
+**Figura 2. Diagrama de interacción entre módulos.** Se abre el backend para mostrar cómo la API, los servicios de proyectos, el orquestador, los agentes y la persistencia colaboran. La ruta evidencia que las reglas de estado y almacenamiento permanecen bajo control de la aplicación, mientras los modelos generativos producen contenido.
+
+```mermaid
+flowchart TB
+    UI[Frontend / páginas] --> API[Controladores REST y validación]
+    API --> AUTHZ[Autenticación y autorización]
+    AUTHZ --> PS[ProjectsService]
+    PS --> STATE[Estado y contexto del proyecto]
+    PS --> ORCH[Orquestador]
+    ORCH --> RA[ResearchAgent]
+    ORCH --> IA[IdeationAgent]
+    ORCH --> MA[MethodologyAgent]
+    ORCH --> BA[BudgetAgent]
+    ORCH --> IM[ImpactAgent]
+    ORCH --> TA[TranslationAgent]
+    RA --> LLM[Adaptador de OpenAI]
+    IA --> LLM
+    MA --> LLM
+    BA --> LLM
+    IM --> LLM
+    TA --> LLM
+    PS <--> REPO[Persistencia / Mongoose]
+    REPO <--> DB[(MongoDB)]
+    PS --> DOC[Ensamblaje y exportación documental]
+    DOC --> UI
+```
+
+<em>Leyenda:</em> los agentes son responsabilidades funcionales coordinadas por el orquestador; no se representan como servicios desplegados independientemente. La persistencia mantiene el contexto y los resultados para permitir la revisión y la reanudación.
+
+### 10.4.1 Secuencias de procesos clave
+
+**Figura 3. Secuencia de autenticación e inicio de sesión.** Representa el recorrido de acceso a la aplicación. El backend valida las credenciales o el mecanismo de autenticación configurado y permite continuar únicamente cuando la sesión es válida.
+
+```mermaid
+sequenceDiagram
+    actor Usuario
+    participant FE as Frontend
+    participant API as API NestJS
+    participant Auth as Servicio de autenticación
+    participant DB as MongoDB
+    Usuario->>FE: Ingresa datos de acceso
+    FE->>API: Solicitud de autenticación
+    API->>Auth: Validar credenciales / identidad
+    Auth->>DB: Consultar usuario cuando aplica
+    DB-->>Auth: Datos del usuario
+    Auth-->>API: Resultado de validación
+    alt Autenticación válida
+        API-->>FE: Sesión o token válido
+        FE-->>Usuario: Acceso al espacio de trabajo
+    else Error de autenticación
+        API-->>FE: Error controlado
+        FE-->>Usuario: Mostrar mensaje y permitir reintento
+    end
+```
+
+<em>Leyenda:</em> la consulta de persistencia depende del mecanismo de acceso utilizado. Los puntos de espera principales son la validación de identidad y la respuesta de la API.
+
+**Figura 4. Secuencia de generación de componentes mediante agentes.** Muestra el proceso central del producto, desde el contexto hasta la persistencia de los resultados. La llamada al proveedor de IA es el punto de mayor duración y puede originar errores externos que deben manejarse sin perder los resultados ya guardados.
+
+```mermaid
+sequenceDiagram
+    actor Usuario
+    participant FE as Frontend
+    participant API as API / ProjectsService
+    participant ORQ as Orquestador
+    participant DB as MongoDB
+    participant LLM as OpenAI
+    Usuario->>FE: Confirma contexto del proyecto
+    FE->>API: Solicitar generación
+    API->>DB: Recuperar contexto y estado
+    DB-->>API: Contexto guardado
+    API->>ORQ: Iniciar secuencia de agentes
+    loop Agentes de formulación
+        ORQ->>LLM: Enviar instrucciones y contexto
+        LLM-->>ORQ: Componente estructurado
+        ORQ->>DB: Guardar resultado del agente
+        DB-->>ORQ: Confirmación de persistencia
+    end
+    ORQ-->>API: Estado y componentes generados
+    API-->>FE: Resultados / estado de generación
+    FE-->>Usuario: Mostrar componentes para revisión
+```
+
+<em>Leyenda:</em> el bucle representa la ejecución secuencial de los agentes de formulación, no necesariamente la traducción, que se realiza sobre el documento consolidado. La duración de las respuestas externas y la persistencia incremental deben medirse en las pruebas de rendimiento.
+
+**Figura 5. Secuencia de revisión, ensamblaje y exportación.** Ilustra la intervención humana antes de producir el documento consolidado. La última versión guardada de los componentes debe ser la que se utilice para ensamblar el documento.
+
+```mermaid
+sequenceDiagram
+    actor Usuario
+    participant FE as Espacio de revisión
+    participant API as API / ProjectsService
+    participant DB as MongoDB
+    participant DOC as Ensamblador documental
+    participant TR as TranslationAgent
+    Usuario->>FE: Edita y aprueba componentes
+    FE->>API: Guardar cambios y estados
+    API->>DB: Persistir versiones aprobadas
+    DB-->>API: Confirmación
+    Usuario->>FE: Solicita documento
+    FE->>API: Ensamblar versión consolidada
+    API->>DB: Recuperar última versión guardada
+    DB-->>API: Componentes vigentes
+    API->>DOC: Generar documento
+    DOC-->>API: Documento consolidado
+    opt Traducción solicitada
+        API->>TR: Traducir documento al inglés
+        TR-->>API: Documento traducido
+    end
+    API-->>FE: Archivo PDF disponible
+    FE-->>Usuario: Descargar / consultar documento
+```
+
+<em>Leyenda:</em> la traducción se ejecuta como operación complementaria sobre el documento consolidado. El ensamblaje y la exportación deben verificarse con pruebas de integración para confirmar que reflejan las últimas modificaciones del usuario.
+
+En conjunto, las secuencias permiten identificar tres puntos de observación para la validación: el resultado de autenticación, la duración de la generación externa y la consistencia entre el contenido aprobado y el documento exportado. En el estado actual no se presentan métricas de latencia o concurrencia medidas; estas deben obtenerse mediante pruebas controladas antes de formular conclusiones cuantitativas sobre desempeño.
 
 ## 11. Implementación y avance actual
 
@@ -756,6 +882,23 @@ La solución dispone de una configuración preliminar de despliegue que permite 
 Durante la etapa actual, el despliegue debe entenderse como un mecanismo para demostración, validación y pruebas del MVP, no como una infraestructura de producción completamente consolidada. La auditoría señala que todavía existen elementos operativos que deben fortalecerse, como automatización de calidad, métricas, alertas, recuperación y validaciones más completas del estado de las dependencias. 
 
 Por lo anterior, el objetivo inmediato del despliegue es garantizar que el flujo funcional pueda ejecutarse de manera reproducible y que el equipo pueda continuar realizando pruebas sobre una versión integrada del sistema.
+
+**Figura 6. Diagrama de despliegue preliminar.** La figura representa la ubicación lógica de los componentes según la configuración descrita. Render se identifica como entorno preparado para desplegar la aplicación; MongoDB y los proveedores externos aparecen como dependencias de ejecución. La representación no afirma que exista redundancia o alta disponibilidad.
+
+```mermaid
+flowchart TB
+    C[Dispositivo cliente
+Navegador web] -->|HTTPS| HOSTFE[Hosting del frontend
+React + Vite]
+    HOSTFE -->|HTTPS / API REST| HOSTBE[Entorno de backend
+Render: servicio NestJS]
+    HOSTBE -->|Conexión de base de datos| MDB[(MongoDB)]
+    HOSTBE -->|HTTPS / API| OAI[OpenAI]
+    HOSTBE -. autenticación cuando aplica .-> G[Google Identity]
+    HOSTBE -. consultas complementarias cuando aplica .-> S[Servicios de búsqueda]
+```
+
+<em>Leyenda:</em> el diagrama diferencia el dispositivo cliente, los entornos de ejecución y los servicios externos. La ubicación exacta del frontend y de MongoDB debe ajustarse si el despliegue efectivo difiere de la configuración preliminar documentada.
 
 ## 13. Validación preliminar
 
@@ -855,5 +998,7 @@ De esta manera, el cierre no se plantea como una reescritura del sistema, sino c
 [7] Elicit. (2026). *Systematic Literature Reviews*. Elicit: AI for scientific research.
 
 [8] Guo, T., Chen, X., Wang, Y., Chang, R., Pei, S., Chawla, N. V., Wiest, O., & Zhang, X. (2024). *Large Language Model based Multi-Agents: A Survey of Progress and Challenges*. arXiv:2402.01680.
+
+[9] Equipo del proyecto Ágora. (2026). *Auditoría tecnológica del proyecto Ágora* [documento interno de evaluación técnica].
 
 
