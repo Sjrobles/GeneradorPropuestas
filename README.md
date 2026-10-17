@@ -90,6 +90,40 @@ La creación de Atlas y la conexión están explicadas paso a paso en
 [`docs/atlas-setup.md`](./docs/atlas-setup.md). Docker queda disponible sólo
 como alternativa opcional; no es necesario para desarrollar Ágora.
 
+## Ejecución monolítica con Docker
+
+El repositorio también permite levantar frontend, backend y MongoDB dentro de
+un único contenedor. Nginx sirve la aplicación React y redirige `/api` al
+backend NestJS; MongoDB sólo escucha dentro del contenedor y conserva sus datos
+en un volumen administrado por Docker.
+
+1. Crea el archivo local de variables y reemplaza, como mínimo, `JWT_SECRET`:
+
+   ```bash
+   cp .env.docker.example .env
+   ```
+
+2. Construye e inicia el contenedor:
+
+   ```bash
+   docker compose up --build -d
+   ```
+
+3. Comprueba el estado y abre la aplicación:
+
+   ```bash
+   docker compose ps
+   curl http://127.0.0.1:8080/api/v1/health/ready
+   ```
+
+   La interfaz queda disponible en <http://127.0.0.1:8080>.
+
+Para observar los tres procesos se puede usar `docker compose logs -f agora`.
+`docker compose down` elimina el contenedor pero conserva los proyectos; sólo
+`docker compose down -v` elimina también el volumen de MongoDB. Las variables
+`VITE_*` se incorporan durante la construcción, por lo que un cambio del client
+ID de Google requiere reconstruir la imagen.
+
 El despliegue público del monorepo en Render y el recorrido de validación para
 evaluadores externos se encuentran en
 [`docs/render-y-pruebas-externas.md`](./docs/render-y-pruebas-externas.md). El

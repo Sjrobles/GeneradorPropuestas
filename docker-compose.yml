@@ -1,19 +1,37 @@
 services:
-  mongodb:
-    image: mongo:8.0
-    container_name: agora-mongodb
+  agora:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        VITE_API_MODE: backend
+        VITE_API_URL: /api/v1
+        VITE_GOOGLE_CLIENT_ID: ${VITE_GOOGLE_CLIENT_ID:-}
+    image: agora-monolith:local
+    container_name: agora-monolith
     restart: unless-stopped
     environment:
-      MONGO_INITDB_DATABASE: agora
+      APP_PORT: ${APP_PORT:-8080}
+      BACKEND_PORT: 3000
+      FRONTEND_ORIGIN: ${FRONTEND_ORIGIN:-http://localhost:8080,http://127.0.0.1:8080}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID:-}
+      JWT_SECRET: ${JWT_SECRET:?Define JWT_SECRET en el archivo .env}
+      MONGODB_URI: mongodb://127.0.0.1:27017/agora
+      NODE_ENV: production
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OPENAI_MODEL: ${OPENAI_MODEL:-gpt-5.6-luna}
     ports:
-      - "27017:27017"
+      - "${APP_PORT:-8080}:${APP_PORT:-8080}"
     volumes:
       - agora_mongodb_data:/data/db
     healthcheck:
-      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      test:
+        - CMD-SHELL
+        - curl --fail --silent --show-error "http://127.0.0.1:$${APP_PORT:-8080}/api/v1/health/ready" >/dev/null
+      interval: 15s
+      timeout: 8s
+      retries: 8
+      start_period: 45s
 
 volumes:
   agora_mongodb_data:
