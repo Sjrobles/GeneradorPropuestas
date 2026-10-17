@@ -2,8 +2,17 @@
 
 ## Estado
 
-La Fase 1 establece la base técnica de la aplicación web. Todavía no implementa
-el flujo funcional con datos mock; ese trabajo comienza en la Fase 2.
+La Fase 6 cierra y endurece el recorrido funcional del frontend web: después de la
+landing, el catálogo, la creación y la selección de idioma, el usuario conversa
+con Ágora para completar seis datos esenciales, ejecuta un diagnóstico simulado y
+confirma un resumen editable. A continuación genera 13 apartados mediante cinco agentes, los revisa
+en un workspace, edita su contenido y los aprueba. Finalmente, revisa pendientes,
+ensambla las últimas versiones, navega la vista previa, solicita una traducción
+opcional, descarga archivos simulados y finaliza el proyecto. La información se
+conserva en el navegador mediante una API simulada. La entrega final incorpora
+carga diferida por ruta, títulos dinámicos, administración de foco, controles de
+progreso accesibles, pruebas automáticas con axe-core y verificación responsive
+en navegador real.
 
 ## Arquitectura
 
@@ -22,7 +31,7 @@ src/
 ├── components/   # UI, layout y estados reutilizables
 ├── features/     # Funcionalidades del producto
 ├── lib/          # Utilidades sin estado
-├── services/     # Contratos de acceso a datos
+├── services/     # Contrato AgoraApi e implementación mock local
 ├── stores/       # Estado local de interfaz
 ├── test/         # Configuración transversal de pruebas
 └── types/        # Contratos del dominio
@@ -30,17 +39,24 @@ src/
 
 ## Estado y datos
 
-TanStack Query administrará los datos provenientes de la MockAPI y posteriormente
-del backend. Una **query** representa una lectura asíncrona; una **mutation**,
+TanStack Query administra los datos provenientes de la MockAPI y posteriormente
+podrá administrar los del backend. Una **query** representa una lectura asíncrona; una **mutation**,
 una operación que modifica datos; y la **cache** conserva resultados para evitar
 solicitudes duplicadas y mantener la interfaz sincronizada.
 
 Zustand se reserva para estado puramente visual. No debe copiar proyectos,
 componentes ni documentos que ya pertenezcan a TanStack Query.
 
-`AgoraApi` es el contrato que separa la interfaz de la fuente de datos. En las
-siguientes fases tendrá una implementación mock. Más adelante podrá sustituirse
-por HTTP sin reescribir las páginas.
+`AgoraApi` es el contrato que separa la interfaz de la fuente de datos.
+`MockAgoraApi` lo implementa con una latencia breve y persistencia en
+`localStorage`, usando claves separadas para proyectos, mensajes, contextos,
+componentes y documentos.
+Más adelante podrá sustituirse por una implementación HTTP sin reescribir las
+páginas.
+
+Los hooks de cada feature actúan como capa de aplicación: traducen las acciones
+de la interfaz a consultas y mutaciones sobre el contrato. Las páginas no leen
+ni escriben `localStorage` directamente.
 
 ## Providers
 
@@ -84,8 +100,21 @@ La aplicación es web responsive:
 /projects/:projectId/complete
 ```
 
-En la Fase 1 las rutas futuras muestran estados informativos. Sus pantallas se
-reemplazarán incrementalmente sin cambiar las URLs.
+En la Fase 6 todas las rutas del recorrido frontend están implementadas. Las
+rutas de documento soportan preparación, ensamblaje, vista previa, traducción,
+exportación mock y finalización sin depender únicamente del estado React.
+
+## Documento y traducción
+
+`DocumentAssembler` es un servicio determinista. Recupera la versión vigente de
+los 13 apartados, respeta el orden del registro, agrega títulos y produce la
+estructura navegable. Nunca solicita a un modelo que reescriba contenido
+aprobado.
+
+`TranslationAgent` mantiene aislada la operación cognitiva. En esta fase es una
+simulación local que traduce los títulos y marca el contenido como traducción
+simulada; posteriormente podrá sustituirse por un agente real sin modificar las
+pantallas. Las descargas DOCX y PDF también son mocks del contrato futuro.
 
 ## Dependencias principales
 
@@ -125,5 +154,10 @@ npm run format:check
 - TypeScript 6 se mantiene dentro del rango admitido por typescript-eslint.
 - React Router usa rutas reales desde el bootstrap.
 - No se introduce Redux.
-- No se implementan backend, autenticación, agentes ni llamadas a OpenAI en esta
-  fase.
+- La Fase 6 no implementa backend, autenticación ni llamadas reales a agentes u
+  OpenAI. `ProjectOrchestrator`, `FormulatorAgent` y sus subagentes son
+  simulaciones locales con límites equivalentes a la arquitectura futura.
+- Sólo la skill de convocatorias internacionales y Banco de la República está
+  habilitada; las demás comunican explícitamente su estado “Próximamente”.
+- La creación, conversación, diagnóstico, generación, edición, aprobación,
+  ensamblaje y finalización se validan con pruebas de navegación y persistencia.
