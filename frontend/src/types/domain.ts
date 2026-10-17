@@ -10,6 +10,8 @@ export const PROJECT_STATES = {
   CONTEXT_CONFIRMATION: 'context_confirmation',
   CONTEXT_CONFIRMED: 'context_confirmed',
   GENERATING_COMPONENTS: 'generating_components',
+  WAITING_EXECUTION_DETAILS: 'waiting_execution_details',
+  EXECUTION_DETAILS_CONFIRMED: 'execution_details_confirmed',
   VALIDATING_COMPONENTS: 'validating_components',
   WAITING_REVIEW: 'waiting_review',
   ASSEMBLING: 'assembling',
@@ -21,16 +23,19 @@ export const PROJECT_STATES = {
 export type ProjectState = (typeof PROJECT_STATES)[keyof typeof PROJECT_STATES]
 
 export const COMPONENT_TYPES = {
-  EXECUTIVE_SUMMARY: 'executive_summary',
-  GENERAL_OBJECTIVE: 'general_objective',
-  SPECIFIC_OBJECTIVES: 'specific_objectives',
-  PROBLEM_STATEMENT: 'problem_statement',
   THEORETICAL_FRAMEWORK: 'theoretical_framework',
   STATE_OF_ART: 'state_of_art',
-  EXPECTED_IMPACTS: 'expected_impacts',
-  BENEFICIARY_POPULATION: 'beneficiary_population',
-  SUSTAINABILITY: 'sustainability',
+  PROBLEM_STATEMENT: 'problem_statement',
+  BACKGROUND: 'background',
+  BIBLIOGRAPHY: 'bibliography',
+  ACTIVITIES: 'activities',
+  SMART_OBJECTIVES: 'smart_objectives',
+  SCHEDULE: 'schedule',
   METHODOLOGY: 'methodology',
+  BUDGET: 'budget',
+  BENEFICIARIES: 'beneficiaries',
+  RISKS: 'risks',
+  EXPECTED_IMPACTS: 'expected_impacts',
 } as const
 export type ComponentType =
   (typeof COMPONENT_TYPES)[keyof typeof COMPONENT_TYPES]
@@ -56,8 +61,33 @@ export interface Skill {
   name: string
 }
 
+export interface User {
+  createdAt: string
+  email: string
+  id: string
+  name: string
+}
+
+export interface AuthSession {
+  accessToken: string
+  user: User
+}
+
 export interface Project {
   createdAt: string
+  fragmentRegenerationCount?: number
+  fullProjectRegenerationCount?: number
+  generationJob?: {
+    activeAgent?: 'research' | 'ideation' | 'methodology' | 'budget' | 'impact'
+    completedAt?: string
+    errorCode?: string
+    errorMessage?: string
+    id: string
+    startedAt: string
+    status: 'processing' | 'completed' | 'failed' | 'interrupted'
+    updatedAt: string
+  }
+  hasDocument?: boolean
   id: string
   language?: ProjectLanguage
   progress: number
@@ -67,16 +97,38 @@ export interface Project {
   updatedAt: string
 }
 
+export interface GenerationJob {
+  generationId: string
+  projectId: string
+  status: 'accepted' | 'processing'
+}
+
 export interface ProjectContext {
   expectedResults?: string
   initialScope?: string
   location?: string
+  objectiveCount?: number
   problem?: string
   projectId: string
+  projectDuration?: string
   proposedSolution?: string
   provisionalTitle?: string
   sector?: string
   targetPopulation?: string
+}
+
+export interface ExecutionDetails {
+  activityDevelopment?: string
+  confirmedAt?: string
+  expectedDeliverables?: string
+  knownEconomicInformation?: string
+  locationsAndParticipants?: string
+  participants?: string
+  projectId: string
+  requiredResources?: string
+  specialConditions?: string
+  timelineAndDependencies?: string
+  verificationMethods?: string
 }
 
 export interface ChatMessage {
@@ -119,10 +171,13 @@ export interface ValidationResult {
 export interface ProjectComponent {
   aiGeneratedContent: string
   approvedAt?: string
+  createdAt: string
   currentContent: string
   id: string
+  modifiedBy: 'ai' | 'user'
   projectId: string
   status: ComponentStatus
+  structuredContent?: Methodology
   type: ComponentType
   updatedAt: string
   validation?: ValidationResult
@@ -154,5 +209,16 @@ export interface ProjectDocument {
   id: string
   language: ProjectLanguage
   projectId: string
+  sections: DocumentSection[]
   status: 'assembling' | 'ready' | 'error'
+  title: string
+  translatedFrom?: ProjectLanguage
+}
+
+export interface DocumentSection {
+  componentId: string
+  content: string
+  id: string
+  order: number
+  title: string
 }

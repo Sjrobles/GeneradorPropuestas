@@ -1,5 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { useState, type PropsWithChildren } from 'react'
+import { useEffect, useState, type PropsWithChildren } from 'react'
+
+import { backendAuthApi } from '@/services/auth/backend-auth-api'
 
 export function AppProviders({ children }: PropsWithChildren) {
   const [queryClient] = useState(
@@ -17,6 +19,12 @@ export function AppProviders({ children }: PropsWithChildren) {
         },
       }),
   )
+
+  useEffect(() => {
+    if (import.meta.env.VITE_API_MODE === 'backend') {
+      void backendAuthApi.warmUp()
+    }
+  }, [])
 
   return (
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
