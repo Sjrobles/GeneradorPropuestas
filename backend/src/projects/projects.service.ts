@@ -99,7 +99,15 @@ const CONTEXT_FIELDS: Array<{
     label: { en: 'problem', es: 'problema' },
     question: {
       en: 'What problem or need do you want to solve?',
-      es: '¿Qué problema o necesidad quieres resolver?',
+      es: 'Describe brevemente el problema o la necesidad que quieres resolver.',
+    },
+  },
+  {
+    field: 'initialScope',
+    label: { en: 'initial scope', es: 'alcance inicial' },
+    question: {
+      en: 'What is the initial scope and what will be left outside the project?',
+      es: '¿Cuál es el alcance inicial y qué quedará por fuera del proyecto?',
     },
   },
   {
@@ -143,14 +151,6 @@ const CONTEXT_FIELDS: Array<{
     question: {
       en: 'How many specific objectives should the project have? Choose an exact number from 2 to 5.',
       es: '¿Cuántos objetivos específicos quieres que tenga el proyecto? Indica un número exacto entre 2 y 5; Ágora generará exactamente esa cantidad.',
-    },
-  },
-  {
-    field: 'initialScope',
-    label: { en: 'initial scope', es: 'alcance inicial' },
-    question: {
-      en: 'What is the initial scope and what will be left outside the project?',
-      es: '¿Cuál será el alcance inicial y qué quedará por fuera del proyecto?',
     },
   },
   {
@@ -346,6 +346,11 @@ export class ProjectsService implements OnModuleInit {
       )
     }
 
+    if (currentField.field === 'projectDuration' && answer.length > 200) {
+      throw new BadRequestException(
+        'La duración admite máximo 200 caracteres. Indica solo el tiempo previsto y la fecha límite.',
+      )
+    }
     const language = this.languageOf(project)
     const normalizedAnswer = normalizeContextAnswer(currentField.field, answer)
     const updatedContext = {
@@ -576,6 +581,16 @@ export class ProjectsService implements OnModuleInit {
     if (index < 0) throw new NotFoundException('Componente no encontrado')
 
     const current = project.components[index]
+    if (content.trim().length < 20) {
+      throw new BadRequestException(
+        'El componente necesita al menos 20 caracteres para guardarse.',
+      )
+    }
+    if (current.type === 'methodology' && content.length > 10000) {
+      throw new BadRequestException(
+        'La metodología admite máximo 10.000 caracteres. Resume el texto antes de guardarlo.',
+      )
+    }
     project.components[index] = {
       ...current,
       approvedAt: undefined,

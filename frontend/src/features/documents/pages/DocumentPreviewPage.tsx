@@ -1,4 +1,11 @@
-import { ArrowLeft, Download, FileText, Languages, Menu } from 'lucide-react'
+import {
+  ArrowLeft,
+  ArrowUpRight,
+  Download,
+  FileText,
+  Languages,
+  Menu,
+} from 'lucide-react'
 import { useState, type ReactNode } from 'react'
 import { Link, useParams, useSearchParams } from 'react-router'
 
@@ -193,10 +200,12 @@ export function DocumentPreviewPage() {
               </Link>
             )}
             <Link
-              className="inline-flex min-h-10 items-center gap-2 rounded-xl bg-primary px-4 text-xs font-extrabold text-white no-underline"
+              className="inline-flex min-h-12 items-center justify-center gap-3 rounded-2xl bg-[#1f3268] px-6 text-sm font-semibold !text-white no-underline transition-colors hover:bg-[#2864ef] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
               to={`/projects/${projectId}/export?language=${document.language}`}
             >
-              <Download aria-hidden="true" size={16} /> Exportar
+              <Download aria-hidden="true" size={18} />
+              Opciones de exportación
+              <ArrowUpRight aria-hidden="true" size={17} />
             </Link>
           </div>
         </div>

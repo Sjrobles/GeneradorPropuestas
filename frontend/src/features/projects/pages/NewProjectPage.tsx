@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { ArrowLeft, FolderPlus, Sparkles } from 'lucide-react'
+import { ArrowLeft, FolderPlus, Compass } from 'lucide-react'
 import { useForm } from 'react-hook-form'
 import { Link, useNavigate, useSearchParams } from 'react-router'
 
@@ -74,7 +74,7 @@ export function NewProjectPage() {
       <div className="mt-10 grid gap-6 lg:grid-cols-[0.8fr_1.2fr]">
         <aside className="rounded-lg border border-border bg-secondary p-6 text-secondary-foreground sm:p-7">
           <span className="grid size-11 place-items-center rounded-md bg-primary text-primary-foreground">
-            <Sparkles aria-hidden="true" size={21} />
+            <Compass aria-hidden="true" size={21} />
           </span>
           <p className="mt-5 text-xs font-bold uppercase tracking-[0.18em] text-primary">
             Skill seleccionada

@@ -1,12 +1,12 @@
+import { AgoraAssistantIcon } from '@/components/icons/AgoraAssistantIcon'
+import '../styles/context-workspace.css'
 import {
   ArrowRight,
-  Bot,
   ChartNoAxesCombined,
   Check,
   CircleDot,
   Clock3,
   FileCheck2,
-  Info,
   Lightbulb,
   ListChecks,
   LoaderCircle,
@@ -16,7 +16,8 @@ import {
   PencilLine,
   ScanLine,
   Send,
-  Sparkles,
+  ScanSearch,
+  ClipboardList,
   Users,
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
@@ -25,6 +26,8 @@ import { Link, useParams } from 'react-router'
 
 import { ErrorState } from '@/components/feedback/ErrorState'
 import { LoadingState } from '@/components/feedback/LoadingState'
+import { TextLimitHint } from '@/components/forms/TextLimitHint'
+import { guidanceForQuestion } from '../context-guidance'
 import { AgoraButton } from '@/components/ui/agora-button'
 import {
   useChatMessagesQuery,
@@ -51,6 +54,7 @@ const contextChecklist: Array<{
   label: string
 }> = [
   { field: 'problem', label: 'Problema', icon: CircleDot },
+  { field: 'initialScope', label: 'Alcance inicial', icon: ScanLine },
   { field: 'targetPopulation', label: 'Población', icon: Users },
   { field: 'location', label: 'Ubicación', icon: MapPin },
   { field: 'proposedSolution', label: 'Solución', icon: Lightbulb },
@@ -64,7 +68,6 @@ const contextChecklist: Array<{
     label: 'Número de objetivos',
     icon: ListChecks,
   },
-  { field: 'initialScope', label: 'Alcance inicial', icon: ScanLine },
   { field: 'projectDuration', label: 'Duración total', icon: Clock3 },
 ]
 
@@ -99,7 +102,7 @@ function ProcessSidebar({ activeStage }: { activeStage: number }) {
                 />
               ) : null}
               <span
-                className={`relative z-10 grid size-9 shrink-0 place-items-center rounded-full border-2 text-sm font-extrabold transition-colors ${
+                className={`relative z-10 grid size-9 shrink-0 place-items-center rounded-full border-2 text-sm font-semibold transition-colors ${
                   active || complete
                     ? 'border-primary bg-primary text-white'
                     : 'border-[#d8e1ee] bg-white text-[#8fa0b9]'
@@ -109,7 +112,7 @@ function ProcessSidebar({ activeStage }: { activeStage: number }) {
               </span>
               <div className="pt-0.5">
                 <p
-                  className={`font-extrabold ${active ? 'text-[#1e315f]' : 'text-[#53637d]'}`}
+                  className={`font-semibold ${active ? 'text-[#1e315f]' : 'text-[#53637d]'}`}
                 >
                   {step.label}
                 </p>
@@ -130,7 +133,7 @@ function ProcessSidebar({ activeStage }: { activeStage: number }) {
             size={18}
           />
           <div>
-            <p className="text-xs font-extrabold text-[#20325e]">
+            <p className="text-xs font-semibold text-[#20325e]">
               Tu información está segura
             </p>
             <p className="mt-1 text-[11px] leading-4 text-[#65758e]">
@@ -143,27 +146,15 @@ function ProcessSidebar({ activeStage }: { activeStage: number }) {
   )
 }
 
-interface ContextPanelProps {
-  context: ProjectContext
-  contextComplete: boolean
-  diagnoseContext: ReturnType<typeof useDiagnoseContextMutation>
-  projectId: string
-}
-
-function ContextPanel({
-  context,
-  contextComplete,
-  diagnoseContext,
-  projectId,
-}: ContextPanelProps) {
+function ContextPanel({ context }: { context: ProjectContext }) {
   return (
     <aside className="flex min-h-0 flex-col rounded-2xl border border-[#dbe3f0] bg-white p-5">
       <div className="flex items-center justify-between gap-3">
-        <h2 className="text-lg font-extrabold text-[#20325e]">
+        <h2 className="text-lg font-semibold text-[#20325e]">
           Contexto recopilado
         </h2>
         <span className="grid size-9 place-items-center rounded-lg border border-primary text-primary">
-          <Sparkles aria-hidden="true" size={18} />
+          <ClipboardList aria-hidden="true" size={18} />
         </span>
       </div>
 
@@ -183,7 +174,7 @@ function ContextPanel({
                 </span>
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center justify-between gap-2">
-                    <h3 className="text-[11px] font-extrabold uppercase tracking-[0.06em] text-[#91a1ba]">
+                    <h3 className="text-[11px] font-semibold uppercase tracking-[0.06em] text-[#91a1ba]">
                       {label}
                     </h3>
                     {content ? (
@@ -205,60 +196,61 @@ function ContextPanel({
           )
         })}
       </div>
+    </aside>
+  )
+}
 
-      <div className="mt-4 border-t border-border pt-4">
-        {contextComplete ? (
+function ContextAnalysisActions({
+  diagnoseContext,
+  projectId,
+}: {
+  diagnoseContext: ReturnType<typeof useDiagnoseContextMutation>
+  projectId: string
+}) {
+  if (diagnoseContext.isSuccess && diagnoseContext.data.complete) {
+    return (
+      <Link
+        className="inline-flex min-h-16 w-full shrink-0 items-center justify-center gap-2 rounded-2xl bg-primary px-5 text-lg font-bold text-white no-underline transition-colors hover:bg-[#2f54ca]"
+        to={`/projects/${projectId}/context`}
+      >
+        Revisar resumen <ArrowRight aria-hidden="true" size={20} />
+      </Link>
+    )
+  }
+
+  return (
+    <div className="shrink-0">
+      <AgoraButton
+        className="min-h-16 w-full rounded-2xl text-lg font-bold"
+        disabled={diagnoseContext.isPending}
+        onClick={() => diagnoseContext.mutate()}
+      >
+        {diagnoseContext.isPending ? (
           <>
-            <AgoraButton
-              className="w-full"
-              disabled={diagnoseContext.isPending}
-              onClick={() => diagnoseContext.mutate()}
-            >
-              {diagnoseContext.isPending ? (
-                <>
-                  <LoaderCircle
-                    className="animate-spin"
-                    aria-hidden="true"
-                    size={16}
-                  />{' '}
-                  Analizando información…
-                </>
-              ) : (
-                <>
-                  <Sparkles aria-hidden="true" size={16} /> Analizar contexto
-                </>
-              )}
-            </AgoraButton>
-            {diagnoseContext.isPending ? (
-              <div
-                className="mt-3 rounded-xl border border-primary/15 bg-[#f5f8ff] p-3"
-                role="status"
-              >
-                <p className="text-xs font-extrabold text-[#20325e]">
-                  Verificando completitud y coherencia
-                </p>
-                <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-white">
-                  <span className="block h-full w-2/3 animate-pulse rounded-full bg-primary" />
-                </div>
-              </div>
-            ) : null}
-            {diagnoseContext.isSuccess && diagnoseContext.data.complete ? (
-              <Link
-                className="mt-3 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-lg bg-[#1e315f] px-4 text-sm font-extrabold text-white no-underline"
-                to={`/projects/${projectId}/context`}
-              >
-                Revisar resumen <ArrowRight aria-hidden="true" size={16} />
-              </Link>
-            ) : null}
+            <LoaderCircle
+              className="animate-spin"
+              aria-hidden="true"
+              size={20}
+            />{' '}
+            Analizando información…
           </>
         ) : (
-          <div className="flex items-start gap-2 rounded-xl bg-[#f7f9fc] p-3 text-xs leading-5 text-[#65758e]">
-            <Info className="mt-0.5 shrink-0" aria-hidden="true" size={15} />
-            Podrás editar esta información antes de generar tu propuesta.
-          </div>
+          <>
+            <ScanSearch aria-hidden="true" size={20} /> Analizar contexto
+          </>
         )}
-      </div>
-    </aside>
+      </AgoraButton>
+      {diagnoseContext.isPending ? (
+        <p className="mt-3 text-center text-sm text-[#65758e]" role="status">
+          Verificando completitud y coherencia…
+        </p>
+      ) : null}
+      {diagnoseContext.isError ? (
+        <p role="alert" className="mt-3 text-sm text-danger">
+          {diagnoseContext.error.message}
+        </p>
+      ) : null}
+    </div>
   )
 }
 
@@ -270,6 +262,11 @@ export function ChatPage() {
   const sendMessage = useSendMessageMutation(projectId)
   const diagnoseContext = useDiagnoseContextMutation(projectId)
   const [message, setMessage] = useState('')
+  const [inputError, setInputError] = useState('')
+  const currentField = contextChecklist.find(
+    ({ field }) => !String(contextQuery.data?.[field] ?? '').trim(),
+  )?.field
+  const messageLimit = currentField === 'projectDuration' ? 200 : 4000
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
   const completedFields = contextChecklist.filter(({ field }) => {
@@ -288,9 +285,26 @@ export function ChatPage() {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     const content = message.trim()
-    if (!content) return
-    setMessage('')
-    await sendMessage.mutateAsync(content)
+    if (currentField === 'objectiveCount' && !/^[2-5]$/.test(content)) {
+      setInputError('Escribe un número entre 2 y 5.')
+      return
+    }
+    if (
+      currentField !== 'objectiveCount' &&
+      (content.length < 3 || content.length > messageLimit)
+    ) {
+      setInputError(
+        `Escribe entre 3 y ${messageLimit.toLocaleString('es-CO')} caracteres para continuar.`,
+      )
+      return
+    }
+    setInputError('')
+    try {
+      await sendMessage.mutateAsync(content)
+      setMessage('')
+    } catch {
+      // Preserve the answer; the mutation displays a controlled error.
+    }
   }
 
   if (
@@ -308,15 +322,15 @@ export function ChatPage() {
   }
 
   return (
-    <section className="bg-[#f4f7fb] p-3 sm:p-4 xl:h-[calc(100dvh-var(--header-height))] xl:overflow-hidden">
+    <section className="agora-context-workspace agora-context-chat bg-[#f4f7fd] p-3 sm:p-4 xl:h-[calc(100dvh-var(--header-height))] xl:overflow-hidden">
       <h1 className="sr-only">Cuéntale a Ágora sobre tu proyecto</h1>
 
       <div className="mb-3 flex items-center justify-between rounded-xl border border-[#dbe3f0] bg-white px-4 py-3 xl:hidden">
         <div>
-          <p className="text-[10px] font-extrabold uppercase tracking-wider text-[#91a1ba]">
+          <p className="text-[10px] font-semibold uppercase tracking-wider text-[#91a1ba]">
             Paso {activeStage} de 4
           </p>
-          <p className="text-sm font-extrabold text-[#20325e]">
+          <p className="text-sm font-semibold text-[#20325e]">
             {processSteps[activeStage - 1]?.label}
           </p>
         </div>
@@ -341,11 +355,11 @@ export function ChatPage() {
         <div className="flex min-h-[calc(100dvh-var(--header-height)-7.5rem)] min-w-0 flex-col gap-3 sm:min-h-[42rem] xl:min-h-0">
           <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-2xl border border-[#dbe3f0] bg-white">
             <div className="flex items-center gap-3 border-b border-[#edf1f6] bg-white px-4 py-3 sm:px-6">
-              <span className="grid size-9 place-items-center rounded-full bg-[#edf4ff] text-primary">
-                <Bot aria-hidden="true" size={18} />
+              <span className="grid size-9 place-items-center rounded-full bg-[#e5edfc] text-primary">
+                <AgoraAssistantIcon aria-hidden="true" size={18} />
               </span>
               <div className="min-w-0">
-                <p className="truncate text-sm font-extrabold text-[#20325e]">
+                <p className="truncate text-sm font-semibold text-[#20325e]">
                   Asistente Ágora
                 </p>
                 <p className="flex items-center gap-1.5 text-[11px] text-[#22a878]">
@@ -360,10 +374,10 @@ export function ChatPage() {
               aria-live="polite"
             >
               <div className="flex items-start gap-3">
-                <span className="grid size-9 shrink-0 place-items-center rounded-full bg-[#edf4ff] text-primary">
-                  <Bot aria-hidden="true" size={17} />
+                <span className="grid size-9 shrink-0 place-items-center rounded-full bg-[#e5edfc] text-primary">
+                  <AgoraAssistantIcon aria-hidden="true" size={17} />
                 </span>
-                <div className="max-w-[88%] rounded-2xl rounded-tl-sm bg-[#f7f9fc] px-4 py-3 text-sm leading-6 text-[#263550]">
+                <div className="max-w-[88%] rounded-2xl rounded-tl-sm bg-[#f4f7fd] px-4 py-3 text-sm leading-6 text-[#263550]">
                   ¡Hola! Soy Ágora, tu asistente para formular proyectos. Te
                   haré preguntas breves para comprender y estructurar tu idea.
                 </div>
@@ -377,17 +391,28 @@ export function ChatPage() {
                     className={`flex items-start gap-3 ${fromUser ? 'justify-end' : 'justify-start'}`}
                   >
                     {!fromUser ? (
-                      <span className="grid size-9 shrink-0 place-items-center rounded-full bg-[#edf4ff] text-primary">
-                        <Bot aria-hidden="true" size={17} />
+                      <span className="grid size-9 shrink-0 place-items-center rounded-full bg-[#e5edfc] text-primary">
+                        <AgoraAssistantIcon aria-hidden="true" size={17} />
                       </span>
                     ) : null}
                     <div
                       className={`max-w-[88%] sm:max-w-[78%] ${fromUser ? 'text-right' : ''}`}
                     >
                       <div
-                        className={`rounded-2xl px-4 py-3 text-left text-sm leading-6 text-[#263550] ${fromUser ? 'rounded-tr-sm bg-[#edf4ff]' : 'rounded-tl-sm bg-[#f7f9fc]'}`}
+                        className={`rounded-2xl px-4 py-3 text-left text-sm leading-6 text-[#263550] ${fromUser ? 'rounded-tr-sm bg-[#e5edfc]' : 'rounded-tl-sm bg-[#f4f7fd]'}`}
                       >
                         {chatMessage.content}
+                        {!fromUser &&
+                        chatMessage.messageType === 'clarification_question' ? (
+                          <details className="mt-3 text-sm">
+                            <summary className="cursor-pointer font-semibold text-primary">
+                              Ver más: cómo responder
+                            </summary>
+                            <p className="mt-2 leading-6">
+                              {guidanceForQuestion(chatMessage.content)}
+                            </p>
+                          </details>
+                        ) : null}
                       </div>
                       <p className="mt-1 text-[10px] text-[#9aabc3]">
                         {formatTime(chatMessage.createdAt)}
@@ -395,7 +420,7 @@ export function ChatPage() {
                       </p>
                     </div>
                     {fromUser ? (
-                      <span className="grid size-9 shrink-0 place-items-center rounded-full bg-[#edf4ff] text-xs font-extrabold text-primary">
+                      <span className="grid size-9 shrink-0 place-items-center rounded-full bg-[#e5edfc] text-xs font-semibold text-primary">
                         AA
                       </span>
                     ) : null}
@@ -405,10 +430,10 @@ export function ChatPage() {
 
               {sendMessage.isPending ? (
                 <div className="flex items-center gap-3">
-                  <span className="grid size-9 place-items-center rounded-full bg-[#edf4ff] text-primary">
-                    <Bot aria-hidden="true" size={17} />
+                  <span className="grid size-9 place-items-center rounded-full bg-[#e5edfc] text-primary">
+                    <AgoraAssistantIcon aria-hidden="true" size={17} />
                   </span>
-                  <div className="flex items-center gap-2 rounded-2xl rounded-tl-sm bg-[#f7f9fc] px-4 py-3 text-sm text-[#65758e]">
+                  <div className="flex items-center gap-2 rounded-2xl rounded-tl-sm bg-[#f4f7fd] px-4 py-3 text-sm text-[#65758e]">
                     <LoaderCircle
                       className="animate-spin text-primary"
                       aria-hidden="true"
@@ -422,61 +447,69 @@ export function ChatPage() {
             </div>
           </div>
 
-          <form
-            className="rounded-2xl border border-[#dbe3f0] bg-white p-2"
-            onSubmit={(event) => void handleSubmit(event)}
-          >
-            {sendMessage.isError ? (
-              <p
-                className="mb-2 rounded-lg bg-danger/10 p-3 text-sm font-medium text-danger"
-                role="alert"
-              >
-                {sendMessage.error.message}
-              </p>
-            ) : null}
-            <div className="flex items-center gap-2">
-              <span className="grid size-10 shrink-0 place-items-center text-[#63738d]">
-                <Mic aria-hidden="true" size={20} />
-              </span>
-              <label className="sr-only" htmlFor="chat-message">
-                Tu respuesta
-              </label>
-              <textarea
-                id="chat-message"
-                className="max-h-28 min-h-11 flex-1 resize-none border-0 bg-transparent px-1 py-2.5 text-sm leading-6 outline-none placeholder:text-[#a1aec1]"
-                placeholder={
-                  contextComplete
-                    ? 'El contexto está listo para analizar.'
-                    : 'Escribe tu respuesta…'
-                }
-                value={message}
-                disabled={sendMessage.isPending || contextComplete}
-                onChange={(event) => setMessage(event.target.value)}
-              />
-              <button
-                className="grid size-11 shrink-0 place-items-center rounded-xl bg-[#1e315f] text-white transition hover:bg-primary disabled:cursor-not-allowed disabled:opacity-40"
-                type="submit"
-                aria-label="Enviar respuesta"
-                disabled={
-                  !message.trim() || sendMessage.isPending || contextComplete
-                }
-              >
-                <Send aria-hidden="true" size={19} />
-              </button>
-            </div>
-          </form>
+          {contextComplete ? (
+            <ContextAnalysisActions
+              diagnoseContext={diagnoseContext}
+              projectId={projectId}
+            />
+          ) : (
+            <form
+              className="rounded-2xl border border-[#dbe3f0] bg-white p-2"
+              onSubmit={(event) => void handleSubmit(event)}
+            >
+              {inputError ? (
+                <p role="alert" className="p-3 text-sm text-danger">
+                  {inputError}
+                </p>
+              ) : null}
+              {sendMessage.isError ? (
+                <p
+                  className="mb-2 rounded-lg bg-danger/10 p-3 text-sm font-medium text-danger"
+                  role="alert"
+                >
+                  {sendMessage.error.message}
+                </p>
+              ) : null}
+              <div className="flex items-center gap-2">
+                <span className="grid size-10 shrink-0 place-items-center text-[#63738d]">
+                  <Mic aria-hidden="true" size={20} />
+                </span>
+                <label className="sr-only" htmlFor="chat-message">
+                  Tu respuesta
+                </label>
+                <textarea
+                  id="chat-message"
+                  maxLength={messageLimit}
+                  aria-describedby="chat-limit"
+                  className="max-h-28 min-h-11 flex-1 resize-none border-0 bg-transparent px-1 py-2.5 text-sm leading-6 outline-none placeholder:text-[#a1aec1]"
+                  placeholder="Escribe tu respuesta…"
+                  value={message}
+                  disabled={sendMessage.isPending || contextComplete}
+                  onChange={(event) => setMessage(event.target.value)}
+                />
+                <button
+                  className="grid size-11 shrink-0 place-items-center rounded-xl bg-[#1e315f] text-white transition hover:bg-primary disabled:cursor-not-allowed disabled:opacity-40"
+                  type="submit"
+                  aria-label="Enviar respuesta"
+                  disabled={
+                    !message.trim() || sendMessage.isPending || contextComplete
+                  }
+                >
+                  <Send aria-hidden="true" size={19} />
+                </button>
+              </div>
+              <div id="chat-limit" className="px-3 pb-2">
+                <TextLimitHint length={message.length} limit={messageLimit} />
+              </div>
+            </form>
+          )}
           <p className="flex items-center justify-center gap-2 text-center text-[10px] text-[#9aabc3]">
             <FileCheck2 aria-hidden="true" size={12} /> Ágora puede cometer
             errores. Verifica siempre la información importante.
           </p>
         </div>
 
-        <ContextPanel
-          context={contextQuery.data}
-          contextComplete={contextComplete}
-          diagnoseContext={diagnoseContext}
-          projectId={projectId}
-        />
+        <ContextPanel context={contextQuery.data} />
       </div>
     </section>
   )

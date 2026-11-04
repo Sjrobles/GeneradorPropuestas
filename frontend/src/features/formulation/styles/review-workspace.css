@@ -1,0 +1,52 @@
+/* Shared with the landing: Inter, navy ink, blue actions and a pale blue ground. */
+.agora-review-workspace {
+  --primary: #2864ef;
+  --foreground: #1f3268;
+  --muted-foreground: #52617c;
+  --border: #dce5f4;
+  font-family: var(--font-ui);
+  color: #1f3268;
+}
+.agora-review-workspace :is(h1, h2, h3, textarea, button, a) {
+  font-family: var(--font-ui);
+}
+.agora-review-workspace :is(h2, h3) {
+  letter-spacing: -0.025em;
+  color: #1f3268;
+}
+.agora-review-workspace .agora-review-title {
+  font-weight: 750;
+  letter-spacing: -0.045em;
+  line-height: 1.12;
+}
+.agora-review-workspace :is(main, aside > section, aside > div) {
+  box-shadow: none;
+  border-radius: 24px;
+}
+.agora-review-workspace textarea {
+  line-height: 1.8;
+  color: #253550;
+}
+.agora-review-workspace .agora-review-summary {
+  background: #eaf0fc;
+}
+.agora-review-workspace .agora-review-ring {
+  box-shadow: none !important;
+}
+.agora-review-workspace .agora-review-footer {
+  border-color: #dce5f4;
+  box-shadow: none;
+}
+.agora-review-workspace .agora-review-footer :is(button, a) {
+  border-radius: 12px;
+  font-weight: 650;
+}
+.agora-review-workspace :is(a, button):focus-visible {
+  outline: 3px solid #2864ef;
+  outline-offset: 4px;
+}
+@media (max-width: 640px) {
+  .agora-review-workspace :is(main, aside > section, aside > div) {
+    border-radius: 18px;
+  }
+}

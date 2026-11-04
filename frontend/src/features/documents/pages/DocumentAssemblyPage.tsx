@@ -8,7 +8,9 @@ import {
   ListChecks,
   LoaderCircle,
   ShieldCheck,
-  Sparkles,
+  FileText,
+  History,
+  Eye,
 } from 'lucide-react'
 import { Link, useNavigate, useParams } from 'react-router'
 
@@ -60,7 +62,7 @@ export function DocumentAssemblyPage() {
           <div className="grid items-center gap-6 p-6 sm:p-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:p-10">
             <div className="max-w-3xl">
               <p className="flex items-center gap-2 text-[11px] font-extrabold uppercase tracking-[0.18em] text-primary">
-                <Sparkles aria-hidden="true" size={15} /> Documento final
+                <FileText aria-hidden="true" size={15} /> Documento final
               </p>
               <h1 className="mt-3 max-w-3xl text-3xl font-extrabold leading-[1.08] tracking-[-0.035em] text-[#1e315f] sm:text-4xl lg:text-[2.75rem]">
                 {assemble.isPending
@@ -115,16 +117,21 @@ export function DocumentAssemblyPage() {
                 'Recuperando versiones',
                 'Ordenando secciones',
                 'Preparando vista previa',
-              ].map((step) => (
+              ].map((step, index) => (
                 <div
                   key={step}
                   className="rounded-xl bg-[#f7f9fc] p-4 text-center text-xs font-bold text-[#66738a]"
                 >
-                  <Sparkles
-                    className="mx-auto mb-2 text-primary"
-                    aria-hidden="true"
-                    size={17}
-                  />
+                  {(() => {
+                    const StepIcon = [History, ListChecks, Eye][index]
+                    return (
+                      <StepIcon
+                        className="mx-auto mb-2 text-primary"
+                        aria-hidden="true"
+                        size={17}
+                      />
+                    )
+                  })()}
                   {step}
                 </div>
               ))}
@@ -215,7 +222,7 @@ export function DocumentAssemblyPage() {
             <aside className="flex flex-col justify-between overflow-hidden rounded-3xl bg-[linear-gradient(145deg,#172a58_0%,#315ce0_100%)] p-6 text-white shadow-[0_18px_42px_rgba(49,92,224,0.2)] sm:p-8">
               <div>
                 <span className="grid size-11 place-items-center rounded-xl bg-white/12 ring-1 ring-inset ring-white/15">
-                  <Sparkles aria-hidden="true" size={21} />
+                  <Eye aria-hidden="true" size={21} />
                 </span>
                 <p className="mt-7 text-[10px] font-extrabold uppercase tracking-[0.18em] text-white/65">
                   Siguiente paso

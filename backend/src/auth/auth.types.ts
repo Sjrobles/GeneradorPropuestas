@@ -5,6 +5,7 @@ export type AuthenticatedUser = UserResponse
 export interface JwtPayload {
   email: string
   sub: string
+  version?: number
 }
 
 export interface AuthResponse {

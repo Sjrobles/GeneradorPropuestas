@@ -199,7 +199,7 @@ describe('ProjectsService', () => {
     expect(composeContextReply).not.toHaveBeenCalled()
     expect(messages).toHaveLength(2)
     expect(messages[1].content).toBe(
-      '¿Quiénes son afectados por este problema o se beneficiarían del proyecto?',
+      '¿Cuál es el alcance inicial y qué quedará por fuera del proyecto?',
     )
   })
 

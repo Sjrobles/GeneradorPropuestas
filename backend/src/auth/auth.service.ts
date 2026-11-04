@@ -91,7 +91,11 @@ export class AuthService {
 
   private async createSession(user: UserDocument): Promise<AuthResponse> {
     const publicUser = this.usersService.toResponse(user)
-    const payload: JwtPayload = { email: publicUser.email, sub: publicUser.id }
+    const payload: JwtPayload = {
+      email: publicUser.email,
+      sub: publicUser.id,
+      version: user.sessionVersion ?? 0,
+    }
     return {
       accessToken: await this.jwtService.signAsync(payload),
       user: publicUser,

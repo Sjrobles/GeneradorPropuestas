@@ -1,3 +1,4 @@
+import '@/features/projects/styles/project-library.css'
 import { ArrowRight, FolderKanban, ShieldCheck } from 'lucide-react'
 import { Link } from 'react-router'
 
@@ -13,7 +14,7 @@ export function SkillsPage() {
   const authenticated = Boolean(getAuthSession())
 
   return (
-    <section className="mx-auto max-w-(--content-width) px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
+    <section className="agora-library mx-auto max-w-(--content-width) px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
       <PageHeader
         eyebrow="Skills de Ágora"
         title="Elige el acompañamiento para tu proyecto"

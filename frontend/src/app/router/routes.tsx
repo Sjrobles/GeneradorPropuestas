@@ -104,6 +104,12 @@ const HelpCenterPage = lazy(() =>
   })),
 )
 
+const PasswordRecoveryPage = lazy(() =>
+  import('@/features/auth/pages/PasswordRecoveryPage').then((module) => ({
+    default: module.PasswordRecoveryPage,
+  })),
+)
+
 function deferred(element: ReactNode) {
   return (
     <Suspense fallback={<LoadingState label="Cargando pantalla…" />}>
@@ -120,6 +126,14 @@ export const routes: RouteObject[] = [
     children: [
       { index: true, element: deferred(<LandingPage />) },
       { path: 'skills', element: deferred(<SkillsPage />) },
+      {
+        path: 'auth/forgot-password',
+        element: deferred(<PasswordRecoveryPage />),
+      },
+      {
+        path: 'auth/reset-password',
+        element: deferred(<PasswordRecoveryPage />),
+      },
       {
         path: 'auth',
         element: deferred(<AuthPage />),

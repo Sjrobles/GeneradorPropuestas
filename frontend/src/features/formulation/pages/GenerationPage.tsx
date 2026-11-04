@@ -1,10 +1,10 @@
+import { AgoraAssistantIcon } from '@/components/icons/AgoraAssistantIcon'
 import {
   ArrowRight,
-  Bot,
   Check,
   Layers3,
   LoaderCircle,
-  Sparkles,
+  Workflow,
   TriangleAlert,
 } from 'lucide-react'
 import { useEffect, useRef } from 'react'
@@ -102,7 +102,7 @@ export function GenerationPage() {
       <div className="mx-auto max-w-6xl">
         <header className="text-center">
           <span className="mx-auto grid size-14 place-items-center rounded-2xl bg-primary text-white shadow-lg shadow-primary/20">
-            <Sparkles aria-hidden="true" size={25} />
+            <Workflow aria-hidden="true" size={25} />
           </span>
           <p className="mt-5 text-xs font-extrabold uppercase tracking-[0.18em] text-primary">
             ProjectOrchestrator · FormulatorAgent
@@ -237,8 +237,8 @@ export function GenerationPage() {
           </div>
         ) : !projectHasError ? (
           <p className="mt-7 flex items-center justify-center gap-2 text-center text-xs text-muted-foreground">
-            <Bot aria-hidden="true" size={15} /> Puedes seguir esta pantalla; el
-            progreso se guarda automáticamente.
+            <AgoraAssistantIcon aria-hidden="true" size={15} /> Puedes seguir
+            esta pantalla; el progreso se guarda automáticamente.
           </p>
         ) : null}
       </div>

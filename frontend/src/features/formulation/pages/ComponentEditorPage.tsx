@@ -12,6 +12,11 @@ import { Link, useParams } from 'react-router'
 
 import { ErrorState } from '@/components/feedback/ErrorState'
 import { LoadingState } from '@/components/feedback/LoadingState'
+import { TextLimitHint } from '@/components/forms/TextLimitHint'
+import {
+  componentInputError,
+  componentTextLimit,
+} from '../utils/component-input'
 import { AgoraButton } from '@/components/ui/agora-button'
 import { ComponentStatusBadge } from '@/features/formulation/components/ComponentStatusBadge'
 import { BudgetWorkbookPanel } from '@/features/formulation/components/BudgetWorkbookPanel'
@@ -67,13 +72,26 @@ export function ComponentEditorPage() {
     approveComponent.isPending ||
     budgetWorkbookImporting
 
+  const contentError = componentInputError(content, component.type)
+  const contentLimit = componentTextLimit(component.type)
+
   const save = async () => {
-    await updateComponent.mutateAsync({ componentId, content })
+    if (contentError) return
+    try {
+      await updateComponent.mutateAsync({ componentId, content })
+    } catch {
+      // The mutation renders the controlled error; retain the editor content.
+    }
   }
 
   const approve = async () => {
-    if (dirty) await updateComponent.mutateAsync({ componentId, content })
-    await approveComponent.mutateAsync(componentId)
+    if (contentError) return
+    try {
+      if (dirty) await updateComponent.mutateAsync({ componentId, content })
+      await approveComponent.mutateAsync(componentId)
+    } catch {
+      // The mutation renders the controlled error; retain the editor content.
+    }
   }
 
   return (
@@ -102,8 +120,17 @@ export function ComponentEditorPage() {
             <div className="overflow-hidden rounded-2xl border border-[#dbe3f0] bg-white shadow-card">
               <div className="flex items-center justify-between border-b border-border bg-[#fbfcfe] px-5 py-3 text-xs font-bold text-muted-foreground">
                 <span>Contenido vigente</span>
-                <span>{content.length} caracteres</span>
+                {contentLimit ? (
+                  <TextLimitHint length={content.length} limit={contentLimit} />
+                ) : (
+                  <span>{content.length} caracteres</span>
+                )}
               </div>
+              {contentError ? (
+                <p role="alert" className="px-5 py-2 text-sm text-danger">
+                  {contentError}
+                </p>
+              ) : null}
               <label className="sr-only" htmlFor="component-content">
                 Contenido del componente
               </label>
@@ -116,6 +143,8 @@ export function ComponentEditorPage() {
               <textarea
                 ref={editorRef}
                 id="component-content"
+                maxLength={contentLimit}
+                aria-invalid={Boolean(contentError)}
                 className="min-h-[32rem] w-full resize-y border-0 bg-white p-6 text-[15px] leading-8 text-[#2d3c58] outline-none sm:p-8"
                 value={content}
                 disabled={busy}
@@ -162,14 +191,14 @@ export function ComponentEditorPage() {
                     </AgoraButton>
                     <AgoraButton
                       variant="secondary"
-                      disabled={!dirty || busy}
+                      disabled={!dirty || busy || Boolean(contentError)}
                       onClick={() => void save()}
                     >
                       <Save aria-hidden="true" size={16} />{' '}
                       {updateComponent.isPending ? 'Guardando…' : 'Guardar'}
                     </AgoraButton>
                     <AgoraButton
-                      disabled={busy || content.trim().length < 20}
+                      disabled={busy || Boolean(contentError)}
                       onClick={() => void approve()}
                     >
                       <ShieldCheck aria-hidden="true" size={16} />{' '}

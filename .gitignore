@@ -13,3 +13,8 @@ backend/.env
 *.log
 /output/
 /package-lock.json
+
+# Local visual review artifacts
+.taste-skill/
+
+.pnpm-store/

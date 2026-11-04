@@ -157,3 +157,78 @@ describe('AgentExecutorService', () => {
     expect(runInputs[2]).toContain('CORRECCIÓN OBLIGATORIA DE FORMATO')
   })
 })
+
+describe('research execution budget', () => {
+  const input = {
+    agent: 'research' as const,
+    context: {
+      expectedResults: 'Resultados',
+      initialScope: 'Alcance',
+      objectiveCount: 3,
+      projectDuration: '6 meses',
+      location: 'Bolívar',
+      problem: 'Problema',
+      proposedSolution: 'Solución',
+      targetPopulation: 'Población',
+    },
+    language: 'es' as const,
+    previousOutputs: {},
+    projectTitle: 'Proyecto',
+    safetyIdentifier: 'safe-user',
+  }
+  const makeService = () =>
+    new AgentExecutorService(
+      {
+        get: jest.fn((key: keyof Environment) =>
+          key === 'OPENAI_MODEL'
+            ? 'gpt-5.6-luna'
+            : key === 'OPENAI_API_KEY'
+              ? 'test-key'
+              : undefined,
+        ),
+      } as unknown as ConfigService<Environment, true>,
+      new PromptCatalogService(),
+    )
+
+  it('caps corrective research retries and passes the same deadline through evidence and writing', async () => {
+    mockRun.mockReset()
+    mockRun
+      .mockResolvedValueOnce({ finalOutput: 'Fuentes verificadas.' })
+      .mockRejectedValue(
+        new Error('Invalid final output: did not match the expected schema'),
+      )
+    await expect(makeService().execute(input)).rejects.toBeInstanceOf(
+      ServiceUnavailableException,
+    )
+    expect(mockRun).toHaveBeenCalledTimes(3)
+    const evidenceOptions = mockRun.mock.calls[0][2] as {
+      signal: AbortSignal
+      maxTurns: number
+    }
+    const writingOptions = mockRun.mock.calls[1][2] as {
+      signal: AbortSignal
+      maxTurns: number
+    }
+    expect(evidenceOptions.signal).toBeInstanceOf(AbortSignal)
+    expect(writingOptions.signal).toBe(evidenceOptions.signal)
+    expect(writingOptions.maxTurns).toBe(2)
+  })
+
+  it('returns a controlled timeout message without approving incomplete research', async () => {
+    mockRun.mockReset()
+    const controller = new AbortController()
+    controller.abort()
+    const timeout = jest
+      .spyOn(AbortSignal, 'timeout')
+      .mockReturnValue(controller.signal)
+    mockRun.mockRejectedValue(new Error('AbortError: internal request aborted'))
+    try {
+      await expect(makeService().execute(input)).rejects.toThrow(
+        'La investigación tardó más de lo esperado',
+      )
+      expect(mockRun).toHaveBeenCalledTimes(1)
+    } finally {
+      timeout.mockRestore()
+    }
+  })
+})

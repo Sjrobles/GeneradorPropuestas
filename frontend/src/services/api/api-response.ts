@@ -52,8 +52,19 @@ export async function apiErrorFromResponse(
           ? 'SERVER_UNAVAILABLE'
           : 'UNKNOWN'
 
+  const message =
+    response.status === 413 && !backendMessage
+      ? 'El contenido enviado es demasiado extenso. Resume los campos e inténtalo nuevamente.'
+      : response.status === 429
+        ? 'Hay muchas solicitudes. Espera un momento e inténtalo de nuevo.'
+        : response.status >= 500 &&
+            /TypeError|ZodError|Internal Server/i.test(backendMessage ?? '')
+          ? 'No pudimos completar esta operación. Tu información guardada se conserva. Intenta nuevamente.'
+          : /must be|must not|validation failed/i.test(backendMessage ?? '')
+            ? 'Revisa la extensión y el contenido de los campos antes de continuar.'
+            : backendMessage
   return new ApiClientError(
-    backendMessage || API_ERROR_MESSAGES[code],
+    message || API_ERROR_MESSAGES[code],
     code,
     response.status,
   )

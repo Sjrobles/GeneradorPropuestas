@@ -23,6 +23,8 @@ interface SkillCardProps {
 }
 
 export function SkillCard({ skill }: SkillCardProps) {
+  if (!skill.enabled) return null
+
   const Icon = icons[skill.icon ?? 'landmark'] ?? Landmark
 
   const content = (

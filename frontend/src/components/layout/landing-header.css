@@ -1,0 +1,195 @@
+/* Floating navigation requested by the user; scoped to the landing page. */
+.agora-floating-header {
+  --header-ink: #1f3268;
+  --header-accent: #2864ef;
+  --header-surface: #fff;
+  --header-hover: #eef2ff;
+  position: sticky;
+  top: 16px;
+  z-index: 40;
+  width: calc(100% - 48px);
+  max-width: 800px;
+  margin: 16px auto;
+  padding: 7px 9px 7px 18px;
+  border-radius: 32px;
+  background: var(--header-surface);
+  box-shadow:
+    0 8px 32px rgb(31 50 104 / 10%),
+    0 1px 3px rgb(31 50 104 / 5%);
+  color: var(--header-ink);
+}
+.agora-floating-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  min-height: 44px;
+}
+.agora-floating-header a {
+  text-decoration: none;
+}
+.agora-floating-header :is(a, button):focus-visible {
+  outline: 3px solid var(--header-accent);
+  outline-offset: 4px;
+}
+.agora-floating-header .agora-floating-bar > a {
+  flex-shrink: 0;
+}
+.agora-floating-nav {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.agora-floating-nav a {
+  padding: 10px 14px;
+  border-radius: 22px;
+  color: var(--header-ink);
+  font-size: 14px;
+  font-weight: 550;
+  transition:
+    background-color 0.2s,
+    color 0.2s;
+}
+.agora-floating-nav a:hover {
+  background: var(--header-hover);
+  color: var(--header-accent);
+}
+.agora-floating-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.agora-floating-header .agora-header-access {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 13px;
+  min-height: 44px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 24px;
+  background: var(--header-ink);
+  color: var(--header-surface);
+  font-size: 14px;
+  font-weight: 650;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background-color 0.2s,
+    transform 0.2s;
+}
+.agora-floating-header .agora-header-access:hover {
+  background: var(--header-accent);
+  transform: translateY(-1px);
+}
+.agora-floating-header .agora-header-access:active {
+  transform: translateY(1px);
+}
+.agora-header-menu {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  border: 0;
+  border-radius: 22px;
+  background: var(--header-hover);
+  color: var(--header-ink);
+  cursor: pointer;
+}
+.agora-floating-mobile {
+  padding: 12px 0 2px;
+}
+.agora-floating-mobile[hidden] {
+  display: none;
+}
+.agora-floating-mobile a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 44px;
+  padding: 10px 14px;
+  border-radius: 22px;
+  font-size: 16px;
+  font-weight: 550;
+  color: var(--header-ink);
+}
+.agora-floating-mobile a:hover {
+  background: var(--header-hover);
+}
+body:has(.agora-floating-header) :is(#producto, #como-funciona, #skills) {
+  scroll-margin-top: 112px;
+}
+@media (max-width: 767px) {
+  .agora-floating-header {
+    top: 10px;
+    width: calc(100% - 24px);
+    margin: 10px auto;
+    padding: 6px 8px 6px 13px;
+    border-radius: 29px;
+  }
+  .agora-floating-bar {
+    gap: 12px;
+  }
+  .agora-floating-nav {
+    display: none;
+  }
+  .agora-header-menu {
+    display: inline-flex;
+  }
+  .agora-floating-header .agora-header-access {
+    min-height: 44px;
+    padding: 0 13px;
+    font-size: 13px;
+    gap: 7px;
+  }
+  .agora-floating-header .agora-header-access svg {
+    display: none;
+  }
+  .agora-floating-header .agora-floating-bar > a {
+    gap: 8px;
+  }
+}
+@media (min-width: 768px) {
+  .agora-floating-mobile {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .agora-floating-header * {
+    transition: none !important;
+  }
+}
+
+/* Transparent blur softly masks content above the floating navigation on scroll. */
+.agora-header-scroll-fade {
+  position: fixed;
+  z-index: 39;
+  inset: 0 0 auto;
+  height: 96px;
+  pointer-events: none;
+  opacity: 0;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 28%, transparent 100%);
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    #000 0%,
+    #000 28%,
+    transparent 100%
+  );
+  transition: opacity 200ms ease;
+}
+.agora-header-scroll-fade.is-visible {
+  opacity: 1;
+}
+@media (max-width: 767px) {
+  .agora-header-scroll-fade {
+    height: 82px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .agora-header-scroll-fade {
+    transition: none;
+  }
+}

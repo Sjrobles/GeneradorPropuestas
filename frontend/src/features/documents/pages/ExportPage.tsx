@@ -1,9 +1,11 @@
+import '../styles/export-page.css'
 import {
   ArrowLeft,
   CheckCircle2,
   Download,
   FileText,
   FileType2,
+  LoaderCircle,
 } from 'lucide-react'
 import { useState } from 'react'
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router'
@@ -58,74 +60,83 @@ export function ExportPage() {
   }
 
   return (
-    <section className="min-h-[calc(100dvh-var(--header-height))] bg-[#f4f7fb] px-4 py-10 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-4xl">
-        <Link
-          className="inline-flex items-center gap-2 text-xs font-extrabold text-primary no-underline"
-          to={`/projects/${projectId}/document?language=${requestedLanguage}`}
-        >
-          <ArrowLeft aria-hidden="true" size={15} /> Volver a la vista previa
-        </Link>
-
-        <header className="mt-8 text-center">
-          <span className="mx-auto grid size-16 place-items-center rounded-2xl bg-primary text-white shadow-lg shadow-primary/20">
-            <Download aria-hidden="true" size={27} />
-          </span>
-          <h1 className="mt-5 font-serif text-4xl font-bold text-[#1e315f] sm:text-5xl">
+    <section className="agora-export-page min-h-[calc(100dvh-var(--header-height))] bg-[#f4f7fd] px-4 py-5 sm:px-6 lg:px-8">
+      <Link
+        className="agora-export-back inline-flex min-h-10 items-center gap-2 text-sm font-semibold text-primary no-underline"
+        to={`/projects/${projectId}/document?language=${requestedLanguage}`}
+      >
+        <ArrowLeft aria-hidden="true" size={15} /> Volver a la vista previa
+      </Link>
+      <div className="agora-export-content mx-auto w-full max-w-4xl">
+        <header className="agora-export-heading mt-5 text-center">
+          <h1 className="font-sans text-3xl font-bold tracking-tight text-[#1f3268] sm:text-4xl">
             Exporta tu borrador
           </h1>
-          <p className="mx-auto mt-4 max-w-2xl text-sm leading-6 text-muted-foreground">
-            Selecciona el formato que prefieras. Ambos archivos conservan la
-            jerarquía, numeración y estructura consolidada del proyecto.
+          <p className="mx-auto mt-3 max-w-xl text-sm leading-6 text-muted-foreground">
+            Tu proyecto, listo para compartir. Elige una versión editable o un
+            PDF para presentar.
           </p>
         </header>
 
-        <div className="mt-10 grid gap-5 sm:grid-cols-2">
-          <button
-            className="group rounded-2xl border border-[#dbe3f0] bg-white p-7 text-left shadow-card transition hover:-translate-y-1 hover:border-primary"
-            disabled={downloading !== null}
-            type="button"
-            onClick={() => void exportDocument('docx')}
-          >
+        <div className="agora-export-formats mt-6 grid gap-4 sm:grid-cols-2">
+          <article className="agora-export-format flex flex-col rounded-3xl border border-[#dbe3f0] bg-white p-5 sm:p-6">
             <span className="grid size-12 place-items-center rounded-xl bg-[#eaf1ff] text-primary">
               <FileType2 aria-hidden="true" size={23} />
             </span>
-            <h2 className="mt-5 text-xl font-extrabold text-[#20325e]">
-              Descargar DOCX
+            <h2 className="mt-3 text-xl font-semibold text-[#20325e]">
+              Word editable
             </h2>
             <p className="mt-2 text-sm leading-6 text-muted-foreground">
-              Versión editable para continuar el trabajo en un procesador de
-              texto.
+              Para editar y seguir trabajando en Word.
             </p>
-            <span className="mt-5 inline-flex items-center gap-2 text-xs font-extrabold text-primary">
-              <Download aria-hidden="true" size={15} />{' '}
+            <button
+              className="mt-4 inline-flex min-h-12 w-full items-center justify-center gap-3 rounded-xl bg-[#1f3268] px-5 text-base font-semibold text-white transition-colors hover:bg-[#2864ef] disabled:cursor-wait disabled:opacity-60"
+              disabled={downloading !== null}
+              type="button"
+              onClick={() => void exportDocument('docx')}
+            >
+              {downloading === 'docx' ? (
+                <LoaderCircle
+                  aria-hidden="true"
+                  className="animate-spin"
+                  size={20}
+                />
+              ) : (
+                <Download aria-hidden="true" size={20} />
+              )}
               {downloading === 'docx'
-                ? 'Generando DOCX…'
-                : 'Generar documento editable'}
-            </span>
-          </button>
-          <button
-            className="group rounded-2xl border border-[#dbe3f0] bg-white p-7 text-left shadow-card transition hover:-translate-y-1 hover:border-primary"
-            disabled={downloading !== null}
-            type="button"
-            onClick={() => void exportDocument('pdf')}
-          >
+                ? 'Preparando archivo…'
+                : 'Descargar Word (.docx)'}
+            </button>
+          </article>
+          <article className="agora-export-format flex flex-col rounded-3xl border border-[#dbe3f0] bg-white p-5 sm:p-6">
             <span className="grid size-12 place-items-center rounded-xl bg-[#fff0ec] text-[#d65b3f]">
               <FileText aria-hidden="true" size={23} />
             </span>
-            <h2 className="mt-5 text-xl font-extrabold text-[#20325e]">
-              Descargar PDF
+            <h2 className="mt-3 text-xl font-semibold text-[#20325e]">
+              Documento PDF
             </h2>
             <p className="mt-2 text-sm leading-6 text-muted-foreground">
-              Versión de lectura con la estructura consolidada del proyecto.
+              Para compartir o presentar tu documento.
             </p>
-            <span className="mt-5 inline-flex items-center gap-2 text-xs font-extrabold text-primary">
-              <Download aria-hidden="true" size={15} />{' '}
-              {downloading === 'pdf'
-                ? 'Generando PDF…'
-                : 'Generar PDF listo para presentar'}
-            </span>
-          </button>
+            <button
+              className="mt-4 inline-flex min-h-12 w-full items-center justify-center gap-3 rounded-xl bg-[#1f3268] px-5 text-base font-semibold text-white transition-colors hover:bg-[#2864ef] disabled:cursor-wait disabled:opacity-60"
+              disabled={downloading !== null}
+              type="button"
+              onClick={() => void exportDocument('pdf')}
+            >
+              {downloading === 'pdf' ? (
+                <LoaderCircle
+                  aria-hidden="true"
+                  className="animate-spin"
+                  size={20}
+                />
+              ) : (
+                <Download aria-hidden="true" size={20} />
+              )}
+              {downloading === 'pdf' ? 'Preparando archivo…' : 'Descargar PDF'}
+            </button>
+          </article>
         </div>
         {downloadError ? (
           <p
@@ -136,14 +147,15 @@ export function ExportPage() {
           </p>
         ) : null}
 
-        <div className="mt-7 flex flex-col items-center justify-between gap-4 rounded-2xl border border-[#dbe3f0] bg-white p-5 sm:flex-row">
+        <div className="agora-export-finish mt-4 flex flex-col items-center justify-between gap-4 rounded-2xl border border-[#dbe3f0] bg-white p-5 sm:flex-row">
           <p className="flex items-center gap-2 text-sm font-bold text-[#52617a]">
             <CheckCircle2
               aria-hidden="true"
               size={18}
               className="text-success"
             />{' '}
-            Documento listo en {document.language.toUpperCase()}
+            Documento listo en{' '}
+            {document.language === 'es' ? 'Español' : 'Inglés'}
           </p>
           <AgoraButton
             disabled={complete.isPending}

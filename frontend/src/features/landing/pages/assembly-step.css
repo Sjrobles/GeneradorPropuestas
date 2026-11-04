@@ -1,0 +1,433 @@
+.agora-context-step + #documento-ensamblado {
+  margin-top: 128px;
+  scroll-margin-top: 112px;
+}
+.agora-assembly-demo {
+  width: 100%;
+  max-width: 500px;
+  min-width: 0;
+  justify-self: end;
+  padding: 24px;
+  border-radius: 24px;
+  background: var(--how-surface);
+  color: var(--how-ink);
+}
+.agora-assembly-heading {
+  display: flex;
+  gap: 13px;
+  align-items: center;
+}
+.agora-assembly-icon {
+  width: 46px;
+  height: 46px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  background: var(--how-tint);
+  color: var(--how-blue);
+  border-radius: 14px;
+}
+.agora-assembly-heading h4 {
+  font-size: 19px;
+  font-weight: 700;
+  margin: 0 0 5px;
+}
+.agora-assembly-heading p {
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--how-copy);
+  margin: 0;
+}
+.agora-assembly-state {
+  display: grid;
+  margin: 25px 0 12px;
+  font-size: 13px;
+  font-weight: 650;
+}
+.agora-assembly-state > span {
+  grid-area: 1/1;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.agora-assembly-working {
+  color: var(--how-blue);
+}
+.agora-assembly-ready {
+  color: var(--how-green);
+}
+.agora-assembly-track {
+  height: 6px;
+  background: var(--how-tint);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.agora-assembly-track > span {
+  display: block;
+  height: 100%;
+  background: var(--how-blue);
+  border-radius: inherit;
+  transform-origin: left;
+}
+.agora-assembly-sections {
+  display: grid;
+  gap: 9px;
+  margin-top: 21px;
+}
+.agora-assembly-section {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 13px 14px;
+  background: var(--how-ground);
+  border-radius: 10px;
+  font-size: 13px;
+}
+.agora-assembly-section > svg:first-child {
+  color: var(--how-blue);
+  flex-shrink: 0;
+}
+.agora-assembly-section > svg:last-child {
+  margin-left: auto;
+  color: var(--how-green);
+  flex-shrink: 0;
+}
+.agora-assembly-document {
+  margin-top: 18px;
+  padding: 18px;
+  background: var(--how-tint);
+  border-radius: 12px;
+}
+.agora-assembly-document-title {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 13px;
+  font-weight: 650;
+  line-height: 1.5;
+}
+.agora-assembly-document-title svg {
+  color: var(--how-blue);
+  flex-shrink: 0;
+}
+.agora-assembly-document p {
+  margin: 10px 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--how-copy);
+}
+.agora-assembly-document-note {
+  font-size: 12px;
+  color: var(--how-green);
+}
+.agora-assembly-phases {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 20px;
+  font-size: 10px;
+  color: var(--how-copy);
+}
+.agora-assembly-phases > span:first-child {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.agora-assembly-demo:not(.is-assembling) .agora-assembly-working {
+  opacity: 0;
+}
+.is-assembling .agora-assembly-track > span {
+  animation: assembly-progress 12s ease-in-out infinite;
+}
+.is-assembling .agora-assembly-working {
+  animation: assembly-working 12s linear infinite;
+}
+.is-assembling .agora-assembly-working > svg {
+  animation: assembly-spin 1.5s linear infinite;
+}
+.is-assembling .agora-assembly-ready,
+.is-assembling .agora-assembly-document {
+  animation: assembly-complete 12s linear infinite;
+}
+.is-assembling .agora-assembly-section-0 > svg:last-child {
+  animation: assembly-check-one 12s linear infinite;
+}
+.is-assembling .agora-assembly-section-1 > svg:last-child {
+  animation: assembly-check-two 12s linear infinite;
+}
+.is-assembling .agora-assembly-section-2 > svg:last-child {
+  animation: assembly-check-three 12s linear infinite;
+}
+@keyframes assembly-progress {
+  0%,
+  5% {
+    transform: scaleX(0);
+  }
+  25% {
+    transform: scaleX(0.33);
+  }
+  45% {
+    transform: scaleX(0.66);
+  }
+  65%,
+  94% {
+    transform: scaleX(1);
+  }
+  100% {
+    transform: scaleX(0);
+  }
+}
+@keyframes assembly-working {
+  0%,
+  65% {
+    opacity: 1;
+  }
+  70%,
+  94% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes assembly-complete {
+  0%,
+  65% {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  70%,
+  94% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+}
+@keyframes assembly-check-one {
+  0%,
+  20%,
+  100% {
+    opacity: 0;
+  }
+  25%,
+  94% {
+    opacity: 1;
+  }
+}
+@keyframes assembly-check-two {
+  0%,
+  40%,
+  100% {
+    opacity: 0;
+  }
+  45%,
+  94% {
+    opacity: 1;
+  }
+}
+@keyframes assembly-check-three {
+  0%,
+  60%,
+  100% {
+    opacity: 0;
+  }
+  65%,
+  94% {
+    opacity: 1;
+  }
+}
+@keyframes assembly-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (max-width: 900px) {
+  .agora-assembly-demo {
+    padding: 20px;
+  }
+  .agora-assembly-heading h4 {
+    font-size: 18px;
+  }
+  .agora-assembly-phases {
+    font-size: 11px;
+  }
+}
+@media (max-width: 600px) {
+  .agora-context-step + #documento-ensamblado {
+    margin-top: 64px;
+  }
+  .agora-assembly-demo {
+    padding: 18px;
+    border-radius: 20px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .agora-assembly-demo * {
+    animation: none !important;
+  }
+  .agora-assembly-working {
+    opacity: 0 !important;
+  }
+  .agora-assembly-ready,
+  .agora-assembly-document,
+  .agora-assembly-section > svg:last-child {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .agora-assembly-track > span {
+    transform: scaleX(1) !important;
+  }
+}
+
+/* The completed document replaces the assembly view at the end of each cycle. */
+.agora-assembly-demo {
+  display: grid;
+}
+.agora-assembly-process,
+.agora-assembly-preview {
+  grid-area: 1 / 1;
+  min-width: 0;
+}
+.agora-assembly-preview {
+  background: var(--how-surface);
+}
+.agora-assembly-demo:not(.is-assembling) .agora-assembly-process {
+  opacity: 0;
+}
+.is-assembling .agora-assembly-process {
+  animation: assembly-process-view 12s linear infinite;
+}
+.is-assembling .agora-assembly-preview {
+  animation: assembly-document-view 12s linear infinite;
+}
+.agora-document-finished {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: #e5f7ed;
+  color: var(--how-green);
+  padding: 7px 11px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 650;
+}
+.agora-document-kind {
+  font-size: 11px;
+  font-weight: 650;
+  color: var(--how-blue);
+  line-height: 1.5;
+  margin: 19px 0 12px;
+}
+.agora-assembly-preview h4 {
+  font-family: var(--font-editorial);
+  font-size: 29px;
+  line-height: 1.13;
+  letter-spacing: -0.025em;
+  font-weight: 700;
+  margin: 0;
+}
+.agora-document-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 18px;
+}
+.agora-document-meta span {
+  padding: 5px 9px;
+  background: var(--how-ground);
+  border-radius: 20px;
+  font-size: 11px;
+  color: var(--how-copy);
+}
+.agora-document-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 24px 0 12px;
+}
+.agora-document-index {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  background: var(--how-tint);
+  color: var(--how-blue);
+  font-size: 13px;
+  font-weight: 700;
+}
+.agora-document-section h5 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+}
+.agora-document-paragraph {
+  margin: 0;
+  font-family: var(--font-editorial);
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--how-copy);
+}
+.agora-document-footer {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 22px;
+  color: var(--how-green);
+  font-size: 11px;
+  line-height: 1.5;
+}
+@keyframes assembly-process-view {
+  0%,
+  70% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  74%,
+  96% {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes assembly-document-view {
+  0%,
+  70% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  74%,
+  96% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+@media (max-width: 600px) {
+  .agora-assembly-preview h4 {
+    font-size: 27px;
+  }
+  .agora-document-paragraph {
+    font-size: 14px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .agora-assembly-demo .agora-assembly-process {
+    opacity: 0 !important;
+    transform: none !important;
+  }
+  .agora-assembly-demo .agora-assembly-preview {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

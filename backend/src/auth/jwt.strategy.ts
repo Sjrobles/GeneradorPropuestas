@@ -21,7 +21,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
   async validate(payload: JwtPayload): Promise<AuthenticatedUser> {
     const user = await this.usersService.findById(payload.sub)
-    if (!user) throw new UnauthorizedException('La sesión ya no es válida')
+    if (!user || (payload.version ?? 0) !== (user.sessionVersion ?? 0))
+      throw new UnauthorizedException('La sesión ya no es válida')
     return this.usersService.toResponse(user)
   }
 }

@@ -1,3 +1,4 @@
+import { PasswordRecoveryService } from './password-recovery.service'
 import { Module } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { JwtModule } from '@nestjs/jwt'
@@ -22,7 +23,7 @@ import { JwtStrategy } from './jwt.strategy'
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtAuthGuard, JwtStrategy],
+  providers: [PasswordRecoveryService, AuthService, JwtAuthGuard, JwtStrategy],
   exports: [JwtAuthGuard],
 })
 export class AuthModule {}

@@ -1,3 +1,4 @@
+import '@/features/projects/styles/project-library.css'
 import {
   AlertTriangle,
   ArrowRight,
@@ -7,7 +8,6 @@ import {
   FolderKanban,
   Plus,
   Search,
-  Sparkles,
 } from 'lucide-react'
 import { useMemo, useState, type ReactNode } from 'react'
 import { Link } from 'react-router'
@@ -55,7 +55,7 @@ export function MyProjectsPage() {
   }, [filter, projects, search])
 
   return (
-    <section className="min-h-[calc(100dvh-var(--header-height))] bg-[#f5f7fb]">
+    <section className="agora-library min-h-[calc(100dvh-var(--header-height))] bg-[#f5f7fb]">
       <div className="mx-auto max-w-(--content-width) px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
         <PageHeader
           eyebrow={userName ? `Espacio de ${userName}` : 'Biblioteca personal'}
@@ -182,9 +182,9 @@ export function MyProjectsPage() {
                 <div className="grid gap-8 p-7 sm:p-10 lg:grid-cols-[1fr_auto] lg:items-center">
                   <div>
                     <span className="grid size-12 place-items-center rounded-2xl bg-primary/10 text-primary">
-                      <Sparkles aria-hidden="true" size={23} />
+                      <FolderKanban aria-hidden="true" size={23} />
                     </span>
-                    <h2 className="mt-5 font-serif text-3xl font-bold text-[#20325e]">
+                    <h2 className="mt-5 font-sans text-3xl font-bold text-[#20325e]">
                       Aún no tienes proyectos guardados
                     </h2>
                     <p className="mt-3 max-w-2xl leading-7 text-muted-foreground">
@@ -237,7 +237,7 @@ function ProjectCard({ project }: { project: Project }) {
   const progress = Math.min(100, Math.max(0, project.progress))
 
   return (
-    <article className="flex min-h-72 flex-col rounded-2xl border border-[#dbe3f0] bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-[#b9c9e6] hover:shadow-md">
+    <article className="agora-library-card flex min-h-72 flex-col rounded-2xl border border-[#dbe3f0] bg-white p-5 shadow-sm transition hover:-translate-y-0.5 hover:border-[#b9c9e6] hover:shadow-md">
       <div className="flex items-start justify-between gap-3">
         <span className="grid size-11 place-items-center rounded-xl bg-[#eef3ff] text-primary">
           {completed ? (
@@ -283,7 +283,7 @@ function ProjectCard({ project }: { project: Project }) {
       </div>
 
       <Link
-        className="mt-auto inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-primary/25 bg-primary/5 px-4 text-sm font-extrabold text-primary no-underline transition hover:bg-primary hover:text-white"
+        className="mt-5 inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-primary/25 bg-primary/5 px-4 text-sm font-extrabold text-primary no-underline transition hover:bg-primary hover:text-white"
         to={getProjectResumePath(project)}
       >
         {completed

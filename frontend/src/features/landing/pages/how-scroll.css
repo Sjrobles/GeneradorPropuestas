@@ -1,0 +1,92 @@
+.agora-how-section {
+  position: relative;
+  isolation: isolate;
+  overflow: clip;
+}
+.agora-how-backdrop {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  fill: none;
+  stroke: #dce6f8;
+  stroke-width: 2;
+  translate: 0 var(--route-drift, 0px);
+  pointer-events: none;
+}
+.agora-how-route {
+  position: absolute;
+  top: var(--route-top, 400px);
+  left: max(16px, calc((100% - 1120px) / 2 - 34px));
+  height: var(--route-height, 60%);
+  width: 2px;
+  background: #dce5f4;
+  pointer-events: none;
+}
+.agora-how-route > span {
+  display: block;
+  height: 100%;
+  background: #2864ef;
+  transform-origin: top;
+  transform: scaleY(var(--route-progress, 0));
+}
+.agora-how-route::after {
+  content: '';
+  position: absolute;
+  top: calc(var(--route-progress, 0) * 100%);
+  left: -3px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #2864ef;
+}
+.agora-how-section .agora-context-step-number {
+  transition:
+    background-color 300ms ease,
+    color 300ms ease,
+    transform 300ms ease;
+}
+.agora-how-section .is-route-active .agora-context-step-number {
+  background: #bdeed0;
+  color: #126640;
+  transform: scale(1.07);
+}
+@media (max-width: 700px) {
+  .agora-how-route {
+    left: 8px;
+  }
+  .agora-how-backdrop {
+    opacity: 0.45;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .agora-how-backdrop {
+    translate: none;
+  }
+  .agora-how-section .agora-context-step-number {
+    transition: none;
+    transform: none;
+  }
+}
+
+/* Layered paper silhouettes and fine grain add depth without obscuring the steps. */
+.agora-how-depth {
+  position: absolute;
+  inset: -60px 0;
+  width: 100%;
+  height: calc(100% + 120px);
+  z-index: -2;
+  pointer-events: none;
+  translate: 0 calc(var(--route-drift, 0px) * -0.65);
+}
+@media (max-width: 700px) {
+  .agora-how-depth {
+    opacity: 0.65;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .agora-how-depth {
+    translate: none;
+  }
+}

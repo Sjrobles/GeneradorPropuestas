@@ -3,6 +3,7 @@ import { useEffect, useRef } from 'react'
 import { Link, Outlet, useLocation, useNavigate } from 'react-router'
 
 import { Brand } from '@/components/layout/Brand'
+import { LandingHeader } from '@/components/layout/LandingHeader'
 import { WorkspaceHeader } from '@/components/layout/WorkspaceHeader'
 import { backendEnabled } from '@/services/api/api-mode'
 import {
@@ -46,6 +47,8 @@ export function AppShell() {
       [/^\/skills$/, 'Skills'],
       [/^\/projects$/, 'Mis proyectos'],
       [/^\/auth$/, 'Acceso seguro'],
+      [/^\/auth\/forgot-password$/, 'Recuperar contraseña'],
+      [/^\/auth\/reset-password$/, 'Nueva contraseña'],
       [/^\/help$/, 'Centro de ayuda'],
       [/^\/route-map$/, 'Mapa de rutas'],
       [/\/projects\/new$/, 'Nuevo proyecto'],
@@ -89,7 +92,9 @@ export function AppShell() {
   }, [sessionExpired])
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div
+      className={`min-h-screen bg-background text-foreground${pathname === '/' ? ' agora-landing-shell' : ''}`}
+    >
       <a
         href="#main-content"
         className="fixed left-4 top-4 z-50 -translate-y-24 rounded-md bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition-transform focus:translate-y-0"
@@ -99,6 +104,8 @@ export function AppShell() {
 
       {isWorkspace ? (
         <WorkspaceHeader />
+      ) : pathname === '/' ? (
+        <LandingHeader signedIn={Boolean(authSession)} onLogout={logout} />
       ) : (
         <header className="sticky top-0 z-40 border-b border-border bg-card/95 backdrop-blur">
           <div className="mx-auto flex h-(--header-height) max-w-(--content-width) items-center justify-between gap-6 px-4 sm:px-6 lg:px-8">

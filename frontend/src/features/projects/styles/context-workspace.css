@@ -1,0 +1,66 @@
+/* The same typeface and colour roles as the Ágora landing. */
+.agora-context-workspace {
+  --primary: #2864ef;
+  --foreground: #1f3268;
+  --background: #f4f7fd;
+  --secondary: #e5edfc;
+  --secondary-foreground: #1f3268;
+  --muted-foreground: #52617c;
+  --border: #dce5f4;
+  font-family: var(--font-ui);
+  color: #1f3268;
+}
+.agora-context-workspace :is(h1, h2, h3, textarea, button, a) {
+  font-family: var(--font-ui);
+}
+.agora-context-workspace :is(h1, h2) {
+  letter-spacing: -0.035em;
+  line-height: 1.15;
+}
+.agora-context-workspace :is(button, a) {
+  font-weight: 650;
+}
+.agora-context-workspace textarea {
+  line-height: 1.75;
+  color: #253550;
+}
+.agora-context-workspace textarea:focus-visible {
+  outline: 2px solid #2864ef;
+  outline-offset: 2px;
+}
+.agora-context-workspace :is(a, button, summary):focus-visible {
+  outline: 3px solid #2864ef;
+  outline-offset: 4px;
+}
+.agora-context-chat aside {
+  border-radius: 24px;
+  box-shadow: none;
+}
+.agora-context-chat aside h3 {
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 12px;
+  color: #52617c;
+}
+.agora-context-chat form {
+  border-radius: 20px;
+}
+.agora-context-confirm .agora-context-header h1 {
+  max-width: 640px;
+  font-weight: 750;
+  letter-spacing: -0.045em;
+}
+.agora-context-confirm .agora-context-field {
+  display: block;
+  box-shadow: none;
+}
+.agora-context-confirm .agora-context-field textarea {
+  background: #f4f7fd;
+  border-radius: 12px;
+}
+@media (max-width: 640px) {
+  .agora-context-chat aside,
+  .agora-context-confirm .agora-context-field {
+    border-radius: 18px;
+  }
+}

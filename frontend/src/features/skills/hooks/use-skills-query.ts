@@ -7,6 +7,7 @@ export function useSkillsQuery() {
   return useQuery({
     queryKey: queryKeys.skills.all,
     queryFn: () => agoraApi.listSkills(),
+    select: (skills) => skills.filter((skill) => skill.enabled),
     staleTime: Number.POSITIVE_INFINITY,
   })
 }

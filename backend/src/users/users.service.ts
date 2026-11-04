@@ -71,6 +71,72 @@ export class UsersService {
     }
   }
 
+  issuePasswordReset(
+    email: string,
+    tokenHash: string,
+    expiresAt: Date,
+    now: Date,
+  ) {
+    return this.userModel
+      .findOneAndUpdate(
+        {
+          email,
+          $or: [
+            { passwordResetRequestedAt: { $exists: false } },
+            {
+              passwordResetRequestedAt: {
+                $lt: new Date(now.getTime() - 60_000),
+              },
+            },
+          ],
+        },
+        {
+          $set: {
+            passwordResetHash: tokenHash,
+            passwordResetExpiresAt: expiresAt,
+            passwordResetRequestedAt: now,
+          },
+        },
+        { new: true },
+      )
+      .exec()
+  }
+
+  clearPasswordReset(id: string, tokenHash: string) {
+    return this.userModel
+      .updateOne(
+        { _id: id, passwordResetHash: tokenHash },
+        { $unset: { passwordResetHash: 1, passwordResetExpiresAt: 1 } },
+      )
+      .exec()
+  }
+
+  async hasValidPasswordReset(tokenHash: string) {
+    return Boolean(
+      await this.userModel.exists({
+        passwordResetHash: tokenHash,
+        passwordResetExpiresAt: { $gt: new Date() },
+      }),
+    )
+  }
+
+  consumePasswordReset(tokenHash: string, passwordHash: string) {
+    return this.userModel
+      .findOneAndUpdate(
+        {
+          passwordResetHash: tokenHash,
+          passwordResetExpiresAt: { $gt: new Date() },
+        },
+        {
+          $set: { passwordHash },
+          $unset: { passwordResetHash: 1, passwordResetExpiresAt: 1 },
+          $inc: { sessionVersion: 1 },
+        },
+        { new: true },
+      )
+      .exec()
+  }
+
   findById(id: string): Promise<UserDocument | null> {
     return this.userModel.findById(id).exec()
   }

@@ -25,6 +25,18 @@ export class User {
   @Prop({ type: String, unique: true, sparse: true, select: false })
   googleSubject?: string
 
+  @Prop({ type: String, select: false, index: true })
+  passwordResetHash?: string
+
+  @Prop({ type: Date, select: false })
+  passwordResetExpiresAt?: Date
+
+  @Prop({ type: Date, select: false })
+  passwordResetRequestedAt?: Date
+
+  @Prop({ type: Number, default: 0 })
+  sessionVersion!: number
+
   createdAt!: Date
   updatedAt!: Date
 }

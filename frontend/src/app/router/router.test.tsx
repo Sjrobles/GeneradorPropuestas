@@ -40,7 +40,7 @@ describe('router', () => {
     ).toBeInTheDocument()
   })
 
-  it('shows enabled and upcoming skills', async () => {
+  it('shows only available skills', async () => {
     renderRoute('/skills')
 
     expect(
@@ -49,7 +49,10 @@ describe('router', () => {
       }),
     ).toBeInTheDocument()
     expect(screen.getByText('Disponible')).toBeInTheDocument()
-    expect(screen.getAllByText('Próximamente')).toHaveLength(3)
+    expect(screen.queryByText('Próximamente')).not.toBeInTheDocument()
+    expect(
+      screen.queryByRole('heading', { name: 'Innovación social' }),
+    ).not.toBeInTheDocument()
   })
 
   it('provides searchable contextual help for the current workflow', async () => {
@@ -103,6 +106,15 @@ describe('router', () => {
           title: 'Documento persistido de Samuel',
           updatedAt: now,
         },
+        {
+          createdAt: now,
+          id: 'in-progress',
+          progress: 20,
+          selectedSkillId: 'international-calls-banco-republica',
+          state: 'collecting_context',
+          title: 'Proyecto sin terminar',
+          updatedAt: now,
+        },
       ]),
     )
 
@@ -114,6 +126,9 @@ describe('router', () => {
     expect(
       await screen.findByRole('link', { name: 'Abrir documento' }),
     ).toHaveAttribute('href', '/projects/samuel-project/document')
+    expect(
+      await screen.findByRole('link', { name: 'Continuar proyecto' }),
+    ).toHaveAttribute('href', '/projects/in-progress/chat')
   })
 
   it('exposes the project library from the main navigation', async () => {
@@ -434,7 +449,9 @@ describe('router', () => {
     expect(
       screen.getByRole('link', { name: 'Ver original en español' }),
     ).toBeInTheDocument()
-    await user.click(screen.getByRole('link', { name: 'Exportar' }))
+    await user.click(
+      screen.getByRole('link', { name: 'Opciones de exportación' }),
+    )
     expect(
       await screen.findByRole('heading', { name: 'Exporta tu borrador' }),
     ).toBeInTheDocument()
@@ -491,12 +508,24 @@ describe('router', () => {
 
     expect(
       await screen.findByText(
-        'Para comenzar, ¿qué problema o necesidad quieres resolver con este proyecto?',
+        'Para comenzar, describe brevemente el problema o la necesidad que quieres resolver.',
       ),
     ).toBeInTheDocument()
 
+    await user.click(screen.getByText('Ver más: cómo responder'))
+    expect(
+      screen.getByText(/No necesitas plantear todavía toda la solución/),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByRole('textbox', { name: 'Tu respuesta' }),
+    ).toHaveAttribute('maxlength', '4000')
+
     await answer(
       'Baja articulación entre investigadores y comunidades rurales.',
+      '¿Cuál es el alcance inicial y qué quedará por fuera del proyecto?',
+    )
+    await answer(
+      'Un piloto de seis meses; no incluye el escalamiento nacional.',
       '¿A qué población, comunidad u organización está dirigido?',
     )
     await answer(
@@ -515,12 +544,22 @@ describe('router', () => {
       'Un banco de retos validado y tres pilotos de colaboración.',
       '¿Cuántos objetivos específicos quieres que tenga el proyecto? Indica un número exacto entre 2 y 5; Ágora generará exactamente esa cantidad.',
     )
-    await answer('3', '¿Cuál es el alcance inicial y qué quedaría por fuera?')
     await answer(
-      'Un piloto de seis meses; no incluye el escalamiento nacional.',
+      '3',
       'Para cerrar el contexto, ¿cuál es la duración total prevista del proyecto? Indícala en semanas o meses y menciona si existe una fecha límite.',
     )
     await answer('El proyecto tendrá una duración total de seis meses.')
+    await screen.findByRole('button', { name: 'Analizar contexto' })
+
+    expect(
+      screen.queryByRole('textbox', { name: 'Tu respuesta' }),
+    ).not.toBeInTheDocument()
+    expect(
+      screen.queryByRole('button', { name: 'Enviar respuesta' }),
+    ).not.toBeInTheDocument()
+    expect(
+      screen.getAllByRole('button', { name: 'Analizar contexto' }),
+    ).toHaveLength(1)
 
     await user.click(
       await screen.findByRole('button', { name: 'Analizar contexto' }),

@@ -346,3 +346,43 @@ describe('BackendAgoraApi', () => {
     ).rejects.toThrow('La skill no está disponible')
   })
 })
+
+describe('controlled API errors', () => {
+  afterEach(() => vi.unstubAllGlobals())
+  it('does not display backend internals after a server failure', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi
+        .fn()
+        .mockResolvedValue(
+          jsonResponse(
+            { message: 'TypeError: provider internal failure' },
+            500,
+          ),
+        ),
+    )
+    await expect(
+      new BackendAgoraApi('http://api.test/api/v1').listSkills(),
+    ).rejects.toThrow('Tu información guardada se conserva')
+  })
+  it('explains the action needed for English validation errors', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi
+        .fn()
+        .mockResolvedValue(
+          jsonResponse(
+            {
+              message: [
+                'content must be shorter than or equal to 4000 characters',
+              ],
+            },
+            400,
+          ),
+        ),
+    )
+    await expect(
+      new BackendAgoraApi('http://api.test/api/v1').listSkills(),
+    ).rejects.toThrow('Revisa la extensión')
+  })
+})

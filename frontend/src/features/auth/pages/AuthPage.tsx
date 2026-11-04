@@ -1,5 +1,5 @@
 import { useEffect, useState, type FormEvent } from 'react'
-import { useNavigate, useSearchParams } from 'react-router'
+import { Link, useNavigate, useSearchParams } from 'react-router'
 
 import { AgoraButton } from '@/components/ui/agora-button'
 import { backendEnabled } from '@/services/api/api-mode'
@@ -18,7 +18,9 @@ function safeReturnTo(value: string | null) {
 export function AuthPage() {
   const navigate = useNavigate()
   const [searchParams] = useSearchParams()
-  const [mode, setMode] = useState<AuthMode>('register')
+  const [mode, setMode] = useState<AuthMode>(
+    searchParams.get('mode') === 'login' ? 'login' : 'register',
+  )
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -186,6 +188,14 @@ export function AuthPage() {
                   onChange={(event) => setPassword(event.target.value)}
                 />
               </label>
+              {mode === 'login' ? (
+                <Link
+                  to="/auth/forgot-password"
+                  className="mt-3 inline-flex min-h-9 items-center text-sm font-semibold text-primary no-underline hover:underline"
+                >
+                  ¿Olvidaste tu contraseña?
+                </Link>
+              ) : null}
               <p className="mt-1.5 text-xs text-muted-foreground">
                 Mínimo 10 caracteres.
               </p>

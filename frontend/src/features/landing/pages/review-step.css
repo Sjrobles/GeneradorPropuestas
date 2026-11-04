@@ -1,0 +1,324 @@
+.agora-context-step + .agora-context-step {
+  margin-top: 100px;
+}
+.agora-review-demo {
+  min-width: 0;
+  width: 100%;
+  max-width: 500px;
+  justify-self: end;
+  padding: 22px;
+  background: var(--how-surface);
+  color: var(--how-ink);
+  border-radius: 24px;
+}
+.agora-review-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.agora-review-heading h4 {
+  font-family: var(--font-editorial);
+  font-size: 30px;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  margin: 0;
+}
+.agora-review-status {
+  display: grid;
+  font-size: 11px;
+  font-weight: 650;
+  min-width: 88px;
+}
+.agora-review-status > span {
+  grid-area: 1/1;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 9px;
+  border-radius: 20px;
+}
+.agora-review-pending {
+  background: var(--how-tint);
+  color: var(--how-blue);
+}
+.agora-review-approved {
+  background: #e5f7ed;
+  color: var(--how-green);
+}
+.agora-review-subtitle {
+  margin: 12px 0 19px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--how-copy);
+}
+.agora-review-editor {
+  border: 1px solid #e1e5ef;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.agora-review-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 10px 12px;
+  background: var(--how-ground);
+  color: var(--how-copy);
+  font-size: 11px;
+}
+.agora-review-toolbar > svg {
+  flex-shrink: 0;
+}
+.agora-review-ai {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-left: auto;
+  color: var(--how-blue);
+  white-space: nowrap;
+}
+.agora-review-document {
+  padding: 13px 15px;
+  font-size: 13px;
+  line-height: 1.65;
+}
+.agora-review-document p {
+  margin: 0;
+}
+.agora-review-document > p + div,
+.agora-review-document > div + p {
+  margin-top: 11px;
+}
+.agora-review-edit {
+  display: grid;
+}
+.agora-review-edit > p {
+  grid-area: 1/1;
+  align-self: start;
+}
+.agora-review-after {
+  background: #e5f7ed;
+  border-radius: 5px;
+}
+.agora-review-suggestion {
+  display: flex;
+  gap: 9px;
+  align-items: flex-start;
+  background: var(--how-tint);
+  border-radius: 10px;
+  padding: 11px 12px;
+  margin-top: 12px;
+  color: var(--how-blue);
+}
+.agora-review-suggestion > svg {
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+.agora-review-suggestion p {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.5;
+}
+.agora-review-suggestion strong,
+.agora-review-suggestion span {
+  display: block;
+}
+.agora-review-suggestion span {
+  margin-top: 3px;
+  color: var(--how-ink);
+}
+.agora-review-checks > p {
+  font-weight: 650;
+  font-size: 13px;
+  margin: 16px 0 8px;
+}
+.agora-review-checks > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  background: var(--how-ground);
+  border-radius: 8px;
+  margin-top: 6px;
+  padding: 9px 12px;
+  font-size: 12px;
+}
+.agora-review-checks svg {
+  color: var(--how-green);
+  flex-shrink: 0;
+}
+.agora-review-demo:not(.is-reviewing) .agora-review-pending,
+.agora-review-demo:not(.is-reviewing) .agora-review-before {
+  opacity: 0;
+}
+.is-reviewing .agora-review-pending,
+.is-reviewing .agora-review-before {
+  animation: review-original 10s linear infinite;
+}
+.is-reviewing .agora-review-after {
+  animation: review-revision 10s linear infinite;
+}
+.is-reviewing .agora-review-suggestion {
+  animation: review-suggestion 10s linear infinite;
+}
+.is-reviewing .agora-review-check-first {
+  animation: review-check-first 10s linear infinite;
+}
+.is-reviewing .agora-review-check-second,
+.is-reviewing .agora-review-approved {
+  animation: review-approval 10s linear infinite;
+}
+@keyframes review-original {
+  0%,
+  35% {
+    opacity: 1;
+  }
+  42%,
+  94% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes review-revision {
+  0%,
+  35% {
+    opacity: 0;
+  }
+  42%,
+  94% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes review-suggestion {
+  0%,
+  12% {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+  18%,
+  94% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(5px);
+  }
+}
+@keyframes review-check-first {
+  0%,
+  48% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  54%,
+  94% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+}
+@keyframes review-approval {
+  0%,
+  62% {
+    opacity: 0;
+  }
+  68%,
+  94% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@media (max-width: 900px) {
+  .agora-review-demo {
+    padding: 18px;
+  }
+  .agora-review-toolbar {
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .agora-review-heading h4 {
+    font-size: 27px;
+  }
+  .agora-review-ai {
+    margin-left: 0;
+  }
+}
+@media (max-width: 600px) {
+  .agora-context-step + .agora-context-step {
+    margin-top: 64px;
+  }
+  .agora-review-demo {
+    border-radius: 20px;
+  }
+  .agora-review-heading h4 {
+    font-size: 28px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .agora-review-demo * {
+    animation: none !important;
+  }
+  .agora-review-pending,
+  .agora-review-before {
+    opacity: 0 !important;
+  }
+  .agora-review-after,
+  .agora-review-approved,
+  .agora-review-suggestion,
+  .agora-review-checks svg {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+.is-reviewing .agora-review-pending {
+  animation: review-pending 10s linear infinite;
+}
+@keyframes review-pending {
+  0%,
+  62% {
+    opacity: 1;
+  }
+  68%,
+  94% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+#revisa-borrador {
+  scroll-margin-top: 112px;
+}
+
+@media (min-width: 601px) {
+  #revisa-borrador .agora-review-demo {
+    grid-column: 1;
+    grid-row: 1;
+    justify-self: start;
+  }
+  #revisa-borrador .agora-context-copy {
+    grid-column: 2;
+    grid-row: 1;
+  }
+}
+
+@media (min-width: 901px) {
+  .agora-context-step + #revisa-borrador {
+    margin-top: 128px;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap: 100px;
+  }
+}

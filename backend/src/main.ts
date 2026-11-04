@@ -1,8 +1,10 @@
 import { Logger, ValidationPipe } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
+import type { NestExpressApplication } from '@nestjs/platform-express'
 import { NestFactory } from '@nestjs/core'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'
 import helmet from 'helmet'
+import { validationException } from './common/validation-errors'
 import { AppModule } from './app.module'
 import type { Environment } from './config/environment'
 import { RequestLoggingInterceptor } from './common/interceptors/request-logging.interceptor'
@@ -11,7 +13,11 @@ import { InfrastructureExceptionFilter } from './common/filters/infrastructure-e
 async function bootstrap() {
   const startedAt = performance.now()
   const logger = new Logger('Bootstrap')
-  const app = await NestFactory.create(AppModule, { cors: false })
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
+    cors: false,
+    bodyParser: false,
+  })
+  app.useBodyParser('json', { limit: '1mb' })
   const config = app.get(ConfigService<Environment, true>)
   const frontendOrigins = config
     .get('FRONTEND_ORIGIN', { infer: true })
@@ -29,6 +35,7 @@ async function bootstrap() {
   app.useGlobalPipes(
     new ValidationPipe({
       forbidNonWhitelisted: true,
+      exceptionFactory: validationException,
       transform: true,
       whitelist: true,
     }),

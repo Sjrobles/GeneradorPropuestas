@@ -1,3 +1,4 @@
+import '../styles/review-workspace.css'
 import {
   ArrowRight,
   Check,
@@ -11,8 +12,7 @@ import {
   RotateCcw,
   Save,
   ShieldCheck,
-  Sparkles,
-  WandSparkles,
+  Lightbulb,
   X,
 } from 'lucide-react'
 import { useMemo, useRef, useState } from 'react'
@@ -20,6 +20,11 @@ import { Link, useParams } from 'react-router'
 
 import { ErrorState } from '@/components/feedback/ErrorState'
 import { LoadingState } from '@/components/feedback/LoadingState'
+import { TextLimitHint } from '@/components/forms/TextLimitHint'
+import {
+  componentInputError,
+  componentTextLimit,
+} from '../utils/component-input'
 import { AgoraButton } from '@/components/ui/agora-button'
 import { ComponentStatusBadge } from '@/features/formulation/components/ComponentStatusBadge'
 import { BudgetWorkbookPanel } from '@/features/formulation/components/BudgetWorkbookPanel'
@@ -139,23 +144,36 @@ export function ReviewWorkspacePage() {
     }))
   }
 
-  const save = async () => {
-    await updateComponent.mutateAsync({
-      componentId: activeComponent.id,
-      content,
-    })
-  }
+  const contentError = componentInputError(content, activeComponent.type)
+  const contentLimit = componentTextLimit(activeComponent.type)
 
-  const approve = async () => {
-    if (dirty) {
+  const save = async () => {
+    if (contentError) return
+    try {
       await updateComponent.mutateAsync({
         componentId: activeComponent.id,
         content,
       })
+    } catch {
+      // The mutation renders the controlled error; retain the editor content.
     }
-    await approveComponent.mutateAsync(activeComponent.id)
-    const nextComponent = orderedComponents[activeIndex + 1]
-    if (nextComponent) setSelectedId(nextComponent.id)
+  }
+
+  const approve = async () => {
+    if (contentError) return
+    try {
+      if (dirty) {
+        await updateComponent.mutateAsync({
+          componentId: activeComponent.id,
+          content,
+        })
+      }
+      await approveComponent.mutateAsync(activeComponent.id)
+      const nextComponent = orderedComponents[activeIndex + 1]
+      if (nextComponent) setSelectedId(nextComponent.id)
+    } catch {
+      // The mutation renders the controlled error; retain the editor content.
+    }
   }
 
   const regenerate = async () => {
@@ -230,7 +248,7 @@ export function ReviewWorkspacePage() {
   }
 
   return (
-    <section className="min-h-[calc(100dvh-var(--header-height))] bg-[#f4f7fb] pb-56 sm:pb-24">
+    <section className="agora-review-workspace min-h-[calc(100dvh-var(--header-height))] bg-[#f4f7fd] pb-56 sm:pb-24">
       <h1 className="sr-only">Workspace de revisión</h1>
       <div className="mx-auto max-w-[1440px] px-4 py-5 sm:px-6 lg:px-8">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -247,7 +265,7 @@ export function ReviewWorkspacePage() {
             <strong className="text-[#20325e]">Revisión del proyecto</strong>
           </nav>
           <Link
-            className="inline-flex min-h-10 items-center justify-center gap-2 rounded-xl border border-[#dbe3f0] bg-white px-4 text-xs font-extrabold text-[#20325e] no-underline shadow-sm transition hover:border-primary hover:text-primary"
+            className="inline-flex min-h-10 items-center justify-center gap-2 rounded-xl border border-[#dbe3f0] bg-white px-4 text-xs font-semibold text-[#20325e] no-underline shadow-sm transition hover:border-primary hover:text-primary"
             to={`/projects/${projectId}/document`}
           >
             Ver vista previa del proyecto
@@ -257,8 +275,8 @@ export function ReviewWorkspacePage() {
 
         <div className="mt-4 grid items-start gap-5 xl:grid-cols-[280px_minmax(0,1fr)_320px]">
           <aside className="space-y-4 xl:sticky xl:top-[calc(var(--header-height)+1.25rem)]">
-            <div className="rounded-2xl border border-[#dfe2cb] bg-white p-4 shadow-sm">
-              <h2 className="px-1 text-base font-extrabold text-[#20325e]">
+            <div className="rounded-2xl border border-[#dce5f4] bg-white p-4 shadow-sm">
+              <h2 className="px-1 text-base font-semibold text-[#20325e]">
                 Componentes del proyecto
               </h2>
               <div className="mt-3 space-y-1">
@@ -280,7 +298,7 @@ export function ReviewWorkspacePage() {
                       onClick={() => setSelectedId(component.id)}
                     >
                       <span
-                        className={`grid size-8 shrink-0 place-items-center rounded-full text-xs font-extrabold transition-all duration-500 ${
+                        className={`grid size-8 shrink-0 place-items-center rounded-full text-xs font-semibold transition-all duration-500 ${
                           componentApproved
                             ? 'agora-component-approved bg-white text-[#159d6e] ring-2 ring-inset ring-[#18ad78] shadow-[0_6px_16px_rgba(24,173,120,0.14)]'
                             : 'bg-[#f0f3f8] text-[#65738a] ring-1 ring-inset ring-[#dce2eb]'
@@ -296,7 +314,7 @@ export function ReviewWorkspacePage() {
                   )
                 })}
               </div>
-              <div className="mt-4 flex flex-wrap gap-x-3 gap-y-2 border-t border-[#e3e5d4] px-1 pt-4 text-[11px] text-[#6d7890]">
+              <div className="mt-4 flex flex-wrap gap-x-3 gap-y-2 border-t border-[#dce5f4] px-1 pt-4 text-[11px] text-[#6d7890]">
                 <span className="flex items-center gap-1.5">
                   <i className="size-2 rounded-full bg-[#238260]" /> Generado
                 </span>
@@ -312,21 +330,21 @@ export function ReviewWorkspacePage() {
               </div>
             </div>
 
-            <div className="rounded-2xl border border-[#dfe2cb] bg-white p-5 shadow-sm">
+            <div className="rounded-2xl border border-[#dce5f4] bg-white p-5 shadow-sm">
               <div className="flex items-center gap-2 text-[#20325e]">
                 <ShieldCheck
                   aria-hidden="true"
                   size={18}
                   className="text-primary"
                 />
-                <h2 className="text-sm font-extrabold">Formulación segura</h2>
+                <h2 className="text-sm font-semibold">Formulación segura</h2>
               </div>
               <p className="mt-3 text-xs leading-5 text-[#66738a]">
                 Completa y aprueba todos los componentes para enviar tu
                 proyecto.
               </p>
               <Link
-                className="mt-3 inline-flex items-center gap-1 text-xs font-extrabold text-primary"
+                className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-primary"
                 to={`/help?from=${encodeURIComponent(`/projects/${projectId}/review`)}&topic=review`}
               >
                 Ver guía de formulación{' '}
@@ -335,9 +353,9 @@ export function ReviewWorkspacePage() {
             </div>
           </aside>
 
-          <main className="min-w-0 rounded-2xl border border-[#dfe2cb] bg-white p-5 shadow-sm sm:p-7 lg:p-8">
+          <main className="min-w-0 rounded-2xl border border-[#dce5f4] bg-white p-5 shadow-sm sm:p-7 lg:p-8">
             <div className="flex flex-wrap items-center gap-3">
-              <h2 className="font-serif text-3xl font-bold text-[#1d2f5c] sm:text-4xl">
+              <h2 className="agora-review-title text-3xl font-bold text-[#1f3268] sm:text-4xl">
                 {definition.label}
               </h2>
               <ComponentStatusBadge status={activeComponent.status} />
@@ -347,7 +365,7 @@ export function ReviewWorkspacePage() {
               medible y consistente con el contexto confirmado.
             </p>
 
-            <div className="mt-6 overflow-hidden rounded-xl border border-[#dfe2cb]">
+            <div className="mt-6 overflow-hidden rounded-xl border border-[#dce5f4]">
               <EditorToolbar
                 disabled={busy}
                 onChange={setContent}
@@ -355,7 +373,7 @@ export function ReviewWorkspacePage() {
                 value={content}
                 trailing={
                   <button
-                    className="ml-auto inline-flex min-h-9 items-center gap-2 rounded-lg bg-[#eaf1ff] px-3 text-xs font-extrabold text-primary transition hover:bg-[#dce8ff] disabled:opacity-50"
+                    className="ml-auto inline-flex min-h-9 items-center gap-2 rounded-lg bg-[#eaf1ff] px-3 text-xs font-semibold text-primary transition hover:bg-[#dce8ff] disabled:opacity-50"
                     type="button"
                     disabled={busy}
                     onClick={() =>
@@ -365,10 +383,20 @@ export function ReviewWorkspacePage() {
                       }))
                     }
                   >
-                    <WandSparkles aria-hidden="true" size={16} /> Sugerir por IA
+                    <PencilLine aria-hidden="true" size={16} /> Sugerir por IA
                   </button>
                 }
               />
+              {contentLimit ? (
+                <div className="px-5 py-2">
+                  <TextLimitHint length={content.length} limit={contentLimit} />
+                </div>
+              ) : null}
+              {contentError ? (
+                <p role="alert" className="px-5 py-2 text-sm text-danger">
+                  {contentError}
+                </p>
+              ) : null}
               <label className="sr-only" htmlFor="review-component-content">
                 Contenido del componente
               </label>
@@ -376,6 +404,8 @@ export function ReviewWorkspacePage() {
                 ref={editorRef}
                 id="review-component-content"
                 className="min-h-56 w-full resize-y border-0 bg-white px-5 py-5 text-[15px] leading-7 text-[#25324b] outline-none disabled:bg-[#fafbfc]"
+                maxLength={contentLimit}
+                aria-invalid={Boolean(contentError)}
                 value={content}
                 disabled={busy}
                 onChange={(event) => setContent(event.target.value)}
@@ -484,13 +514,13 @@ export function ReviewWorkspacePage() {
             {showSuggestion ? (
               <section className="mt-5 rounded-2xl border-2 border-primary bg-[#eaf2ff] p-5">
                 <div className="flex items-start gap-3">
-                  <Sparkles
+                  <Lightbulb
                     className="mt-0.5 shrink-0 text-primary"
                     aria-hidden="true"
                     size={19}
                   />
                   <div className="min-w-0 flex-1">
-                    <h2 className="text-sm font-extrabold text-primary">
+                    <h2 className="text-sm font-semibold text-primary">
                       Sugerencia de mejora (IA)
                     </h2>
                     <p className="mt-3 text-sm leading-6 text-[#53627a]">
@@ -513,7 +543,7 @@ export function ReviewWorkspacePage() {
                 </div>
                 <div className="mt-4 flex justify-end gap-2">
                   <button
-                    className="min-h-10 rounded-lg px-4 text-xs font-extrabold text-[#53627a]"
+                    className="min-h-10 rounded-lg px-4 text-xs font-semibold text-[#53627a]"
                     type="button"
                     onClick={() =>
                       setDismissedSuggestions((current) => ({
@@ -525,7 +555,7 @@ export function ReviewWorkspacePage() {
                     Omitir
                   </button>
                   <button
-                    className="min-h-10 rounded-lg bg-primary px-4 text-xs font-extrabold text-white shadow-sm"
+                    className="min-h-10 rounded-lg bg-primary px-4 text-xs font-semibold text-white shadow-sm"
                     type="button"
                     onClick={applySuggestion}
                   >
@@ -536,7 +566,7 @@ export function ReviewWorkspacePage() {
             ) : null}
 
             <section className="mt-6">
-              <h2 className="text-sm font-extrabold text-[#20325e]">
+              <h2 className="text-sm font-semibold text-[#20325e]">
                 Criterios que debe cumplir:
               </h2>
               <ul className="mt-3 space-y-2">
@@ -559,18 +589,17 @@ export function ReviewWorkspacePage() {
           </main>
 
           <aside className="space-y-4 xl:sticky xl:top-[calc(var(--header-height)+1.25rem)]">
-            <section className="relative overflow-hidden rounded-3xl border border-[#d9e3f2] bg-[linear-gradient(145deg,#ffffff_0%,#f5f8ff_100%)] p-5 shadow-[0_16px_38px_rgba(30,49,95,0.09)]">
-              <div className="absolute -right-10 -top-12 size-36 rounded-full bg-primary/5 blur-2xl" />
+            <section className="agora-review-summary relative overflow-hidden rounded-3xl border border-[#dce5f4] bg-white p-5">
               <div className="relative flex items-center justify-between gap-3">
                 <div>
-                  <p className="text-[10px] font-extrabold uppercase tracking-[0.16em] text-primary">
+                  <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-primary">
                     Progreso de revisión
                   </p>
-                  <h2 className="mt-1 text-lg font-extrabold text-[#20325e]">
+                  <h2 className="mt-1 text-lg font-semibold text-[#20325e]">
                     Estado del proyecto
                   </h2>
                 </div>
-                <span className="rounded-full bg-[#e8efff] px-3 py-1.5 text-xs font-extrabold text-primary">
+                <span className="rounded-full bg-[#e8efff] px-3 py-1.5 text-xs font-semibold text-primary">
                   {reviewedPercentage}%
                 </span>
               </div>
@@ -595,17 +624,20 @@ export function ReviewWorkspacePage() {
                   >
                     <div className="grid size-full place-items-center rounded-full bg-white text-center shadow-[inset_0_0_0_1px_rgba(219,227,240,0.8)]">
                       <span className="agora-review-count flex flex-col items-center justify-center">
-                        <strong className="block text-3xl font-extrabold leading-none text-[#17213f]">
+                        <strong className="block text-3xl font-semibold leading-none text-[#17213f]">
                           {reviewed}
                         </strong>
                         <small className="mt-1.5 block text-[10px] font-bold leading-[1.35] text-[#8b98ad]">
-                          de {totalComponents} revisados
+                          revisados
                         </small>
                       </span>
                     </div>
                   </div>
+                  <p className="mt-2 text-center text-xs font-semibold text-[#5f6d84]">
+                    {totalComponents} componentes
+                  </p>
                   <span
-                    className={`rounded-full px-2.5 py-1 text-[10px] font-extrabold ${
+                    className={`rounded-full px-2.5 py-1 text-[10px] font-semibold ${
                       pending > 0
                         ? 'bg-[#fff1d2] text-[#b86d00]'
                         : 'bg-[#e7f8ee] text-[#15855e]'
@@ -622,7 +654,7 @@ export function ReviewWorkspacePage() {
                       <i className="size-2 rounded-full bg-[#18b27c]" />{' '}
                       Aprobado
                     </dt>
-                    <dd className="mt-1 text-lg font-extrabold text-[#17213f]">
+                    <dd className="mt-1 text-lg font-semibold text-[#17213f]">
                       {approved}
                     </dd>
                   </div>
@@ -631,7 +663,7 @@ export function ReviewWorkspacePage() {
                       <i className="size-2 rounded-full bg-[#3f7af1]" />{' '}
                       Modificado
                     </dt>
-                    <dd className="mt-1 text-lg font-extrabold text-[#17213f]">
+                    <dd className="mt-1 text-lg font-semibold text-[#17213f]">
                       {modified}
                     </dd>
                   </div>
@@ -640,22 +672,14 @@ export function ReviewWorkspacePage() {
                       <i className="size-2 rounded-full bg-[#f2a20b]" /> Por
                       revisar
                     </dt>
-                    <dd className="mt-1 text-lg font-extrabold text-[#17213f]">
+                    <dd className="mt-1 text-lg font-semibold text-[#17213f]">
                       {pending}
                     </dd>
                   </div>
                 </dl>
               </div>
-              <div className="relative mt-5 border-t border-[#dbe3f0] pt-4">
-                {approved === orderedComponents.length ? (
-                  <Link
-                    className="agora-assembly-ready flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-[linear-gradient(100deg,#1e315f,#3862e8)] px-4 text-sm font-extrabold text-white no-underline shadow-lg shadow-primary/20"
-                    to={`/projects/${projectId}/document/assemble`}
-                  >
-                    Continuar al ensamblaje{' '}
-                    <ArrowRight aria-hidden="true" size={17} />
-                  </Link>
-                ) : (
+              {approved < orderedComponents.length ? (
+                <div className="relative mt-5 border-t border-[#dbe3f0] pt-4">
                   <div className="flex min-h-12 items-center gap-3 rounded-xl border border-[#e1e6ef] bg-[#f5f7fa] px-4 text-xs font-bold text-[#7a879b]">
                     <span className="grid size-8 shrink-0 place-items-center rounded-lg bg-white text-[#9aa6b8] shadow-sm">
                       <LockKeyhole aria-hidden="true" size={15} />
@@ -665,12 +689,12 @@ export function ReviewWorkspacePage() {
                       componentes restantes para ensamblar.
                     </span>
                   </div>
-                )}
-              </div>
+                </div>
+              ) : null}
             </section>
 
-            <section className="rounded-2xl border border-[#dfe2cb] bg-white p-5 shadow-sm">
-              <h2 className="text-base font-extrabold text-[#20325e]">
+            <section className="rounded-2xl border border-[#dce5f4] bg-white p-5 shadow-sm">
+              <h2 className="text-base font-semibold text-[#20325e]">
                 Validaciones automáticas
               </h2>
               <div className="mt-3 divide-y divide-[#e3e5d4]">
@@ -680,7 +704,7 @@ export function ReviewWorkspacePage() {
                       <Check aria-hidden="true" size={13} strokeWidth={3} />
                     </span>
                     <div>
-                      <h3 className="text-xs font-extrabold text-[#25324b]">
+                      <h3 className="text-xs font-semibold text-[#25324b]">
                         {criterion}
                       </h3>
                       <p className="mt-1 text-[11px] leading-4 text-[#6d7990]">
@@ -691,11 +715,11 @@ export function ReviewWorkspacePage() {
                   </div>
                 ))}
                 <div className="flex gap-3 py-3">
-                  <span className="mt-0.5 grid size-5 shrink-0 place-items-center rounded-full bg-[#fff3d8] font-extrabold text-[#eaa00a]">
+                  <span className="mt-0.5 grid size-5 shrink-0 place-items-center rounded-full bg-[#fff3d8] font-semibold text-[#eaa00a]">
                     !
                   </span>
                   <div>
-                    <h3 className="text-xs font-extrabold text-[#25324b]">
+                    <h3 className="text-xs font-semibold text-[#25324b]">
                       Sugerencia de mejora
                     </h3>
                     <p className="mt-1 text-[11px] leading-4 text-[#6d7990]">
@@ -704,22 +728,16 @@ export function ReviewWorkspacePage() {
                   </div>
                 </div>
               </div>
-              <button
-                className="mt-2 inline-flex items-center gap-2 text-xs font-extrabold text-primary"
-                type="button"
-              >
-                Ver detalle <ArrowRight aria-hidden="true" size={14} />
-              </button>
             </section>
 
-            <section className="rounded-2xl border border-[#dfe2cb] bg-white p-5 shadow-sm">
+            <section className="rounded-2xl border border-[#dce5f4] bg-white p-5 shadow-sm">
               <div className="flex items-center gap-2">
                 <History
                   aria-hidden="true"
                   size={17}
                   className="text-[#20325e]"
                 />
-                <h2 className="text-base font-extrabold text-[#20325e]">
+                <h2 className="text-base font-semibold text-[#20325e]">
                   Historial de cambios
                 </h2>
               </div>
@@ -727,7 +745,7 @@ export function ReviewWorkspacePage() {
                 <li className="relative">
                   <i className="absolute -left-[21px] top-1 size-2.5 rounded-full bg-primary ring-4 ring-white" />
                   <strong className="text-[#35425b]">
-                    Hoy · Revisión humana
+                    Hoy · Revisión por el usuario
                   </strong>
                   <p className="mt-1 text-[#8a97ab]">
                     {dirty
@@ -748,7 +766,7 @@ export function ReviewWorkspacePage() {
         </div>
       </div>
 
-      <footer className="fixed inset-x-0 bottom-0 z-30 border-t border-[#dbe3f0] bg-white/95 px-4 py-3 shadow-[0_-8px_24px_rgba(30,49,95,0.08)] backdrop-blur sm:px-6 lg:px-8">
+      <footer className="agora-review-footer fixed inset-x-0 bottom-0 z-30 border-t border-[#dbe3f0] bg-white px-4 py-3 shadow-[0_-8px_24px_rgba(30,49,95,0.08)] sm:px-6 lg:px-8">
         <div className="mx-auto flex max-w-[1440px] flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <p className="flex items-center gap-2 text-xs text-[#758299]">
             <CheckCircle2
@@ -762,7 +780,7 @@ export function ReviewWorkspacePage() {
           </p>
           {approved === orderedComponents.length && !dirty ? (
             <Link
-              className="agora-assembly-ready inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-[linear-gradient(100deg,#1e315f,#3862e8)] px-6 text-sm font-extrabold text-white no-underline shadow-lg shadow-primary/20"
+              className="inline-flex min-h-14 items-center justify-center gap-3 rounded-xl bg-[#1f3268] px-7 text-base font-bold !text-white no-underline transition-colors hover:bg-[#2864ef] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary"
               to={`/projects/${projectId}/document/assemble`}
             >
               Ensamblar documento <ArrowRight aria-hidden="true" size={17} />
@@ -780,7 +798,7 @@ export function ReviewWorkspacePage() {
                   : `Regenerar fragmento (${fragmentRegenerationsRemaining} disponibles)`}
               </AgoraButton>
               <AgoraButton
-                disabled={!dirty || busy}
+                disabled={!dirty || busy || Boolean(contentError)}
                 onClick={() => void save()}
               >
                 <Save aria-hidden="true" size={16} />
@@ -788,7 +806,7 @@ export function ReviewWorkspacePage() {
               </AgoraButton>
               <AgoraButton
                 className="bg-[#1e315f] hover:bg-[#16264d]"
-                disabled={busy || content.trim().length < 20}
+                disabled={busy || Boolean(contentError)}
                 onClick={() => void approve()}
               >
                 <ShieldCheck aria-hidden="true" size={16} />

@@ -1,0 +1,64 @@
+.agora-library {
+  --primary: #2864ef;
+  color: #1f3268;
+  background: #f4f7fd;
+  font-family: var(--font-ui);
+}
+
+.agora-library header {
+  animation: library-arrive 480ms ease-out both;
+}
+
+.agora-library header h1 {
+  font-family: var(--font-ui);
+  font-weight: 750;
+  letter-spacing: -0.045em;
+  text-wrap: balance;
+}
+
+.agora-library-card {
+  border-radius: 24px;
+  box-shadow: none;
+  animation: library-arrive 520ms ease-out both;
+}
+
+.agora-library-card:nth-child(3n + 2) {
+  animation-delay: 70ms;
+}
+.agora-library-card:nth-child(3n + 3) {
+  animation-delay: 140ms;
+}
+
+.agora-library-card a svg {
+  transition: transform 200ms ease;
+}
+
+.agora-library-card a:is(:hover, :focus-visible) svg {
+  transform: translateX(4px);
+}
+
+@keyframes library-arrive {
+  from {
+    opacity: 0;
+    translate: 0 12px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .agora-library header,
+  .agora-library-card {
+    animation: none;
+  }
+  .agora-library-card,
+  .agora-library-card a svg {
+    transition: none;
+  }
+  .agora-library-card:hover,
+  .agora-library-card a:is(:hover, :focus-visible) svg {
+    transform: none;
+  }
+}

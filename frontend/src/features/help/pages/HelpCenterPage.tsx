@@ -8,7 +8,7 @@ import {
   Lightbulb,
   Search,
   Settings2,
-  Sparkles,
+  Workflow,
   WalletCards,
 } from 'lucide-react'
 import { useMemo, useState } from 'react'
@@ -77,7 +77,7 @@ const helpTopics: HelpTopic[] = [
     category: 'Generación con agentes',
     description:
       'Comprende el orden de los agentes y cómo continuar si una generación se interrumpe.',
-    icon: Sparkles,
+    icon: Workflow,
     id: 'generation',
     keywords: ['agentes', 'generación', 'error', 'reintentar', 'api'],
     steps: [

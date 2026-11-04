@@ -58,8 +58,13 @@ const contextQuestions: Array<{
 }> = [
   {
     field: 'problem',
-    es: 'Para comenzar, ¿qué problema o necesidad quieres resolver con este proyecto?',
+    es: 'Para comenzar, describe brevemente el problema o la necesidad que quieres resolver.',
     en: 'To begin, what problem or need do you want this project to address?',
+  },
+  {
+    field: 'initialScope',
+    es: '¿Cuál es el alcance inicial y qué quedará por fuera del proyecto?',
+    en: 'What is the initial scope and what is excluded?',
   },
   {
     field: 'targetPopulation',
@@ -85,11 +90,6 @@ const contextQuestions: Array<{
     field: 'objectiveCount',
     es: '¿Cuántos objetivos específicos quieres que tenga el proyecto? Indica un número exacto entre 2 y 5; Ágora generará exactamente esa cantidad.',
     en: 'How many specific objectives should the project have? Choose an exact number from 2 to 5.',
-  },
-  {
-    field: 'initialScope',
-    es: '¿Cuál es el alcance inicial y qué quedaría por fuera?',
-    en: 'What is the initial scope and what is excluded?',
   },
   {
     field: 'projectDuration',

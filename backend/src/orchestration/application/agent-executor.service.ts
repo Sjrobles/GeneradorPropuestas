@@ -1,3 +1,4 @@
+import { setTimeout as waitForRetry } from 'node:timers/promises'
 import { Injectable, Logger, ServiceUnavailableException } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import {
@@ -58,6 +59,8 @@ export class AgentExecutorService {
       })
     }
 
+    const signal =
+      input.agent === 'research' ? AbortSignal.timeout(240_000) : undefined
     const prompt = this.promptCatalog.get(input.agent)
     const outputLanguageInstruction =
       input.language === 'en'
@@ -107,6 +110,11 @@ export class AgentExecutorService {
                 'Mantén la salida completa dentro del esquema: no agregues campos para equipo humano, resúmenes o referencias; intégralos en narrative y en los ítems permitidos.',
               ]
             : []),
+          ...(input.agent === 'methodology'
+            ? [
+                'La metodología consolidada debe tener como máximo 10.000 caracteres, con desarrollo suficiente y sin repeticiones.',
+              ]
+            : []),
           ...(input.agent === 'ideation'
             ? [
                 `Genera exactamente ${input.context.objectiveCount} objetivos específicos SMART en components.smartObjectives.items: ni uno más ni uno menos. Todas las actividades y el cronograma deben enlazarse con esos objetivos.`,
@@ -117,7 +125,7 @@ export class AgentExecutorService {
             : []),
           ...(input.agent === 'research'
             ? [
-                'Cada uno de los cuatro apartados narrativos del Agente 1 debe contener como mínimo 1.000 caracteres útiles, sin contar títulos ni bibliografía.',
+                'Cada uno de los cuatro apartados narrativos del Agente 1 debe contener entre 1.000 y 1.800 caracteres útiles, sin contar títulos ni bibliografía. Sé preciso y evita repetir información entre apartados; conserva todos los campos y criterios requeridos.',
                 'Cada apartado debe utilizar entre 3 y 5 referencias verificadas, identificadas mediante citationIds y citadas dentro de la narrativa.',
                 'Toda referencia citada debe aparecer en bibliography.references con autor, año, título, referencia APA completa, URL o DOI verificable y una explicación projectRelevance de mínimo 220 caracteres.',
                 'El estado del arte debe comparar al menos tres referentes, explicar avances y limitaciones, y concluir con una brecha conectada con la solución del proyecto.',
@@ -129,12 +137,12 @@ export class AgentExecutorService {
         modelSettings: {
           maxTokens:
             input.agent === 'research'
-              ? 16_000
+              ? 12_000
               : input.agent === 'methodology' || input.agent === 'budget'
                 ? 10_000
                 : 6_000,
-          reasoning: { effort: 'medium' },
-          text: { verbosity: 'high' },
+          reasoning: { effort: input.agent === 'research' ? 'low' : 'medium' },
+          text: { verbosity: input.agent === 'research' ? 'medium' : 'high' },
         },
         outputType: OUTPUT_SCHEMA_BY_AGENT[input.agent],
         tools: [],
@@ -162,6 +170,7 @@ export class AgentExecutorService {
               projectPayload,
               input.safetyIdentifier,
               input.language,
+              signal,
             )
           : undefined
       const budgetEvidence =
@@ -184,7 +193,7 @@ export class AgentExecutorService {
       let result
       let currentAgentInput = agentInput
       let invalidOutputReason = ''
-      const maxAttempts = 3
+      const maxAttempts = input.agent === 'research' ? 2 : 3
       for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
         try {
           result = await runner.run(specialist, currentAgentInput, {
@@ -227,7 +236,8 @@ export class AgentExecutorService {
                 }
               },
             },
-            maxTurns: input.agent === 'research' ? 5 : 3,
+            maxTurns: input.agent === 'research' ? 2 : 3,
+            signal,
           })
           if (input.agent === 'ideation') {
             const ideation = ideationAgentOutputSchema.parse(result.finalOutput)
@@ -267,11 +277,14 @@ export class AgentExecutorService {
             throw error
           }
 
-          const delayMs = this.retryDelayMs(error, attempt)
+          const delayMs =
+            input.agent === 'research'
+              ? Math.min(this.retryDelayMs(error, attempt), 15_000)
+              : this.retryDelayMs(error, attempt)
           this.logger.warn(
             `Límite temporal para ${input.agent}; reintento ${attempt + 1}/${maxAttempts} en ${Math.round(delayMs / 1000)} s`,
           )
-          await new Promise((resolve) => setTimeout(resolve, delayMs))
+          await waitForRetry(delayMs, undefined, { signal })
         }
       }
       if (!result) throw new Error(`No fue posible ejecutar ${input.agent}`)
@@ -307,7 +320,9 @@ export class AgentExecutorService {
       throw new ServiceUnavailableException({
         agent: input.agent,
         code: 'OPENAI_UNAVAILABLE',
-        message: `No fue posible completar el agente ${input.agent}. El progreso anterior quedó guardado y puedes reanudarlo.`,
+        message: signal?.aborted
+          ? 'La investigación tardó más de lo esperado. Puedes reintentar la generación.'
+          : `No fue posible completar el agente ${input.agent}. El progreso anterior quedó guardado y puedes reanudarlo.`,
       })
     }
   }
@@ -316,6 +331,7 @@ export class AgentExecutorService {
     projectPayload: Record<string, unknown>,
     safetyIdentifier: string,
     language: 'en' | 'es',
+    signal?: AbortSignal,
   ): Promise<string> {
     const evidenceAgent = new Agent({
       name: 'Ágora · Subagente de evidencia documental',
@@ -325,7 +341,7 @@ export class AgentExecutorService {
       instructions: [
         'Actúas como subagente documental del agente de investigación de Ágora.',
         'Investiga evidencia académica e institucional reciente, pertinente al contexto del proyecto.',
-        'Entrega un dossier textual detallado con hallazgos, autores, año, título, URL o DOI y relación concreta con el proyecto.',
+        'Entrega un dossier conciso de 3 a 5 fuentes verificadas con hallazgos, autores, año, título, URL o DOI y relación concreta con el proyecto. Evita búsquedas redundantes una vez tengas evidencia suficiente.',
         'Prioriza fuentes de los últimos cinco años; usa fuentes seminales solo cuando sean indispensables.',
         'No redactes el documento final ni inventes referencias. Señala con claridad cualquier dato no verificado.',
         language === 'en'
@@ -333,9 +349,9 @@ export class AgentExecutorService {
           : 'Redacta el dossier completo de evidencia en español. Conserva títulos oficiales de fuentes, nombres propios, URL y DOI en su forma original.',
       ].join('\n\n'),
       modelSettings: {
-        maxTokens: 5_000,
+        maxTokens: 3_000,
         reasoning: { effort: 'low' },
-        text: { verbosity: 'high' },
+        text: { verbosity: 'medium' },
       },
       tools: [
         webSearchTool({
@@ -351,16 +367,17 @@ export class AgentExecutorService {
       workflowName: 'Agora project formulation',
     })
 
-    const maxAttempts = 3
+    const maxAttempts = 2
     for (let attempt = 1; attempt <= maxAttempts; attempt += 1) {
       try {
         const result = await evidenceRunner.run(
           evidenceAgent,
           JSON.stringify(projectPayload, null, 2),
-          { maxTurns: 4 },
+          { maxTurns: 3, signal },
         )
         return String(result.finalOutput ?? '')
       } catch (error) {
+        if (signal?.aborted) throw error
         if (!this.isTransientOpenAIError(error) || attempt === maxAttempts) {
           this.logger.warn(
             `No fue posible recopilar evidencia documental externa; el agente continuará con el contexto disponible: ${error instanceof Error ? error.message : 'error desconocido'}`,
@@ -371,11 +388,11 @@ export class AgentExecutorService {
             'Cuando no puedas verificar una fuente, indícalo claramente en consistencyWarnings y evita presentarla como evidencia confirmada.',
           ].join(' ')
         }
-        const delayMs = this.retryDelayMs(error, attempt)
+        const delayMs = Math.min(this.retryDelayMs(error, attempt), 15_000)
         this.logger.warn(
           `Límite temporal para evidencia documental; reintento ${attempt + 1}/${maxAttempts} en ${Math.round(delayMs / 1000)} s`,
         )
-        await new Promise((resolve) => setTimeout(resolve, delayMs))
+        await waitForRetry(delayMs, undefined, { signal })
       }
     }
 

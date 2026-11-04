@@ -1,3 +1,4 @@
+import '../styles/context-workspace.css'
 import { zodResolver } from '@hookform/resolvers/zod'
 import {
   ArrowRight,
@@ -6,12 +7,14 @@ import {
   Save,
   ShieldCheck,
 } from 'lucide-react'
-import { useForm } from 'react-hook-form'
+import { useForm, useWatch } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router'
 import { z } from 'zod'
 
 import { ErrorState } from '@/components/feedback/ErrorState'
 import { LoadingState } from '@/components/feedback/LoadingState'
+import { TextLimitHint } from '@/components/forms/TextLimitHint'
+import { contextGuidance } from '../context-guidance'
 import { AgoraButton } from '@/components/ui/agora-button'
 import {
   useConfirmContextMutation,
@@ -42,6 +45,11 @@ const fields: Array<{
     description: 'Necesidad principal que origina el proyecto.',
   },
   {
+    name: 'initialScope',
+    label: 'Alcance inicial',
+    description: 'Límites y cobertura de esta primera formulación.',
+  },
+  {
     name: 'targetPopulation',
     label: 'Población beneficiaria',
     description: 'Personas, comunidades u organizaciones destinatarias.',
@@ -68,11 +76,6 @@ const fields: Array<{
       'Elige entre 2 y 5. Ágora generará exactamente la cantidad indicada.',
   },
   {
-    name: 'initialScope',
-    label: 'Alcance inicial',
-    description: 'Límites y cobertura de esta primera formulación.',
-  },
-  {
     name: 'projectDuration',
     label: 'Duración total del proyecto',
     description:
@@ -80,7 +83,11 @@ const fields: Array<{
   },
 ]
 
-const requiredAnswer = z.string().trim().min(3, 'Completa este campo.')
+const requiredAnswer = z
+  .string()
+  .trim()
+  .min(3, 'Escribe al menos 3 caracteres.')
+  .max(4000, 'Este campo admite máximo 4.000 caracteres.')
 
 const contextSchema = z.object({
   problem: requiredAnswer,
@@ -94,7 +101,10 @@ const contextSchema = z.object({
     .min(2, 'El mínimo es 2 objetivos.')
     .max(5, 'El máximo es 5 objetivos.'),
   initialScope: requiredAnswer,
-  projectDuration: requiredAnswer,
+  projectDuration: requiredAnswer.max(
+    200,
+    'La duración admite máximo 200 caracteres.',
+  ),
 })
 
 type ContextValues = z.infer<typeof contextSchema>
@@ -116,14 +126,24 @@ function ContextForm({
     ) as ContextValues,
   })
 
+  const watchedValues = useWatch({ control: form.control })
+
   const save = form.handleSubmit(async (values) => {
-    await updateContext.mutateAsync({ projectId, input: values })
+    try {
+      await updateContext.mutateAsync({ projectId, input: values })
+    } catch {
+      // Keep entered values; the mutation renders a corrective message.
+    }
   })
 
   const confirm = form.handleSubmit(async (values) => {
-    await updateContext.mutateAsync({ projectId, input: values })
-    await confirmContext.mutateAsync(projectId)
-    await navigate(`/projects/${projectId}/generation`)
+    try {
+      await updateContext.mutateAsync({ projectId, input: values })
+      await confirmContext.mutateAsync(projectId)
+      await navigate(`/projects/${projectId}/generation`)
+    } catch {
+      // Keep entered values; the mutation renders a corrective message.
+    }
   })
 
   return (
@@ -132,10 +152,10 @@ function ContextForm({
         {fields.map((field) => (
           <label
             key={field.name}
-            className="rounded-xl border border-border bg-card p-5 shadow-sm"
+            className="agora-context-field rounded-3xl border border-border bg-card p-5 sm:p-6"
           >
             <span className="flex items-center justify-between gap-3">
-              <span className="font-extrabold">{field.label}</span>
+              <span className="font-semibold">{field.label}</span>
               <PencilLine
                 className="text-primary"
                 aria-hidden="true"
@@ -155,10 +175,27 @@ function ContextForm({
                 {...form.register(field.name, { valueAsNumber: true })}
               />
             ) : (
-              <textarea
-                className="mt-4 min-h-28 w-full resize-y rounded-lg border border-border bg-background px-4 py-3 text-sm leading-6 outline-none focus:border-primary"
-                {...form.register(field.name)}
-              />
+              <>
+                <details className="mt-2 text-sm">
+                  <summary className="cursor-pointer font-semibold text-primary">
+                    Ver más: cómo responder
+                  </summary>
+                  <p className="mt-2 leading-6">
+                    {contextGuidance[field.name]}
+                  </p>
+                </details>
+                <textarea
+                  aria-label={field.label}
+                  maxLength={field.name === 'projectDuration' ? 200 : 4000}
+                  aria-invalid={Boolean(form.formState.errors[field.name])}
+                  className="mt-4 min-h-28 w-full resize-y rounded-lg border border-border bg-background px-4 py-3 text-sm leading-6 outline-none focus:border-primary"
+                  {...form.register(field.name)}
+                />
+                <TextLimitHint
+                  length={(watchedValues[field.name] ?? '').length}
+                  limit={field.name === 'projectDuration' ? 200 : 4000}
+                />
+              </>
             )}
             {form.formState.errors[field.name] ? (
               <span className="mt-2 block text-xs font-bold text-danger">
@@ -215,30 +252,30 @@ export function ContextPage() {
     )
 
   return (
-    <section className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
-      <header className="rounded-[1.4rem] bg-[#21356d] p-7 text-white shadow-card sm:p-9">
+    <section className="agora-context-workspace agora-context-confirm mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
+      <header className="agora-context-header rounded-3xl border border-[#dce5f4] bg-[#e5edfc] p-7 text-[#1f3268] sm:p-9">
         <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <div>
-            <p className="text-xs font-extrabold uppercase tracking-[0.18em] text-[#a9bdff]">
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-[#2864ef]">
               Diagnóstico completado
             </p>
-            <h1 className="mt-3 text-4xl font-extrabold tracking-tight">
+            <h1 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
               Confirma el contexto de tu proyecto
             </h1>
-            <p className="mt-4 max-w-2xl leading-7 text-white/70">
+            <p className="mt-4 max-w-2xl leading-7 text-[#52617c]">
               Revisa y ajusta la información estructurada antes de iniciar la
               formulación de componentes.
             </p>
           </div>
-          <div className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/10 p-4">
+          <div className="flex items-center gap-3 rounded-xl border border-[#dce5f4] bg-white p-4">
             <CheckCircle2
-              className="text-[#9fefce]"
+              className="text-[#15855e]"
               aria-hidden="true"
               size={26}
             />
             <div>
-              <p className="text-xs text-white/60">Estado</p>
-              <p className="font-extrabold">Contexto coherente</p>
+              <p className="text-xs text-[#52617c]">Estado</p>
+              <p className="font-semibold">Contexto coherente</p>
             </div>
           </div>
         </div>

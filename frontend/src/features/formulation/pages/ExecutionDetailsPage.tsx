@@ -8,12 +8,13 @@ import {
   ShieldCheck,
   Target,
 } from 'lucide-react'
-import { useForm } from 'react-hook-form'
+import { useForm, useWatch } from 'react-hook-form'
 import { useNavigate, useParams } from 'react-router'
 import { z } from 'zod'
 
 import { ErrorState } from '@/components/feedback/ErrorState'
 import { LoadingState } from '@/components/feedback/LoadingState'
+import { TextLimitHint } from '@/components/forms/TextLimitHint'
 import { AgoraButton } from '@/components/ui/agora-button'
 import { useComponentsQuery } from '@/features/formulation/hooks/use-components'
 import {
@@ -100,7 +101,11 @@ const fields: Array<{
 const requiredAnswer = z
   .string()
   .trim()
-  .min(3, 'Esta respuesta es necesaria para continuar.')
+  .min(3, 'Escribe al menos 3 caracteres para continuar.')
+  .max(
+    10000,
+    'Esta respuesta admite máximo 10.000 caracteres. Resume el contenido antes de continuar.',
+  )
 
 const executionDetailsSchema = z.object(
   Object.fromEntries(
@@ -212,14 +217,24 @@ function ExecutionDetailsForm({
     ) as ExecutionDetailsValues,
   })
 
+  const watchedValues = useWatch({ control: form.control })
+
   const save = form.handleSubmit(async (values) => {
-    await updateDetails.mutateAsync({ projectId, input: values })
+    try {
+      await updateDetails.mutateAsync({ projectId, input: values })
+    } catch {
+      // Keep entered values; the mutation renders a corrective message.
+    }
   })
 
   const confirm = form.handleSubmit(async (values) => {
-    await updateDetails.mutateAsync({ projectId, input: values })
-    await confirmDetails.mutateAsync(projectId)
-    await navigate(`/projects/${projectId}/generation`)
+    try {
+      await updateDetails.mutateAsync({ projectId, input: values })
+      await confirmDetails.mutateAsync(projectId)
+      await navigate(`/projects/${projectId}/generation`)
+    } catch {
+      // Keep entered values; the mutation renders a corrective message.
+    }
   })
 
   return (
@@ -243,8 +258,14 @@ function ExecutionDetailsForm({
             </span>
             <textarea
               aria-label={field.label}
+              maxLength={10000}
+              aria-invalid={Boolean(form.formState.errors[field.name])}
               className="mt-4 min-h-36 w-full resize-y rounded-lg border border-border bg-background px-4 py-3 text-sm leading-6 outline-none focus:border-primary"
               {...form.register(field.name)}
+            />
+            <TextLimitHint
+              length={(watchedValues[field.name] ?? '').length}
+              limit={10000}
             />
             {form.formState.errors[field.name] ? (
               <span className="mt-2 block text-xs font-bold text-danger">
